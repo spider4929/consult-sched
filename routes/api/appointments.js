@@ -31,6 +31,7 @@ router.post('/:user_id', [ auth, [
         const newAppointment = new Appointment ({
             text: req.body.text,
             set_date: req.body.set_date,
+            meet_link: req.body.meet_link,
             student: student.id,
             teacher: teacher.id,
             teacher_name: teacher.first_name + ' ' + teacher.last_name,
