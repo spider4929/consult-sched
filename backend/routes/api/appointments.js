@@ -11,7 +11,8 @@ const User = require('../../models/User')
 // @access  Private
 router.post('/:user_id', [ auth, [
     check('text', 'Text is required').not().isEmpty(),
-    check('set_date', 'Date is required').not().isEmpty()
+    check('start_date', 'Start Date is required').not().isEmpty(),
+    check('end_date', 'End Date is required').not().isEmpty()
 ] ], async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -30,7 +31,8 @@ router.post('/:user_id', [ auth, [
         
         const newAppointment = new Appointment ({
             text: req.body.text,
-            set_date: req.body.set_date,
+            start_date: req.body.start_date,
+            end_date: req.body.end_date,
             meet_link: req.body.meet_link,
             student: student.id,
             teacher: teacher.id,
