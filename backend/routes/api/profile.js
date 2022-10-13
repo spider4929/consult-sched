@@ -14,7 +14,7 @@ router.get('/me', auth, async (req, res) => {
         const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['first_name', 'last_name', 'avatar'])
 
         if (!profile) {
-            return res.status(400).json({ errors: [ { msg: "There is no profile for this user." } ] })
+            return res.status(400).json({ error: 'There is no profile for this user' })
         }
 
         res.json(profile)
@@ -104,13 +104,13 @@ router.get('/user/:user_id', auth, async (req, res) => {
     try {
         const profile = await Profile.findOne({ user: req.params.user_id }).populate('user', ['first_name', 'last_name', 'avatar'])
 
-        if (!profile) return res.status(400).json({ errors: [ { msg: "Profile not found." } ] })
+        if (!profile) return res.status(400).json({ error: 'Profile not found' })
         
         res.json(profile)
     } catch(err) {
         console.error(err.message)
         if (err.kind == 'ObjectId') {
-            return res.status(400).json({ errors: [ { msg: "Profile not found." } ] })
+            return res.status(400).json({ error: 'Profile not found' })
         }
         res.status(500).send('Server Error')
     }
@@ -130,7 +130,7 @@ router.delete('/', auth, async (req, res) => {
     } catch(err) {
         console.error(err.message)
         if (err.kind == 'ObjectId') {
-            return res.status(400).json({ errors: [ { msg: "Profile not found." } ] })
+            return res.status(400).json({ error: 'Profile not found' })
         }
         res.status(500).send('Server Error')
     }
