@@ -30,7 +30,8 @@ router.post('/:user_id', [ auth, [
         
         const newAppointment = new Appointment ({
             text: req.body.text,
-            set_date: req.body.set_date,
+            start_date: req.body.start_date,
+            end_date: req.body.end_date,
             meet_link: req.body.meet_link,
             student: student.id,
             teacher: teacher.id,
