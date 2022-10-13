@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Typography, Container, Button, makeStyles, TextField, FormControl, FormLabel } from "@mui/material";
 import { useState } from "react";
 
@@ -88,13 +87,6 @@ const Profile = () => {
                     </form>
             </FormControl>
         </Container>
-=======
-const Profile = () => {
-    return ( 
-        <div>
-            Profile
-        </div>
->>>>>>> 305f2c121552232b1f68bdc68287622e8b3ec0f2
      );
 }
  
