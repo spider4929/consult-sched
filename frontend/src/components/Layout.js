@@ -1,5 +1,5 @@
 import { Box, Drawer, Typography, List, ListItem, ListItemIcon, 
-    ListItemText, AppBar, Toolbar, Button} from "@mui/material";
+    ListItemText, AppBar, Toolbar, Button, Badge } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { format } from 'date-fns'
@@ -74,12 +74,12 @@ const Layout = ({ children }) => {
             text: 'Create Consultations',
             icon: <AddCircleOutlineOutlinedIcon />,
             path: '/create-consultation-professor'
-        },
-        {
-            text: 'Inbox',
-            icon: <EmailOutlinedIcon />,
-            path: '/inbox'
         }
+        // {
+        //     text: 'Inbox',
+        //     icon: <EmailOutlinedIcon />,
+        //     path: '/inbox'
+        // }
         
     ]
 
@@ -115,23 +115,37 @@ const Layout = ({ children }) => {
                             button
                             key={item.text}
                             onClick={() => navigate(item.path)}
-                            sx={location.pathname == item.path ? classes.active : null}
+                            sx={location.pathname === item.path ? classes.active : null}
                         >
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.text}></ListItemText>
                         </ListItem>
                     ))}
+                    {/* TODO: remove this if you cannot make the number work */}
+                    <ListItem
+                        button
+                        onClick={() => navigate('/inbox')}
+                        sx={location.pathname === '/inbox' ? classes.active : null}
+                    >
+                        <ListItemIcon>
+                            {/* TODO: make value dynamic */}
+                            <Badge badgeContent={4} color="primary">
+                                <EmailOutlinedIcon />
+                            </Badge>
+                        </ListItemIcon>
+                        <ListItemText primary="Inbox"></ListItemText>
+                    </ListItem>
                 </List>
                             
-            {/* TODO: Flush button to the bottom */}
-            <Button 
-                variant="text"
-                size="large"
+                {/* TODO: Flush button to the bottom */}
+                <Button 
+                    variant="text"
+                    size="large"
 
-            >
-                Logout
-            
-            </Button>
+                >
+                    Logout
+                
+                </Button>
 
             </Drawer>
 

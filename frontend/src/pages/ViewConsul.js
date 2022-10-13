@@ -1,9 +1,14 @@
+import { Box } from "@mui/system";
+import Consultation from "../components/Consultation";
+
 const ViewConsul = () => {
+    // TODO: insert useEffect here
+
     return ( 
-        <div>
-            View Consultations
-        </div>
-     );
+        <Box>
+            <Consultation />
+        </Box>
+    );
 }
  
 export default ViewConsul;
