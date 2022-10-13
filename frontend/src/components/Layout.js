@@ -1,5 +1,5 @@
 import { Box, Drawer, Typography, List, ListItem, ListItemIcon, 
-    ListItemText, AppBar, Toolbar, Button, Badge } from "@mui/material";
+    ListItemText, AppBar, Toolbar, Button, Badge, Card, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { format } from 'date-fns'
@@ -10,6 +10,7 @@ import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 // custom CSS for page
 const drawerWidth = 260
@@ -36,11 +37,8 @@ const classes = {
         background: 'white',
         color: 'black'
     },
-    date: {
-        flexGrow: 1
-    },
     sidebarLogo: {
-        width: '100%'
+        width: '25%'
     }
 }
 
@@ -62,7 +60,7 @@ const Layout = ({ children }) => {
         },
         {
             text: 'View Consultations',
-            icon: <SearchOutlinedIcon />,
+            icon: <Badge badgeContent={10} color="primary"><SearchOutlinedIcon /></Badge>,
             path: '/view-consultations'
         },
         {
@@ -83,84 +81,101 @@ const Layout = ({ children }) => {
         
     ]
 
+    // simulates a logged in user
+    const user = true;
 
-    return ( 
-        <Box sx={classes.root}>
-            {/* app bar */}
-            <AppBar 
-                sx={classes.appbar}
-                elevation={0}
-            >
-                <Toolbar>
-                    <Typography sx={classes.date}>
-                        This is a top app bar. Today is the { format(new Date(), 'do MMMM Y') }
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-
-
-            {/* side drawer */}
-            <Drawer 
-                sx={classes.drawer}
-                variant="permanent"
-                anchor="left"
-            >
-                
-                <img src="cpe.png" alt="cpe logo" className={classes.sidebarLogo}></img>
-
-                {/* list of links */}
-                <List>
-                    {menuItems.map(item => (
+    // this will display if user is logged in
+    if (user) {
+        return ( 
+            <Box sx={classes.root}>
+                {/* app bar */}
+                <AppBar 
+                    sx={classes.appbar}
+                    elevation={0}
+                >
+                    <Toolbar>
+                        {/* TODO: display here the current page */}
+                        <Typography sx={{flexGrow: 1}}>This is supposed to show the current page.</Typography>
+                        <Typography>
+                            {/* Day, MM/DD/YYYY */}
+                            { format(new Date(), 'iiii, LLLL dd, RRRR') }
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+    
+    
+                {/* side drawer */}
+                <Drawer 
+                    sx={classes.drawer}
+                    variant="permanent"
+                    anchor="left"
+                >
+                    
+                    <img src="cpe.png" alt="cpe logo" className={classes.sidebarLogo}></img>
+    
+                    {/* list of links */}
+                    <List sx={{flexGrow: 1}}>
+                        {menuItems.map(item => (
+                            <ListItem
+                                button
+                                key={item.text}
+                                onClick={() => navigate(item.path)}
+                                sx={location.pathname === item.path ? classes.active : null}
+                            >
+                                <ListItemIcon>{item.icon}</ListItemIcon>
+                                <ListItemText primary={item.text}></ListItemText>
+                            </ListItem>
+                        ))}
+    
+                        {/* TODO: remove this if you cannot make the number work */}
                         <ListItem
                             button
-                            key={item.text}
-                            onClick={() => navigate(item.path)}
-                            sx={location.pathname === item.path ? classes.active : null}
+                            onClick={() => navigate('/inbox')}
+                            sx={location.pathname === '/inbox' ? classes.active : null}
                         >
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text}></ListItemText>
+                            <ListItemIcon>
+                                {/* TODO: make value dynamic */}
+                                <Badge badgeContent={10} color="primary">
+                                    <EmailOutlinedIcon />
+                                </Badge>
+                            </ListItemIcon>
+                            <ListItemText primary="Inbox"></ListItemText>
                         </ListItem>
-                    ))}
-                    {/* TODO: remove this if you cannot make the number work */}
-                    <ListItem
-                        button
-                        onClick={() => navigate('/inbox')}
-                        sx={location.pathname === '/inbox' ? classes.active : null}
+                    </List>
+                                
+                    <Button 
+                        variant="contained"
+                        size="large"
+                        sx={{margin: '10px'}}
                     >
-                        <ListItemIcon>
-                            {/* TODO: make value dynamic */}
-                            <Badge badgeContent={4} color="primary">
-                                <EmailOutlinedIcon />
-                            </Badge>
-                        </ListItemIcon>
-                        <ListItemText primary="Inbox"></ListItemText>
-                    </ListItem>
-                </List>
-                            
-                {/* TODO: Flush button to the bottom */}
-                <Button 
-                    variant="text"
-                    size="large"
-
-                >
-                    Logout
-                
-                </Button>
-
-            </Drawer>
-
-            {/* content body */}
+                        Logout
+                    </Button>
     
-            <Box sx={{ 
-                padding: `${theme.spacing(2)}`, 
-                background: '#f9f9f9',
-                width:'100%'
-            }}>
-                <Box sx={theme.mixins.toolbar}></Box>
+                </Drawer>
+    
+                {/* content body */}
+        
+                <Box sx={{ 
+                    padding: `${theme.spacing(2)}`, 
+                    background: '#f9f9f9',
+                    width:'100%'
+                }}>
+                    <Box sx={theme.mixins.toolbar}></Box>
+                    {children}
+                </Box>
+            </Box>
+        );
+    }
+
+    // this will display if user is not logged in
+    else {
+        return (
+            <Box sx={{ padding: `${theme.spacing(2)}`}}>
                 {children}
             </Box>
-        </Box>
-    );
+        )
+    }
+    
 }
  
 export default Layout;

@@ -29,7 +29,7 @@ router.post('/', [
         let user = await User.findOne({ email })
 
         if (user) {
-            return res.status(400).json({ errors: [ { msg: 'User already exists' } ] })
+            return res.status(400).json({ error: 'User already exists'})
         }
 
         // Get users gravatar
@@ -51,7 +51,7 @@ router.post('/', [
 
         // See if it uses TIP email
         if (!user.email.includes("@tip.edu.ph")) {
-            return res.status(400).json({ errors: [ { msg: 'Please use TIP Email' } ] })
+            return res.status(400).json({ error:  'Please use TIP Email'})
         }
 
         // Encrypt password
