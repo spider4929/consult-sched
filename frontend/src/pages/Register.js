@@ -1,4 +1,4 @@
-import { Box, Card, TextField, Button, Typography } from "@mui/material";
+import { Box, Card, TextField, Button, Typography, CardHeader } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
@@ -26,6 +26,7 @@ const Register = () => {
             }}
                 elevation = {3}
             >
+                <Typography variant="h4" sx={{margin: 'auto', textAlign: 'center', marginBottom: `${theme.spacing(2)}`}}>Register</Typography>
                 <img src="cpe.png" alt="cpe logo" className="loginLogo"></img>
                 <form onSubmit={handleSubmit}>
                     <TextField

@@ -95,7 +95,7 @@ const Layout = ({ children }) => {
                 >
                     <Toolbar>
                         {/* TODO: display here the current page */}
-                        <Typography sx={{flexGrow: 1}}>This is supposed to show the current page.</Typography>
+                        <Typography sx={{flexGrow: 1}}>Welcome, Ferdinand "Bongbong" Romualdez Marcos Jr., the God-King Emperor of Mankind.</Typography>
                         <Typography>
                             {/* Day, MM/DD/YYYY */}
                             { format(new Date(), 'iiii, LLLL dd, RRRR') }

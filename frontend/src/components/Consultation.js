@@ -1,6 +1,6 @@
 const Consultation = () => {
     return ( 
-        <div>Tite</div>
+        <img src="trystana.gif"></img>
     );
 }
  
