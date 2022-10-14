@@ -57,7 +57,7 @@ const SideNavbar = () => {
         },
         {
             text: 'View Consultations',
-            icon: <Badge badgeContent={10} color="primary"><SearchOutlinedIcon /></Badge>,
+            icon: <SearchOutlinedIcon />,
             path: '/view-consultations'
         }
     ]
