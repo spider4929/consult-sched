@@ -35,7 +35,7 @@ const ViewConsul = () => {
         <TableHead>
           <TableRow>
             <TableCell>Title</TableCell>
-            <TableCell>Instructor</TableCell>
+            { user.role === 1 ? <TableCell>Instructor</TableCell> : <TableCell>Student/s</TableCell>}
             <TableCell>Start</TableCell>
             <TableCell>End</TableCell>
             <TableCell>Meet Link/Location</TableCell>
