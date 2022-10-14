@@ -1,4 +1,4 @@
-import { Box, Card, TextField, Button, Typography } from "@mui/material";
+import { Box, Card, TextField, Button, Typography, Alert } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
@@ -66,7 +66,7 @@ const Login = () => {
                         Register
                     </Button>
 
-                    { error && <Card sx={{padding: `${theme.spacing(2)}`, color: 'white', backgroundColor: '#ff4569'}}>{error}</Card>}
+                    { error && <Alert severity="error">{error}</Alert>}
 
                 </form>
         

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, 
+  IconButton, Tooltip} from "@mui/material";
 import { useAuthContext } from "../hooks/useAuthContext";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -52,8 +53,8 @@ const ViewConsul = () => {
               <TableCell>{format(new Date(consultation.end_date), 'PPpp')}</TableCell>
               <TableCell>{consultation.meet_link}</TableCell>
               <TableCell align='center'>
-                <Button><DeleteOutlineOutlinedIcon color="primary"/></Button>
-                <Button><EditOutlinedIcon color="primary"/></Button>
+                <Tooltip title="Delete"><IconButton><DeleteOutlineOutlinedIcon color="primary"/></IconButton></Tooltip>
+                <Tooltip title="Edit"><IconButton><EditOutlinedIcon color="primary"/></IconButton></Tooltip>
               </TableCell>
             </TableRow>
           ))}
