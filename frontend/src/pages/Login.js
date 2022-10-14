@@ -1,16 +1,25 @@
 import { Box, Card, TextField, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
+import { useLogin } from "../hooks/useLogin";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const theme = useTheme()
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const { login, error, isLoading } = useLogin()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        console.log(email, password)
+        await login(email, password)
+    }
+
+    const routeChange = () => {
+        const path = '/register'
+        navigate(path)
     }
 
     return (
@@ -50,7 +59,19 @@ const Login = () => {
                         variant="contained">
                         Login
                     </Button>
+
+                    <Button
+                        onClick={routeChange}
+                        variant="contained">
+                        Register
+                    </Button>
+
+                    { error && <Card sx={{padding: `${theme.spacing(2)}`, color: 'white', backgroundColor: '#ff4569'}}>{error}</Card>}
+
                 </form>
+        
+                
+
             </Card>
         </Box>
     );

@@ -1,16 +1,8 @@
-import { Box, Drawer, Typography, List, ListItem, ListItemIcon, 
-    ListItemText, AppBar, Toolbar, Button, Badge, Card, TextField } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Typography, AppBar, Toolbar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { format } from 'date-fns'
-
-// icon imports
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useAuthContext } from "../hooks/useAuthContext";
+import SideNavbar from './SideNavbar'
 
 // custom CSS for page
 const drawerWidth = 260
@@ -44,45 +36,8 @@ const classes = {
 
 
 const Layout = ({ children }) => {
-    const navigate = useNavigate()
-    const location = useLocation()
     const theme = useTheme()
-    const menuItems = [
-        {
-            text: 'Profile',
-            icon: <AccountCircleOutlinedIcon />,
-            path: '/profile'
-        },
-        {
-            text: 'Dashboard',
-            icon: <GridViewOutlinedIcon />,
-            path: '/'
-        },
-        {
-            text: 'View Consultations',
-            icon: <Badge badgeContent={10} color="primary"><SearchOutlinedIcon /></Badge>,
-            path: '/view-consultations'
-        },
-        {
-            text: 'Create a Consultation',
-            icon: <AddCircleOutlineOutlinedIcon />,
-            path: '/create-consultation-student'
-        },
-        {
-            text: 'Create Consultations',
-            icon: <AddCircleOutlineOutlinedIcon />,
-            path: '/create-consultation-professor'
-        }
-        // {
-        //     text: 'Inbox',
-        //     icon: <EmailOutlinedIcon />,
-        //     path: '/inbox'
-        // }
-        
-    ]
-
-    // simulates a logged in user
-    const user = true;
+    const { user } = useAuthContext()
 
     // this will display if user is logged in
     if (user) {
@@ -105,53 +60,7 @@ const Layout = ({ children }) => {
     
     
                 {/* side drawer */}
-                <Drawer 
-                    sx={classes.drawer}
-                    variant="permanent"
-                    anchor="left"
-                >
-                    
-                    <img src="cpe.png" alt="cpe logo" className={classes.sidebarLogo}></img>
-    
-                    {/* list of links */}
-                    <List sx={{flexGrow: 1}}>
-                        {menuItems.map(item => (
-                            <ListItem
-                                button
-                                key={item.text}
-                                onClick={() => navigate(item.path)}
-                                sx={location.pathname === item.path ? classes.active : null}
-                            >
-                                <ListItemIcon>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text}></ListItemText>
-                            </ListItem>
-                        ))}
-    
-                        {/* TODO: remove this if you cannot make the number work */}
-                        <ListItem
-                            button
-                            onClick={() => navigate('/inbox')}
-                            sx={location.pathname === '/inbox' ? classes.active : null}
-                        >
-                            <ListItemIcon>
-                                {/* TODO: make value dynamic */}
-                                <Badge badgeContent={10} color="primary">
-                                    <EmailOutlinedIcon />
-                                </Badge>
-                            </ListItemIcon>
-                            <ListItemText primary="Inbox"></ListItemText>
-                        </ListItem>
-                    </List>
-                                
-                    <Button 
-                        variant="contained"
-                        size="large"
-                        sx={{margin: '10px'}}
-                    >
-                        Logout
-                    </Button>
-    
-                </Drawer>
+                <SideNavbar />
     
                 {/* content body */}
         

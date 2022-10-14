@@ -1,4 +1,4 @@
-import { Box, Card, TextField, Button, Typography, CardHeader } from "@mui/material";
+import { Box, Card, TextField, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
