@@ -3,6 +3,11 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 const auth = require('../../middleware/auth')
 
+const Moment = require('moment');
+const MomentRange = require('moment-range');
+
+const moment = MomentRange.extendMoment(Moment);
+
 const Appointment = require('../../models/Appointment')
 const User = require('../../models/User')
 
@@ -28,11 +33,23 @@ router.post('/:user_id', [ auth, [
         if (teacher.role != 2) {
             return res.status(400).json({ error: 'You can only book towards a Teacher' })
         }
+
+        const appointments = await Appointment.find({ teacher: req.params.user_id, accepted: 1 })
+
+        const date1 = [moment(req.body.start_date), moment(req.body.end_date)]
+        const range1 = moment.range(date1)
+        for (var a in appointments) {
+            const range2 = moment.range(a.range)
+            if (range1.overlaps(range2)) {
+                return res.status(400).json({ error: 'Conflict detected. Please contact your professor for another schedule' })
+            }
+        }
         
         const newAppointment = new Appointment ({
             text: req.body.text,
             start_date: req.body.start_date,
             end_date: req.body.end_date,
+            range: [moment(req.body.start_date), moment(req.body.end_date)],
             meet_link: req.body.meet_link,
             student: student.id,
             teacher: teacher.id,

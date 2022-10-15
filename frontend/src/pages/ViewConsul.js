@@ -12,7 +12,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 
 const ViewConsul = () => {
-  // add state for not approved consultations
   const [consultations, setConsultations] = useState(null)
   const { user } = useAuthContext()
 

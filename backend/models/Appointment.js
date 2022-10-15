@@ -42,6 +42,9 @@ const AppointmentSchema = new Schema({
         type: Date,
         required: true
     },
+    range: {
+        type: []
+    },
     meet_link: {
         type: String,
     },
