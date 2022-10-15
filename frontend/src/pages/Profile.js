@@ -1,4 +1,4 @@
-import { Typography, Container, Button, makeStyles, TextField, FormControl, FormLabel } from "@mui/material";
+import { Typography, Box, Button, makeStyles, TextField, FormControl, FormLabel } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -41,7 +41,6 @@ const Profile = () => {
         
         if (user) {
             fetchProfiles()
-            console.log(profiles)
         }
         }, [user])
     
@@ -73,7 +72,7 @@ const Profile = () => {
     }
 
     return ( 
-        <Container>
+        <Box padding={2}>
             <Typography
              variant="h6" 
              color="primary">
@@ -179,7 +178,7 @@ const Profile = () => {
                         </Button>
                     </form>
             </FormControl>
-        </Container>
+        </Box>
      );
 }
  

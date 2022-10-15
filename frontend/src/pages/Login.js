@@ -1,4 +1,4 @@
-import { Box, Card, TextField, Button, Typography, Alert } from "@mui/material";
+import { Box, Card, TextField, Button, Typography, Alert, Link } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
@@ -54,17 +54,27 @@ const Login = () => {
                         value={password}
                     />
 
-                    <Button
+                    <Button 
+                        sx={{
+                            marginTop: `${theme.spacing(3)}`, 
+                            width: '100%'
+                        }}
                         type="submit"
                         variant="contained">
                         Login
                     </Button>
 
-                    <Button
-                        onClick={routeChange}
-                        variant="contained">
-                        Register
-                    </Button>
+                    <Link 
+                        sx={{
+                        marginTop: '10px'
+                    }} 
+                        href="#" 
+                        onClick={routeChange} 
+                        color='#000000'
+                        variant='body2'
+                        >
+                        No account? Register Here!
+                    </Link>
 
                     { error && <Alert severity="error">{error}</Alert>}
 

@@ -56,7 +56,7 @@ const SideNavbar = () => {
             path: '/'
         },
         {
-            text: 'View Consultations',
+            text: 'View Your Consultations',
             icon: <SearchOutlinedIcon />,
             path: '/view-consultations'
         }
@@ -127,7 +127,7 @@ const SideNavbar = () => {
                 </ListItem>
             </List>
                         
-            <Button o
+            <Button
                 onClick={handleClick}
                 variant="contained"
                 size="large"

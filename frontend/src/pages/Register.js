@@ -65,7 +65,7 @@ const Register = () => {
                         value={password}
                     />
 
-                    <Button disabled={isLoading} type="submit" variant="contained">Register</Button>
+                    <Button sx={{marginTop: `${theme.spacing(3)}`, width: '100%'}} disabled={isLoading} type="submit" variant="contained">Register</Button>
 
                     {/* TODO: for array of errors, to .map() here */}
                     { error && <Alert severity="error">{error}</Alert>}

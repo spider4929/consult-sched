@@ -1,8 +1,9 @@
+import format from 'date-fns/format'
+
+// mui imports
 import { useEffect, useState } from 'react'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, 
   IconButton, Tooltip} from "@mui/material";
-import { useAuthContext } from "../hooks/useAuthContext";
-import format from 'date-fns/format'
 
 // icon imports
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -10,6 +11,10 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
+
+// hook imports
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 const ViewConsul = () => {
   const [consultations, setConsultations] = useState(null)
