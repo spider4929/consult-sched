@@ -124,6 +124,16 @@ router.put('/approve/:app_id', auth, async (req, res) => {
         if (teacher.id != appointment.teacher) {
             return res.status(400).json({ error: "You cannot approve another teacher's appointments" })
         }
+
+        const appointments = await Appointment.find({ teacher: req.user.id, accepted: 1 })
+
+        const range1 = moment.range(appointment.range)
+        for (var a in appointments) {
+            const range2 = moment.range(a.range)
+            if (range1.overlaps(range2)) {
+                return res.status(400).json({ error: 'Conflict detected. Please contact your student(s) for another schedule' })
+            }
+        }
         
         if(appointment.accepted == 1) {
             return res.status(400).json({ error: 'Appointment has already been accepted' })
