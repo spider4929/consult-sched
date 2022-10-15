@@ -72,11 +72,11 @@ router.get('/teacher', auth, async (req, res) => {
 // @access  Private
 router.get('/student', auth, async (req, res) => {
     try {
-        const student = await User.findById(req.user.id).select('-password')
+        const student = await User.findOne({ user: req.user.id })
         if (student.role != 1) {
             return res.status(400).json({ error: "You cannot view student's list of appointments" })
         }
-        const appointments = await Appointment.find({ user: req.user.id })
+        const appointments = await Appointment.find({ user: student.id })
         res.json(appointments)
     } catch (err) {
         console.error(err.message)
