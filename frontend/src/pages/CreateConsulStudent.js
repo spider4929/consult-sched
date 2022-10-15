@@ -1,29 +1,38 @@
 import { useEffect, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Box } from '@mui/system';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack } from '@mui/material';
-import { format } from 'date-fns'
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, Alert, FormLabel} from '@mui/material';
+import { formatISO } from 'date-fns';
+import { utcToZonedTime } from "date-fns-tz";
 import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-
+import { useConsultationContext } from '../hooks/useConsultationsContext'
+import { useNavigate } from "react-router-dom";
 
 const CreateConsulStudent = () => {
-    let date = new Date()
+    // context calls
+    const { dispatch } = useConsultationContext()
+    const { user } = useAuthContext()
+
     const theme = useTheme()
+    const navigate = useNavigate()
+
     const [teachProfiles, setTeachProfiles] = useState('')
     const [assignedTeach, setAssignedTeach] = useState('')
-    const [displayAllForms, setDisplayAllForms] = useState('')
+    //const [displayAllForms, setDisplayAllForms] = useState('')
+
+    // error checking
+    const [error, setError] = useState(null)
 
     // form useStates
     const [text, setText] = useState('')
-    const [startDate, setStartDate] = useState(date.getDate())
-    const [endDate, setEndDate] = useState(date.getDate())
+    const [startDate, setStartDate] = useState()
+    const [endDate, setEndDate] = useState()
     const [meetLink, setMeetLink] = useState('')
 
-    const { user } = useAuthContext()
-
+    // fetch list of Instructors on database
     useEffect(() => {
         const fetchTeachProfiles = async () => {
             const response = await fetch('/api/profile/teachers', {
@@ -50,40 +59,49 @@ const CreateConsulStudent = () => {
 
     const handleEndDateChange = (newValue) => {
         setEndDate(newValue);
-      };
+    };
 
-    // handle submit functions
+    // functions
+
+    const formatToUTC = (time) => formatISO(utcToZonedTime(time, "UTC")).replace("+08:00", ".000Z")
+
+    // pass form to database
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        setStartDate(format(startDate, 'YYYY-MM-ddThh:mm.000Z'))
-        setEndDate(format(endDate, 'YYYY-MM-DDThh:mm.000Z'))
+        setError(null)
 
-        const consultation = {text, startDate, endDate, meetLink}
+        const consultation = {text, start_date: formatToUTC(startDate), end_date: formatToUTC(endDate), meet_link: meetLink}
 
-        console.log(consultation)
+        const response = await fetch(`/api/appointments/${assignedTeach}`, {
+            method: 'POST',
+            body: JSON.stringify(consultation),
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': `${user.token}`
+            }
+        })
 
-        // const response = await fetch(`/api/appointments/${assignedTeach}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'x-auth-token': `${user.token}`
-        //     }
-        // })
+        const json = await response.json()
 
-        // const json = await response.json()
+        if (!response.ok) {
+            setError(json.error)
+            console.log(json.error)
+        }
 
-        // if (response.ok) {
-        //     dispatchEvent({type: 'CREATE_CONSULTATION', payload: json})
-        // }
+        if (response.ok) {
+            // dispatch({type: 'CREATE_CONSULTATION', payload: json})
+            navigate('/view-consultations')
+        }
     };
 
     return (  
         <Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <FormControl>
                     <Stack spacing={2}>
-                        <InputLabel sx={{margin: `${theme.spacing(2)}`}}>Select Instructor</InputLabel>
+                        <InputLabel sx={{marginTop: `${theme.spacing(2)}`}}>Select Instructor</InputLabel>
                         <Select
                             value={assignedTeach}
                             label="Select Instructor"
@@ -114,7 +132,7 @@ const CreateConsulStudent = () => {
                             value={startDate}
                             onChange={handleStarDateChange}
                             renderInput={(params) => <TextField {...params} />}
-                            inputFormat='YYYY-MM-DDThh:mm.000Z'
+                            inputFormat="MM/dd/yyyy hh:mm:ss a"
                         />
                         <DateTimePicker
                             required
@@ -122,7 +140,7 @@ const CreateConsulStudent = () => {
                             value={endDate}
                             onChange={handleEndDateChange}
                             renderInput={(params) => <TextField {...params} />}
-                            inputFormat='YYYY-MM-DDThh:mm.000Z'
+                            inputFormat="MM/dd/yyyy hh:mm:ss a"
                         />
                         <TextField
                             required
@@ -138,6 +156,9 @@ const CreateConsulStudent = () => {
                         >
                             Submit
                         </Button>
+                        
+                        { error && <Alert severity="error">{error}</Alert>}
+                        
                     </Stack>
                 </FormControl>
             </LocalizationProvider>

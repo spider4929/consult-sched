@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 
 export const ConsultationContext = createContext()
 
-export const workoutsReducer = (state, action) => {
+export const consultationReducer = (state, action) => {
     switch (action.type) {
         case 'GET_CONSULTATIONS':
             return {
@@ -23,15 +23,15 @@ export const workoutsReducer = (state, action) => {
     }
 }
 
-export const ConsultationContextProvider = () => {
+export const ConsultationContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(consultationReducer, {
         consultation: null
     })
 
     return (
-        <WorkoutsContext.Provider value={{ ...state, dispatch }}>
+        <ConsultationContext.Provider value={{ ...state, dispatch }}>
             { children }
-        </WorkoutsContext.Provider>
+        </ConsultationContext.Provider>
     )
 
 }

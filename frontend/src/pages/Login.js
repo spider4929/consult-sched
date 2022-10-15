@@ -1,4 +1,4 @@
-import { Box, Card, TextField, Button, Typography, Alert, Link } from "@mui/material";
+import { Stack, Box, Card, TextField, Button, Typography, Alert, Link } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
@@ -31,6 +31,7 @@ const Login = () => {
             }}
                 elevation = {3}
             >
+                
                 <Typography variant="h4" sx={{margin: 'auto', textAlign: 'center', marginBottom: `${theme.spacing(2)}`}}>Login</Typography>
                 <img src="cpe.png" alt="cpe logo" className="loginLogo"></img>
                 <form onSubmit={handleSubmit}>
@@ -77,11 +78,7 @@ const Login = () => {
                     </Link>
 
                     { error && <Alert severity="error">{error}</Alert>}
-
                 </form>
-        
-                
-
             </Card>
         </Box>
     );
