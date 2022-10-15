@@ -125,7 +125,7 @@ router.put('/approve/:app_id', auth, async (req, res) => {
             return res.status(400).json({ error: "You cannot approve another teacher's appointments" })
         }
 
-        const appointments = await Appointment.find({ teacher: req.user_id, accepted: 1 })
+        const appointments = await Appointment.find({ teacher: req.user.id, accepted: 1 })
 
         const range1 = moment.range(appointment.range)
         for (var a in appointments) {
