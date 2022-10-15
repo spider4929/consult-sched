@@ -36,14 +36,14 @@ router.post('/:user_id', [ auth, [
 
         const appointments = await Appointment.find({ teacher: req.params.user_id, accepted: 1 })
 
-        const date1 = [moment(req.body.start_date), moment(req.body.end_date)]
-        const range1 = moment.range(date1)
-        for (var a in appointments) {
-            const range2 = moment.range(a.range)
-            if (range1.overlaps(range2)) {
-                return res.status(400).json({ error: 'Conflict detected. Please contact your professor for another schedule' })
-            }
-        }
+        // const date1 = [moment(req.body.start_date), moment(req.body.end_date)]
+        // const range1 = moment.range(date1)
+        // for (var a in appointments) {
+        //     const range2 = moment.range(a.range)
+        //     if (range1.overlaps(range2)) {
+        //         return res.status(400).json({ error: 'Conflict detected. Please contact your professor for another schedule' })
+        //     }
+        // }
         
         const newAppointment = new Appointment ({
             text: req.body.text,
