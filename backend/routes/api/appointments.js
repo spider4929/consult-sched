@@ -3,6 +3,11 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 const auth = require('../../middleware/auth')
 
+const Moment = require('moment');
+const MomentRange = require('moment-range');
+
+const moment = MomentRange.extendMoment(Moment);
+
 const Appointment = require('../../models/Appointment')
 const User = require('../../models/User')
 
@@ -28,11 +33,23 @@ router.post('/:user_id', [ auth, [
         if (teacher.role != 2) {
             return res.status(400).json({ error: 'You can only book towards a Teacher' })
         }
+
+        const appointments = await Appointment.find({ teacher: req.params.user_id, accepted: 1 })
+
+        const date1 = [moment(req.body.start_date), moment(req.body.end_date)]
+        const range1 = moment.range(date1)
+        for (var a in appointments) {
+            const range2 = moment.range(a.range)
+            if (range1.overlaps(range2)) {
+                return res.status(400).json({ error: 'Conflict detected. Please contact your professor for another schedule' })
+            }
+        }
         
         const newAppointment = new Appointment ({
             text: req.body.text,
             start_date: req.body.start_date,
             end_date: req.body.end_date,
+            range: [moment(req.body.start_date), moment(req.body.end_date)],
             meet_link: req.body.meet_link,
             student: student.id,
             teacher: teacher.id,
@@ -56,11 +73,15 @@ router.post('/:user_id', [ auth, [
 router.get('/teacher', auth, async (req, res) => {
     try {
         const teacher = await User.findById(req.user.id).select('-password')
+
         if (teacher.role != 2) {
             return res.status(400).json({ error: "You cannot view teacher's list of appointments" })
         }
-        const appointments = await Appointment.find({ user: req.user.id })
+
+        const appointments = await Appointment.find({ teacher: req.user.id })
+
         res.json(appointments)
+
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -76,7 +97,7 @@ router.get('/student', auth, async (req, res) => {
         if (student.role != 1) {
             return res.status(400).json({ error: "You cannot view student's list of appointments" })
         }
-        const appointments = await Appointment.find({ user: req.user.id })
+        const appointments = await Appointment.find({ student: req.user.id })
         res.json(appointments)
     } catch (err) {
         console.error(err.message)
@@ -95,10 +116,19 @@ router.put('/approve/:app_id', auth, async (req, res) => {
         }
 
         const appointment = await Appointment.findOne({ _id: req.params.app_id })
+
+        if (!appointment) {
+            return res.status(401).json({ error: 'Appointment not found' })
+        }
+
+        if (teacher.id != appointment.teacher) {
+            return res.status(400).json({ error: "You cannot approve another teacher's appointments" })
+        }
         
         if(appointment.accepted == 1) {
             return res.status(400).json({ error: 'Appointment has already been accepted' })
         }
+        
 
         appointment.accepted = 1 
         await appointment.save()
@@ -120,9 +150,19 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
             return res.status(400).json({ error: "You cannot delete the appointment" })
         }
         const appointment = await Appointment.findOne({ _id: req.params.app_id })
+
+        if (!appointment) {
+            return res.status(401).json({ error: 'Appointment not found' })
+        }
+
+        if (teacher.id != appointment.teacher) {
+            return res.status(400).json({ error: "You cannot cancel another teacher's appointments" })
+        }
+
         if (appointment.accepted == 1) {
             return res.status(400).json({ error: 'Appointment has already been approved. Please coordinate with your respective faculty member to reject the appointment before deleting it' })
         }
+
         await Appointment.findOneAndRemove({ _id: req.params.app_id })
 
         res.json({ msg: 'Appointment successfully removed' })
@@ -141,13 +181,18 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
 router.delete('/reject/:app_id', auth, async (req, res) => {
     try{
         const teacher = await User.findById(req.user.id).select('-password')
+
         if (teacher.role != 2) {
             return res.status(400).json({ error: "You cannot view teacher's list of appointments" })
         }
-        const appointment = await Appointment.findOneAndRemove({ _id: req.params.app_id })
+        const appointment = await Appointment.findOne({ _id: req.params.app_id })
 
         if (!appointment) {
             return res.status(401).json({ error: 'Appointment not found' })
+        }
+
+        if (teacher.id != appointment.teacher) {
+            return res.status(400).json({ error: "You cannot reject another teacher's appointments" })
         }
 
         if (appointment.accepted == 0) {

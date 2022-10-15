@@ -1,7 +1,7 @@
 const CreateConsulProf = () => {
     return ( 
         <div>
-            Create Consultations Instructor Side
+            Approve Consultations
         </div>
      );
 }
