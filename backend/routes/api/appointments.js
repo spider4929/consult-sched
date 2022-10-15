@@ -56,11 +56,15 @@ router.post('/:user_id', [ auth, [
 router.get('/teacher', auth, async (req, res) => {
     try {
         const teacher = await User.findById(req.user.id).select('-password')
+
         if (teacher.role != 2) {
             return res.status(400).json({ error: "You cannot view teacher's list of appointments" })
         }
+
         const appointments = await Appointment.find({ teacher: req.user.id })
+
         res.json(appointments)
+
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -96,6 +100,10 @@ router.put('/approve/:app_id', auth, async (req, res) => {
 
         const appointment = await Appointment.findOne({ _id: req.params.app_id })
 
+        if (!appointment) {
+            return res.status(401).json({ error: 'Appointment not found' })
+        }
+
         if (teacher.id != appointment.teacher) {
             return res.status(400).json({ error: "You cannot approve another teacher's appointments" })
         }
@@ -126,6 +134,10 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
         }
         const appointment = await Appointment.findOne({ _id: req.params.app_id })
 
+        if (!appointment) {
+            return res.status(401).json({ error: 'Appointment not found' })
+        }
+
         if (teacher.id != appointment.teacher) {
             return res.status(400).json({ error: "You cannot cancel another teacher's appointments" })
         }
@@ -152,17 +164,18 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
 router.delete('/reject/:app_id', auth, async (req, res) => {
     try{
         const teacher = await User.findById(req.user.id).select('-password')
+
         if (teacher.role != 2) {
             return res.status(400).json({ error: "You cannot view teacher's list of appointments" })
         }
-        const appointment = await Appointment.findOneAndRemove({ _id: req.params.app_id })
-
-        if (teacher.id != appointment.teacher) {
-            return res.status(400).json({ error: "You cannot reject another teacher's appointments" })
-        }
+        const appointment = await Appointment.findOne({ _id: req.params.app_id })
 
         if (!appointment) {
             return res.status(401).json({ error: 'Appointment not found' })
+        }
+
+        if (teacher.id != appointment.teacher) {
+            return res.status(400).json({ error: "You cannot reject another teacher's appointments" })
         }
 
         if (appointment.accepted == 0) {

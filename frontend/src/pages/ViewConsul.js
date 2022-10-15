@@ -40,7 +40,7 @@ const ViewConsul = () => {
       case 0:
         return <Tooltip title="Rejected"><CloseIcon color='error'/></Tooltip>;
       case 1:
-        return <Tooltip title="Accepted"><CheckIcon color='success'/></Tooltip>;
+        return <Tooltip title="Accepted"><CheckIcon color='primary'/></Tooltip>;
       default:
         return <Tooltip title="Pending"><PendingOutlinedIcon color='warning'/></Tooltip>;
     }
