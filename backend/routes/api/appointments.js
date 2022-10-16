@@ -88,6 +88,31 @@ router.get('/teacher', auth, async (req, res) => {
     }
 })
 
+// @route   GET api/appointments/:user_id
+// @desc    Get teacher's list of appointments from students
+// @access  Private
+router.get('/:user_id', auth, async (req, res) => {
+    try {
+        const teacher = await User.findById(req.params.user_id).select('-password')
+        if (teacher.role != 2) {
+            return res.status(400).json({ error: "You cannot view other student's list of appointments" })
+        }
+
+        const student = await User.findById(req.user.id).select('-password')
+        if (student.role != 1) {
+            return res.status(400).json({ error: "You cannot view other teacher's list of appointments" })
+        }
+
+        const appointments = await Appointment.find({ teacher: req.params.user_id })
+
+        res.json(appointments)
+
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
+    }
+})
+
 // @route   GET api/appointments/student
 // @desc    Get student's list of appointments
 // @access  Private
@@ -128,7 +153,7 @@ router.put('/approve/:app_id', auth, async (req, res) => {
         const appointments = await Appointment.find({ teacher: req.user.id, accepted: 1 })
 
         const range1 = moment.range(appointment.range)
-        for (var a in appointments) {
+        for (const a of appointments) {
             const range2 = moment.range(a.range)
             if (range1.overlaps(range2)) {
                 return res.status(400).json({ error: 'Conflict detected. Please contact your student(s) for another schedule' })
