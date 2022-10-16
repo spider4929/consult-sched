@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Box } from '@mui/system';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, Alert, FormLabel} from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, Alert} from '@mui/material';
 import { formatISO } from 'date-fns';
 import { utcToZonedTime } from "date-fns-tz";
 import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { useConsultationContext } from '../hooks/useConsultationsContext'
 import { useNavigate } from "react-router-dom";
 
 const CreateConsulStudent = () => {
     // context calls
-    const { dispatch } = useConsultationContext()
     const { user } = useAuthContext()
 
     const theme = useTheme()
@@ -167,9 +165,3 @@ const CreateConsulStudent = () => {
 }
  
 export default CreateConsulStudent;
-
-// workflow
-// - get list of teachers where the value is their id
-// - output it on a <Select />
-// - display forms taking "text", "start_date", "end_date", and "meet_link" 
-// - then submit

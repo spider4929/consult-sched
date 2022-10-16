@@ -20,6 +20,8 @@ const ViewConsul = () => {
   const [consultations, setConsultations] = useState(null)
   const { user } = useAuthContext()
 
+  // fetch consultations of logged in student
+
   useEffect(() => {
     const fetchConsultations = async () => {
       const response = await fetch('/api/appointments/student', {
@@ -38,6 +40,8 @@ const ViewConsul = () => {
       fetchConsultations()
     }
   }, [user])
+
+  // functions
 
   const statusCheck = (value) => {
     switch(value) {
