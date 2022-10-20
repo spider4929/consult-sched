@@ -88,6 +88,27 @@ router.get('/teacher', auth, async (req, res) => {
     }
 })
 
+// @route   GET api/appointments/student
+// @desc    Get student's list of appointments
+// @access  Private
+router.get('/student', auth, async (req, res) => {
+    try {
+        const student = await User.findById(req.user.id).select('-password')
+
+        if (student.role != 1) {
+            return res.status(400).json({ error: "You cannot view student's list of appointments" })
+        }
+
+        const appointments = await Appointment.find({ student: req.user.id })
+
+        res.json(appointments)
+
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
+    }
+})
+
 // @route   GET api/appointments/:user_id
 // @desc    Get teacher's list of appointments from students
 // @access  Private
@@ -107,23 +128,6 @@ router.get('/:user_id', auth, async (req, res) => {
 
         res.json(appointments)
 
-    } catch (err) {
-        console.error(err.message)
-        res.status(500).send('Server Error')
-    }
-})
-
-// @route   GET api/appointments/student
-// @desc    Get student's list of appointments
-// @access  Private
-router.get('/student', auth, async (req, res) => {
-    try {
-        const student = await User.findById(req.user.id).select('-password')
-        if (student.role != 1) {
-            return res.status(400).json({ error: "You cannot view student's list of appointments" })
-        }
-        const appointments = await Appointment.find({ student: req.user.id })
-        res.json(appointments)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
