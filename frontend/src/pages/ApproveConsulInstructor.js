@@ -38,10 +38,9 @@ const CreateConsulProf = () => {
         }
     }, [user])
 
+    //TODO: add alerts for when a consultation is successfully accepted or not
     // approval function
     const handleApproval = async (consulId) => {
-        setError(null)
-
         const response = await fetch(`/api/appointments/approve/${consulId}`, {
             method: 'PUT',
             headers: {
@@ -55,17 +54,15 @@ const CreateConsulProf = () => {
 
     // rejection function
     const handleReject = async (consulId) => {
-        setError(null)
-
         const response = await fetch(`/api/appointments/reject/${consulId}`, {
             method: 'DELETE',
             headers: {
                 'x-auth-token': `${user.token}`
-        }
+            }
         })
 
         setConsultations(consultations.filter(item => item._id != consulId))
-        
+
     }
     
     return ( 
@@ -87,8 +84,8 @@ const CreateConsulProf = () => {
                         <TableRow key={consultation._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell sx={{maxWidth: 400}}>{consultation.text}</TableCell>
                             { user.role === 1 ? <TableCell>{consultation.teacher_name}</TableCell> : <TableCell>{consultation.student_name}</TableCell> }
-                            <TableCell>{format(new Date(consultation.start_date), 'PPpp')}{}</TableCell>
-                            <TableCell>{format(new Date(consultation.end_date), 'PPpp')}</TableCell>
+                            <TableCell>{format(new Date(consultation.start_date), 'LLL dd, yyyy, hh:mm aa')}{}</TableCell>
+                            <TableCell>{format(new Date(consultation.end_date), 'LLL dd, yyyy, hh:mm aa')}</TableCell>
                             <TableCell>{consultation.meet_link}</TableCell>
                             <TableCell align='center'>
                                 <Tooltip title="Approve"><IconButton onClick={() => handleApproval(consultation._id)}><CheckIcon color="primary"/></IconButton></Tooltip>
@@ -100,8 +97,7 @@ const CreateConsulProf = () => {
                 </Table>
             </TableContainer>
         { error && <Alert severity="error">{error}</Alert> }
-        { accept && <Alert severity="success">Consultation successfully accepted!</Alert> }
-        { reject && <Alert severity="success">Consultation successfully rejected!</Alert> }
+        {/* TODO: pop-up if accept or reject is successful */}
         </Box>
     );
 }

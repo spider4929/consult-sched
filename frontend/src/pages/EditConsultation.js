@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react'
-import { useAuthContext } from "../hooks/useAuthContext";
-import { Box } from '@mui/system';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, Alert} from '@mui/material';
 import { formatISO } from 'date-fns';
 import { utcToZonedTime } from "date-fns-tz";
+
+//mui
+import { Box } from '@mui/system';
+import { FormControl, TextField, Button, Stack, Alert} from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { useNavigate } from "react-router-dom";
 
-const CreateConsulStudent = () => {
+//hooks
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useConsultationContext } from '../hooks/useConsultationsContext';
+
+const EditConsultation = () => {
     // context calls
     const { user } = useAuthContext()
+    const { consultation } = useConsultationContext()
 
     const theme = useTheme()
     const navigate = useNavigate()
 
-    const [teachProfiles, setTeachProfiles] = useState('')
     const [assignedTeach, setAssignedTeach] = useState('')
     //const [displayAllForms, setDisplayAllForms] = useState('')
 
@@ -29,27 +34,6 @@ const CreateConsulStudent = () => {
     const [startDate, setStartDate] = useState()
     const [endDate, setEndDate] = useState()
     const [meetLink, setMeetLink] = useState('')
-
-    // fetch list of Instructors on database
-    useEffect(() => {
-        const fetchTeachProfiles = async () => {
-            const response = await fetch('/api/profile/teachers', {
-                headers: {
-                    'x-auth-token': `${user.token}`
-                }
-            })
-
-            const json = await response.json()
-
-            if (response.ok) {
-                setTeachProfiles(json)
-            }
-        }
-        
-        if (user) { 
-            fetchTeachProfiles()
-        }
-    }, [user])
 
     const handleStarDateChange = (newValue) => {
         setStartDate(newValue);
@@ -76,8 +60,6 @@ const CreateConsulStudent = () => {
             end_date: formatToUTC(endDate), 
             meet_link: meetLink
         }
-
-        console.log(consultation)
 
         const response = await fetch(`/api/appointments/${assignedTeach}`, {
             method: 'POST',
@@ -108,46 +90,32 @@ const CreateConsulStudent = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <FormControl>
                     <Stack spacing={2}>
-                        <InputLabel sx={{marginTop: `${theme.spacing(2)}`}}>Select Instructor</InputLabel>
-                        <Select
-                            value={assignedTeach}
-                            label="Select Instructor"
-                            onChange={(e) => setAssignedTeach(e.target.value)}
-                        >
-                            { teachProfiles && teachProfiles.map((teachProfile) => (
-                                <MenuItem 
-                                    key={teachProfile._id}
-                                    value={teachProfile.user._id}
-                                    >
-
-                                    {teachProfile.user.first_name} {teachProfile.user.last_name}
-
-                                </MenuItem>
-                            ))}
-                        </Select>
                         <TextField
                             required
                             label="Enter title" 
                             variant="outlined"
                             type="text"
                             onChange={(e) => setText(e.target.value)}
-                            value={text}
+                            // value={text}
+                            defaultValue={consultation.text}
                         />
                         <DateTimePicker
                             required
                             label="Start Date"
-                            value={startDate}
+                            // value={startDate}
                             onChange={handleStarDateChange}
                             renderInput={(params) => <TextField {...params} />}
                             inputFormat="MM/dd/yyyy hh:mm a"
+                            defaultValue={consultation.start_date}
                         />
                         <DateTimePicker
                             required
                             label="End Date"
-                            value={endDate}
                             onChange={handleEndDateChange}
                             renderInput={(params) => <TextField {...params} />}
                             inputFormat="MM/dd/yyyy hh:mm a"
+                            // value={endDate}
+                            defaultValue={consultation.end_date}
                         />
                         <TextField
                             required
@@ -155,13 +123,14 @@ const CreateConsulStudent = () => {
                             variant="outlined"
                             type="text"
                             onChange={(e) => setMeetLink(e.target.value)}
-                            value={meetLink}
+                            // value={meetLink}
+                            defaultValue={consultation.meet_link}
                         />
                         <Button
                             variant="contained"
                             onClick={handleSubmit}
                         >
-                            Submit
+                            Update
                         </Button>
                         
                         { error && <Alert severity="error">{error}</Alert>}
@@ -173,4 +142,4 @@ const CreateConsulStudent = () => {
     );
 }
  
-export default CreateConsulStudent;
+export default EditConsultation;
