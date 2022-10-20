@@ -60,7 +60,7 @@ const CreateConsulStudent = () => {
     };
 
     // functions
-
+    // TODO: change the function to remove the seconds and replace it with 00
     const formatToUTC = (time) => formatISO(utcToZonedTime(time, "UTC")).replace("+08:00", ".000Z")
 
     // pass form to database
@@ -94,6 +94,7 @@ const CreateConsulStudent = () => {
         }
     };
 
+    //TODO: add a way for student's to see all of an instructor's schedules to know what times slots are unavailable
     return (  
         <Box>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -130,7 +131,7 @@ const CreateConsulStudent = () => {
                             value={startDate}
                             onChange={handleStarDateChange}
                             renderInput={(params) => <TextField {...params} />}
-                            inputFormat="MM/dd/yyyy hh:mm:ss a"
+                            inputFormat="MM/dd/yyyy hh:mm a"
                         />
                         <DateTimePicker
                             required
@@ -138,7 +139,7 @@ const CreateConsulStudent = () => {
                             value={endDate}
                             onChange={handleEndDateChange}
                             renderInput={(params) => <TextField {...params} />}
-                            inputFormat="MM/dd/yyyy hh:mm:ss a"
+                            inputFormat="MM/dd/yyyy hh:mm a"
                         />
                         <TextField
                             required

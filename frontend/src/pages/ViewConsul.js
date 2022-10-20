@@ -15,20 +15,21 @@ import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 // hook imports
 import { useAuthContext } from "../hooks/useAuthContext";
 
-
 const ViewConsul = () => {
   const [consultations, setConsultations] = useState(null)
   const { user } = useAuthContext()
 
-  // fetch consultations of logged in student
-
+  // fetch consultations of logged in student or instructor
   useEffect(() => {
     const fetchConsultations = async () => {
-      const response = await fetch('/api/appointments/student', {
+      let userRole = (user.role === 1) ? 'student': 'teacher'
+
+      const response = await fetch(`/api/appointments/${userRole}`, {
         headers: {
           'x-auth-token': `${user.token}`
         }
       })
+      
       const json = await response.json()
 
       if (response.ok) {
@@ -40,7 +41,7 @@ const ViewConsul = () => {
       fetchConsultations()
     }
   }, [user])
-
+  
   // functions
 
   const statusCheck = (value) => {
@@ -53,6 +54,8 @@ const ViewConsul = () => {
         return <Tooltip title="Pending"><PendingOutlinedIcon color='warning'/></Tooltip>;
     }
   }
+
+  // return is different if you are a student or a teacher
 
   return (
     <TableContainer>
@@ -73,7 +76,7 @@ const ViewConsul = () => {
             <TableRow key={consultation._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               
               <TableCell sx={{maxWidth: 400}}>{consultation.text}</TableCell>
-              <TableCell>{consultation.teacher_name}</TableCell>
+              { user.role === 1 ? <TableCell>{consultation.teacher_name}</TableCell> : <TableCell>{consultation.student_name}</TableCell> }
               <TableCell>{format(new Date(consultation.start_date), 'PPpp')}{}</TableCell>
               <TableCell>{format(new Date(consultation.end_date), 'PPpp')}</TableCell>
               <TableCell>{consultation.meet_link}</TableCell>
@@ -88,6 +91,7 @@ const ViewConsul = () => {
       </Table>
     </TableContainer>
   );
+
 }
  
 export default ViewConsul;

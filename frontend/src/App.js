@@ -7,7 +7,7 @@ import Profile from './pages/Profile'
 import Dashboard from './pages/Dashboard'
 import ViewConsul from './pages/ViewConsul'
 import CreateConsulStudent from './pages/CreateConsulStudent'
-import CreateConsulProf from './pages/CreateConsulProf'
+import ApproveConsulInstructor from './pages/ApproveConsulInstructor'
 import Inbox from './pages/Inbox'
 import Layout from './components/Layout'
 import Register from './pages/Register'
@@ -53,7 +53,7 @@ function App() {
               />
               <Route 
                 path="/create-consultation-professor" 
-                element={ user && user.role === 2 ? <CreateConsulProf /> : <Navigate to="/login"/> }
+                element={ user && user.role === 2 ? <ApproveConsulInstructor /> : <Navigate to="/login"/> }
               />
               <Route 
                 path="/inbox" 
