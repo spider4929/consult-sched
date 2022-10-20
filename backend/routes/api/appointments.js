@@ -179,6 +179,47 @@ router.put('/approve/:app_id', auth, async (req, res) => {
     }
 })
 
+// @route   PUT api/appointments/edit/:app_id
+// @desc    Edit the appointment
+// @access  Private
+router.put('/edit/:app_id', [ auth, [
+    check('text', 'Text is required').not().isEmpty()
+] ], async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+
+    try {
+        const user = await User.findById(req.user.id).select('-password')
+        const appointment = await Appointment.findOne({ _id: req.params.app_id })
+        if(!( appointment.student != user.id ^ appointment.teacher != user.id)) {
+            return res.status(400).json({ error: 'Unauthorized access is prohibited' })
+        }
+        if (appointment.accepted == 0) {
+            return res.status(400).json({ error: 'Cannot edit a rejected appointment' })
+        }else if (appointment.accepted == 2) {
+            appointment.text = req.body.text
+            appointment.start_date = req.body.start_date
+            appointment.end_date = req.body.end_date
+            appointment.range = [moment(req.body.start_date), moment(req.body.end_date)]
+            appointment.meet_link = req.body.meet_link
+        } else {
+            appointment.text = req.body.text
+            appointment.meet_link = req.body.meet_link 
+        }
+
+        await appointment.save()
+        res.json(appointment)
+    } catch (err) {
+        console.error(err.message)
+        if (err.kind == 'ObjectId') {
+            return res.status(400).json({ error: 'Appointment not found' })
+        }
+        res.status(500).send('Server Error')
+    }
+})
+
 // @route   DELETE api/appointments/cancel/:app_id
 // @desc    Cancel the appointment
 // @access  Private
@@ -192,10 +233,6 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
 
         if (!appointment) {
             return res.status(401).json({ error: 'Appointment not found' })
-        }
-
-        if (teacher.id != appointment.teacher) {
-            return res.status(400).json({ error: "You cannot cancel another teacher's appointments" })
         }
 
         if (appointment.accepted == 1) {
