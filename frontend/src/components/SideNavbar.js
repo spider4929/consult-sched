@@ -77,7 +77,7 @@ const SideNavbar = () => {
             {
                 text: 'Approve Consultations',
                 icon: <AddCircleOutlineOutlinedIcon />,
-                path: '/create-consultation-professor'
+                path: '/approve-consultation'
             }
         )
     }

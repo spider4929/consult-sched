@@ -52,7 +52,7 @@ function App() {
                 element={ user && user.role === 1 ? <CreateConsulStudent /> : <Navigate to="/login"/> } 
               />
               <Route 
-                path="/create-consultation-professor" 
+                path="/approve-consultation" 
                 element={ user && user.role === 2 ? <ApproveConsulInstructor /> : <Navigate to="/login"/> }
               />
               <Route 

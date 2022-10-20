@@ -70,7 +70,14 @@ const CreateConsulStudent = () => {
 
         setError(null)
 
-        const consultation = {text, start_date: formatToUTC(startDate), end_date: formatToUTC(endDate), meet_link: meetLink}
+        const consultation = {
+            text, 
+            start_date: formatToUTC(startDate), 
+            end_date: formatToUTC(endDate), 
+            meet_link: meetLink
+        }
+
+        console.log(consultation)
 
         const response = await fetch(`/api/appointments/${assignedTeach}`, {
             method: 'POST',
@@ -83,6 +90,7 @@ const CreateConsulStudent = () => {
 
         const json = await response.json()
 
+        //TODO: set error checking to recevie multiple errors
         if (!response.ok) {
             setError(json.error)
             console.log(json.error)
@@ -90,7 +98,7 @@ const CreateConsulStudent = () => {
 
         if (response.ok) {
             // dispatch({type: 'CREATE_CONSULTATION', payload: json})
-            navigate('/view-consultations')
+            // navigate('/view-consultations')
         }
     };
 
