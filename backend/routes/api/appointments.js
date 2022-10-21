@@ -235,6 +235,10 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
             return res.status(401).json({ error: 'Appointment not found' })
         }
 
+        if (student.id != appointment.student) {
+            return res.status(400).json({ error: "You cannot cancel another student's appointments" })
+        }
+
         if (appointment.accepted == 1) {
             return res.status(400).json({ error: 'Appointment has already been approved. Please coordinate with your respective faculty member to reject the appointment before deleting it' })
         }
