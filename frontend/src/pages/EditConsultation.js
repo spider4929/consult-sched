@@ -4,7 +4,7 @@ import { utcToZonedTime } from "date-fns-tz";
 
 //mui
 import { Box } from '@mui/system';
-import { FormControl, TextField, Button, Stack, Alert} from '@mui/material';
+import { FormControl, TextField, Button, Stack, Alert, Typography} from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -96,6 +96,7 @@ const EditConsultation = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <FormControl>
                     <Stack spacing={2}>
+                    <Typography align='center'>Edit Consultation</Typography>
                         <TextField
                             required
                             label="Enter title" 
