@@ -144,7 +144,7 @@ const ViewConsul = () => {
                             <TableCell>{consultation.meet_link}</TableCell>
                             <TableCell align='center'>{ statusCheck(consultation.accepted) }</TableCell>
                             <TableCell align='center'>
-                                { user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : buttonCases('EnableEdit', consultation) }
+                                { user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : buttonCases('DisableEdit') }
                                 { user.role === 1 && consultation.accepted === 1 ? buttonCases('DisableDelete') : buttonCases('EnableDelete', consultation) }
                             </TableCell>
                         </TableRow>
