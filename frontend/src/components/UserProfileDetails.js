@@ -63,7 +63,6 @@ export const UserProfileDetails = (props) => {
             facebook: facebookLink,
             linkedin: linkedinLink
         }
-        console.log(newProfile)
         const response = await fetch(`/api/profile`, {
             method: 'POST',
             body: JSON.stringify(newProfile),
@@ -104,7 +103,6 @@ export const UserProfileDetails = (props) => {
         />
         <Divider />
         <CardContent>
-        {console.log(profile)}
         <Grid
             container
             spacing={3}
