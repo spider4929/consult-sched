@@ -2,9 +2,9 @@ import format from 'date-fns/format'
 
 // mui imports
 import { useEffect, useState } from 'react'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, 
-  IconButton, Tooltip, Box, Modal, Typography, ButtonGroup } from "@mui/material";
-import { DataGrid, gridColumnsTotalWidthSelector } from '@mui/x-data-grid';
+import { IconButton, Tooltip, Box, Modal, Typography, 
+    ButtonGroup } from "@mui/material";
+import { DataGrid } from '@mui/x-data-grid';
 
 // icon imports
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -36,7 +36,6 @@ const ViewConsul = () => {
     const [consultationsFuture, setConsultationsFuture] = useState([])
     const [consultationsPast, setConsultationsPast] = useState([])
     const [open, setOpen] = useState(false);
-    const [itemEdited, setItemEdited] = useState(null);
     const { user } = useAuthContext()
     const { dispatch } = useConsultationContext()
 
@@ -51,16 +50,16 @@ const ViewConsul = () => {
                 }
             })
             
-            const oldJson = await response.json()
+            const tempJson = await response.json()
 
-            const json = oldJson.sort((a, b) => {
+            const json = tempJson.sort((a, b) => {
                 let da = new Date(a.start_date),
                     db = new Date(b.start_date);
                 return da - db;
             })
 
             if (response.ok) {
-                setConsultations(json)
+                // setConsultations(tempJson)
                 setConsultationsFuture(json.filter(i => i.finished === false))
                 setConsultationsPast(json.filter(i => i.finished === true))
             }
@@ -81,7 +80,7 @@ const ViewConsul = () => {
             }
         })
 
-        setConsultations(consultations.filter(item => item._id != consulId))
+        setConsultationsFuture(consultationsFuture.filter(item => item._id !== consulId))
 
     }
 
@@ -118,7 +117,7 @@ const ViewConsul = () => {
         }
     }
     
-    // column and row for futureConsultations
+    // column and row for future consultations
 
     const columnsFuture = [
         {   field: 'id',
@@ -155,7 +154,7 @@ const ViewConsul = () => {
             field: 'approvedStatus',
             headerName: 'Approved?',
             renderCell: (params) => {
-                switch(params.value.accepted) {
+                switch(params.value) {
                     case 0:
                         return <Tooltip title="Rejected"><CloseIcon color='error'/></Tooltip>;
                     case 1:
@@ -169,12 +168,11 @@ const ViewConsul = () => {
             field: 'actions',
             headerName: 'Actions',
             renderCell: (params) => {
-
                 const consultation = params.value
-        
+
                 return (
                     <ButtonGroup>
-                        {user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : buttonCases('DisableEdit')}
+                        {user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : buttonCases('DisableEdit') }
                         {user.role === 1 && consultation.accepted === 1 ? buttonCases('DisableDelete') : buttonCases('EnableDelete', consultation)}
                     </ButtonGroup>
                 )
@@ -192,8 +190,8 @@ const ViewConsul = () => {
             startDate: format(new Date(consultation.start_date), 'LLL dd, yyyy, hh:mm aa'),
             endDate: format(new Date(consultation.end_date), 'LLL dd, yyyy, hh:mm aa'),
             meetLink: consultation.meet_link,
-            approvedStatus: consultations,
-            actions: consultations
+            approvedStatus: consultation.accepted,
+            actions: consultation
         })
     }
     )

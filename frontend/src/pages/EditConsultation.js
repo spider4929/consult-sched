@@ -27,14 +27,17 @@ const EditConsultation = () => {
 
     // error checking
     const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
 
     // form useStates
     const [text, setText] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [meetLink, setMeetLink] = useState('')
+    const [consulId, setConsulId] = useState('')
 
     useEffect(() => {
+        setConsulId(consultation._id)
         setText(consultation.text)
         setStartDate(consultation.start_date)
         setEndDate(consultation.end_date)
@@ -50,8 +53,6 @@ const EditConsultation = () => {
     };
 
     // functions
-    // TODO: change the function to remove the seconds and replace it with 00
-    const formatToUTC = (time) => formatISO(utcToZonedTime(time, "UTC")).replace("+08:00", ".000Z")
 
     // pass form to database
 
@@ -61,14 +62,14 @@ const EditConsultation = () => {
         setError(null)
 
         const consultation = {
-            text, 
-            start_date: formatToUTC(startDate), 
-            end_date: formatToUTC(endDate), 
+            text: text, 
             meet_link: meetLink
         }
 
-        const response = await fetch(`/api/appointments/${assignedTeach}`, {
-            method: 'POST',
+        console.log(consulId)
+
+        const response = await fetch(`/api/appointments/edit/${consulId}`, {
+            method: 'PUT',
             body: JSON.stringify(consultation),
             headers: {
                 'Content-Type': 'application/json',
@@ -81,12 +82,12 @@ const EditConsultation = () => {
         //TODO: set error checking to recevie multiple errors
         if (!response.ok) {
             setError(json.error)
-            console.log(json.error)
         }
 
         if (response.ok) {
             // dispatch({type: 'CREATE_CONSULTATION', payload: json})
             navigate('/view-consultations')
+            setSuccess('Consultation updated!')
         }
     };
 
@@ -112,6 +113,7 @@ const EditConsultation = () => {
                             renderInput={(params) => <TextField {...params} />}
                             inputFormat="MM/dd/yyyy hh:mm a"
                             value={startDate}
+                            disabled
                         />
                         <DateTimePicker
                             required
@@ -120,6 +122,7 @@ const EditConsultation = () => {
                             renderInput={(params) => <TextField {...params} />}
                             inputFormat="MM/dd/yyyy hh:mm a"
                             value={endDate}
+                            disabled
                         />
                         <TextField
                             required
@@ -136,8 +139,9 @@ const EditConsultation = () => {
                             Update
                         </Button>
                         
-                        { error && <Alert severity="error">{error}</Alert>}
-                        
+                        { error && <Alert severity="error">{error}</Alert> }
+                        { success && <Alert severity="success">{success}</Alert> }
+
                     </Stack>
                 </FormControl>
             </LocalizationProvider>
