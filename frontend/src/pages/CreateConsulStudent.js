@@ -60,7 +60,6 @@ const CreateConsulStudent = () => {
     };
 
     // functions
-    // TODO: change the function to remove the seconds and replace it with 00
     const formatToUTC = (time) => formatISO(utcToZonedTime(time, "UTC")).replace("+08:00", ".000Z")
 
     // pass form to database
