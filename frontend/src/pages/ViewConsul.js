@@ -12,6 +12,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 // hook imports
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -32,7 +33,6 @@ const style = {
 };
 
 const ViewConsul = () => {
-    const [consultations, setConsultations] = useState(null)
     const [consultationsFuture, setConsultationsFuture] = useState([])
     const [consultationsPast, setConsultationsPast] = useState([])
     const [open, setOpen] = useState(false);
@@ -109,6 +109,10 @@ const ViewConsul = () => {
                 return (
                     <IconButton disabled><DeleteOutlineOutlinedIcon color="disabled"/></IconButton>
                 )
+            case 'EnableCancel':
+                return (
+                    <Tooltip title="Cancel"><IconButton><CancelOutlinedIcon color="error"/></IconButton></Tooltip>
+                )
             default:
                 return (
                     <Box></Box>
@@ -172,8 +176,10 @@ const ViewConsul = () => {
 
                 return (
                     <ButtonGroup>
-                        {user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : buttonCases('DisableEdit') }
-                        {user.role === 1 && consultation.accepted === 1 ? buttonCases('DisableDelete') : buttonCases('EnableDelete', consultation)}
+                        {user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : null }
+                        {user.role === 1 && consultation.accepted !== 2 ? buttonCases('DisableEdit') : null }
+                        {consultation.accepted === 2 ? buttonCases('EnableDelete', consultation) : buttonCases('DisableDelete')}
+                        {user.role === 2 && consultation.accepted === 1 ? buttonCases('EnableCancel'): null }
                     </ButtonGroup>
                 )
             }

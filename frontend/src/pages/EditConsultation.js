@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
-import { formatISO } from 'date-fns';
-import { utcToZonedTime } from "date-fns-tz";
 
 //mui
 import { Box } from '@mui/system';
 import { FormControl, TextField, Button, Stack, Alert, Typography} from '@mui/material';
-import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -20,10 +17,7 @@ const EditConsultation = () => {
     const { user } = useAuthContext()
     const { consultation } = useConsultationContext()
 
-    const theme = useTheme()
     const navigate = useNavigate()
-
-    const [assignedTeach, setAssignedTeach] = useState('')
 
     // error checking
     const [error, setError] = useState(null)
