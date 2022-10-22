@@ -49,7 +49,7 @@ router.post('/', [ auth, [
     const profileFields = {}
     profileFields.user = req.user.id
     if (courses) {
-        profileFields.courses = courses.split(',').map(course => course.trim())
+        profileFields.courses = courses
     }
 
     // Build social object
