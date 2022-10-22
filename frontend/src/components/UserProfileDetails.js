@@ -9,7 +9,6 @@ import {
     Grid,
     InputAdornment,
     TextField,
-    Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +16,8 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { CircularProgress } from '@mui/material';
-
+import React from 'react'
+import { MuiChipsInput } from 'mui-chips-input'
 
 export const UserProfileDetails = (props) => {
     const [ profile, setProfile ] = useState(null)
@@ -25,18 +25,8 @@ export const UserProfileDetails = (props) => {
     const [error, setError] = useState(null)
     const navigate = useNavigate()
     const [ courses, setCourses ] = useState('')
-    const [ facebookLink, setfacebookLink] = useState('')
-    const [ linkedinLink, setlinkedinLink] = useState('')
-
-    const handleCoursesChange = (newValue) => {
-        setCourses(newValue);
-    }
-    const handleFacebookLinkChange = (newValue) => {
-        setfacebookLink(newValue);
-    }
-    const handleLinkedInLinkChange = (newValue) => {
-        setlinkedinLink(newValue);
-    }
+    const [ facebookLink, setfacebookLink] = useState('https://www.facebook.com/')
+    const [ linkedinLink, setlinkedinLink] = useState('https://www.linkedin.com/in/')
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -51,7 +41,9 @@ export const UserProfileDetails = (props) => {
 
         if (response.ok) {
             setProfile(json)
-            console.log(json)
+            setCourses(json.courses)
+            setfacebookLink(json.social.facebook)
+            setlinkedinLink(json.social.linkedin)
         }
         }
         
@@ -62,6 +54,7 @@ export const UserProfileDetails = (props) => {
     }, [user])
 
     const handleSubmit = async (e) => {
+        e.preventDefault()
 
         setError(null)
 
@@ -70,7 +63,7 @@ export const UserProfileDetails = (props) => {
             facebook: facebookLink,
             linkedin: linkedinLink
         }
-
+        console.log(newProfile)
         const response = await fetch(`/api/profile`, {
             method: 'POST',
             body: JSON.stringify(newProfile),
@@ -93,12 +86,16 @@ export const UserProfileDetails = (props) => {
 
     };
 
-    
+    const handleChange = (newValue) => {
+        setCourses(newValue)
+    }
+
     return (
     <form
       autoComplete="off"
       noValidate
       {...props}
+      onSubmit={handleSubmit}
     >
         {profile ?
       <Card>
@@ -107,95 +104,90 @@ export const UserProfileDetails = (props) => {
         />
         <Divider />
         <CardContent>
+        {console.log(profile)}
         <Grid
-                        container
-                        spacing={3}
-                    >
-                        <Grid
-                        item
-                        md={6}
-                        xs={12}
-                        >   
-                            <TextField
-                                fullWidth
-                                label="First Name"
-                                id="outlined-disabled"
-                                disabled
-                                variant="outlined"
+            container
+            spacing={3}
+            >
+                <Grid
+                item
+                md={6}
+                xs={12}
+                >   
+                    <TextField
+                        fullWidth
+                        label="First Name"
+                        id="outlined-disabled"
+                        disabled
+                        variant="outlined"
 
-                                defaultValue={profile.user.first_name}
-                                />
-                        </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Last Name"
-                                id="outlined-disabled"
-                                disabled
-                                variant="outlined"
-                                
-                                defaultValue={profile.user.last_name}
-                                />
-                        </Grid>
-                        <Grid
-                            item
-                            md={12}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Courses"
-                                name="courses"
-                                onChange={handleCoursesChange}
-                                required
-                                variant="outlined"
-                                
-                                defaultValue={profile.courses}
-                                />
-                        </Grid>
-                        <Grid
-                            item
-                            md={12}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                inputProps={{
-                                    startAdornment: <InputAdornment position="start"><FacebookIcon /></InputAdornment>
-                                }}
-                                label="Facebook Link"
-                                name="facebookLink"
-                                onChange={handleFacebookLinkChange}
-                                required
-                                variant="outlined"
-                                
-                                defaultValue={profile.social.facebook}
-                                />
-                        </Grid>
-                        <Grid
-                            item
-                            md={12}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                inputProps={{
-                                    startAdornment: <InputAdornment position="start"><LinkedInIcon /></InputAdornment>
-                                }}
-                                label="LinkedIn Link"
-                                name="linkedinLink"
-                                onChange={handleLinkedInLinkChange}
-                                required
-                                variant="outlined"
-                                
-                                defaultValue={profile.social.linkedin}
-                                />
-                        </Grid>
-                    </Grid>
+                        defaultValue={profile.user.first_name}
+                        />
+                </Grid>
+                <Grid
+                    item
+                    md={6}
+                    xs={12}
+                >
+                    <TextField
+                        fullWidth
+                        label="Last Name"
+                        id="outlined-disabled"
+                        disabled
+                        variant="outlined"
+                        
+                        defaultValue={profile.user.last_name}
+                        />
+                </Grid>
+                <Grid
+                    item
+                    md={12}
+                    xs={12}
+                >
+                    <TextField
+                        fullWidth
+                        startAdornment={<InputAdornment position="start"><FacebookIcon /></InputAdornment>}
+                        label="Facebook Link"
+                        name="facebookLink"
+                        onChange={(e) => setfacebookLink(e.target.value)}
+                        required
+                        variant="outlined"
+                        
+                        value={facebookLink}
+                        />
+                </Grid>
+                <Grid
+                    item
+                    md={12}
+                    xs={12}
+                >
+                    <TextField
+                        fullWidth
+                        startAdornment={<InputAdornment position="start"><LinkedInIcon /></InputAdornment>}
+                        label="LinkedIn Link"
+                        name="linkedinLink"
+                        onChange={(e) => setlinkedinLink(e.target.value)}
+                        required
+                        variant="outlined"
+                        
+                        value={linkedinLink}
+                        />
+                </Grid>
+                <Grid
+                    item
+                    md={12}
+                    xs={12}
+                >
+                    <MuiChipsInput 
+                        label="Courses" 
+                        fullWidth 
+                        value={courses} 
+                        onChange={handleChange}
+                        required
+                        variant="outlined"
+                        />
+                </Grid>
+            </Grid>
         </CardContent>
         <Divider />
         <Box
@@ -208,7 +200,7 @@ export const UserProfileDetails = (props) => {
                 <Button
                     color="primary"
                     variant="contained"
-                    onClick={handleSubmit}
+                    type="submit"
                 >
                     Save
                 </Button>
