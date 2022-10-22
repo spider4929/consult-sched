@@ -23,6 +23,7 @@ export const UserProfileDetails = (props) => {
     const [ profile, setProfile ] = useState(null)
     const { user } = useAuthContext()
     const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
     const navigate = useNavigate()
     const [ courses, setCourses ] = useState('')
     const [ facebookLink, setfacebookLink] = useState('https://www.facebook.com/')
@@ -57,13 +58,13 @@ export const UserProfileDetails = (props) => {
         e.preventDefault()
 
         setError(null)
+        setSuccess(null)
 
         const newProfile = {
             courses: courses,
             facebook: facebookLink,
             linkedin: linkedinLink
         }
-        console.log(newProfile)
         const response = await fetch(`/api/profile`, {
             method: 'POST',
             body: JSON.stringify(newProfile),
@@ -81,6 +82,7 @@ export const UserProfileDetails = (props) => {
         }
 
         if (response.ok) {
+            setSuccess('Change details sucess!')
             navigate('/profile')
         }
 
@@ -104,7 +106,6 @@ export const UserProfileDetails = (props) => {
         />
         <Divider />
         <CardContent>
-        {console.log(profile)}
         <Grid
             container
             spacing={3}
@@ -206,6 +207,7 @@ export const UserProfileDetails = (props) => {
                 </Button>
 
                 { error && <Alert severity="error">{error}</Alert>}
+                { success && <Alert severity="success">{success}</Alert>}
             </Box>
       </Card> : <CircularProgress />}
     </form>
