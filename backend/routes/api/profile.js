@@ -37,6 +37,14 @@ router.post('/', [ auth, [
     
     const { courses, facebook, linkedin } = req.body
 
+    if (!facebook.includes("facebook.com")) {
+        return res.status(400).json({ error: "Please use a Facebook link" })
+    }
+
+    if (!linkedin.includes("linkedin.com")) {
+        return res.status(400).json({ error: "Please use a LinkedIn link" })
+    }
+
     // Build profile object
     const profileFields = {}
     profileFields.user = req.user.id
