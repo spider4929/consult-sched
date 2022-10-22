@@ -196,20 +196,14 @@ router.put('/edit/:app_id', [ auth, [
         if(!( appointment.student != user.id ^ appointment.teacher != user.id)) {
             return res.status(400).json({ error: 'Unauthorized access is prohibited' })
         }
-        if (appointment.accepted == 0) {
-            return res.status(400).json({ error: 'Cannot edit a rejected appointment' })
-        }else if (appointment.accepted == 2) {
-            appointment.text = req.body.text
-            appointment.start_date = req.body.start_date
-            appointment.end_date = req.body.end_date
-            appointment.range = [moment(req.body.start_date), moment(req.body.end_date)]
-            appointment.meet_link = req.body.meet_link
-        } else {
-            appointment.text = req.body.text
-            appointment.meet_link = req.body.meet_link 
+        if (appointment.accepted == 0 || appointment.accepted == 1) {
+            return res.status(400).json({ error: 'Cannot edit a rejected or accepted appointment' })
         }
 
+        appointment.text = req.body.text
+        appointment.meet_link = req.body.meet_link 
         await appointment.save()
+        
         res.json(appointment)
     } catch (err) {
         console.error(err.message)

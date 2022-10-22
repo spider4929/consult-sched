@@ -4,7 +4,7 @@ import { utcToZonedTime } from "date-fns-tz";
 
 //mui
 import { Box } from '@mui/system';
-import { FormControl, TextField, Button, Stack, Alert} from '@mui/material';
+import { FormControl, TextField, Button, Stack, Alert, Typography} from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -24,16 +24,22 @@ const EditConsultation = () => {
     const navigate = useNavigate()
 
     const [assignedTeach, setAssignedTeach] = useState('')
-    //const [displayAllForms, setDisplayAllForms] = useState('')
 
     // error checking
     const [error, setError] = useState(null)
 
     // form useStates
     const [text, setText] = useState('')
-    const [startDate, setStartDate] = useState()
-    const [endDate, setEndDate] = useState()
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
     const [meetLink, setMeetLink] = useState('')
+
+    useEffect(() => {
+        setText(consultation.text)
+        setStartDate(consultation.start_date)
+        setEndDate(consultation.end_date)
+        setMeetLink(consultation.meet_link)
+    }, [])
 
     const handleStarDateChange = (newValue) => {
         setStartDate(newValue);
@@ -90,23 +96,22 @@ const EditConsultation = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <FormControl>
                     <Stack spacing={2}>
+                    <Typography align='center'>Edit Consultation</Typography>
                         <TextField
                             required
                             label="Enter title" 
                             variant="outlined"
                             type="text"
                             onChange={(e) => setText(e.target.value)}
-                            // value={text}
-                            defaultValue={consultation.text}
+                            value={text}
                         />
                         <DateTimePicker
                             required
                             label="Start Date"
-                            // value={startDate}
                             onChange={handleStarDateChange}
                             renderInput={(params) => <TextField {...params} />}
                             inputFormat="MM/dd/yyyy hh:mm a"
-                            defaultValue={consultation.start_date}
+                            value={startDate}
                         />
                         <DateTimePicker
                             required
@@ -114,8 +119,7 @@ const EditConsultation = () => {
                             onChange={handleEndDateChange}
                             renderInput={(params) => <TextField {...params} />}
                             inputFormat="MM/dd/yyyy hh:mm a"
-                            // value={endDate}
-                            defaultValue={consultation.end_date}
+                            value={endDate}
                         />
                         <TextField
                             required
@@ -123,8 +127,7 @@ const EditConsultation = () => {
                             variant="outlined"
                             type="text"
                             onChange={(e) => setMeetLink(e.target.value)}
-                            // value={meetLink}
-                            defaultValue={consultation.meet_link}
+                            value={meetLink}
                         />
                         <Button
                             variant="contained"
