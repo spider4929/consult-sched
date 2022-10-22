@@ -72,6 +72,35 @@ const ViewConsul = () => {
   
     // functions
 
+    // Modal component handlers
+    const handleOpen = (consultation) => {
+        dispatch({ type: 'STORE_A_CONSULTATION', payload: consultation })
+        setOpen(true)
+    };
+  
+    const handleClose = () => setOpen(false);
+
+    // CRUD handles
+    const handleCancel = async (item) => {
+        const response = await fetch(`/api/appointments/reject/${item._id}`, {
+            method: 'DELETE',
+            headers: {
+                'x-auth-token': `${user.token}`
+            }
+        })
+        
+        const updatedConsultations = consultationsFuture.map((consultation) => {
+            if (consultation._id === item._id) {
+                consultation.accepted = 0
+                return consultation
+            }
+            return consultation
+        })
+        
+        setConsultationsFuture(updatedConsultations)
+
+    }
+
     const handleDelete = async (consulId) => {
         const response = await fetch(`/api/appointments/cancel/${consulId}`, {
             method: 'DELETE',
@@ -84,13 +113,7 @@ const ViewConsul = () => {
 
     }
 
-    const handleOpen = (consultation) => {
-        dispatch({ type: 'STORE_A_CONSULTATION', payload: consultation })
-        setOpen(true)
-    };
-  
-    const handleClose = () => setOpen(false);
-
+    // case functions
     const buttonCases = (caseEvent, consultation) => {
         switch(caseEvent) {
             case 'EnableEdit':
@@ -111,7 +134,7 @@ const ViewConsul = () => {
                 )
             case 'EnableCancel':
                 return (
-                    <Tooltip title="Cancel"><IconButton><CancelOutlinedIcon color="error"/></IconButton></Tooltip>
+                    <Tooltip title="Cancel"><IconButton onClick={() => handleCancel(consultation)}><CancelOutlinedIcon color="error"/></IconButton></Tooltip>
                 )
             default:
                 return (
@@ -136,7 +159,7 @@ const ViewConsul = () => {
         },
         {
             field: 'instructor',
-            headerName: 'Instructor',
+            headerName: user.role === 1 ? 'Instructor' : 'Student',
             width: 250
         },
         {
@@ -178,8 +201,9 @@ const ViewConsul = () => {
                     <ButtonGroup>
                         {user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableEdit', consultation) : null }
                         {user.role === 1 && consultation.accepted !== 2 ? buttonCases('DisableEdit') : null }
-                        {consultation.accepted === 2 ? buttonCases('EnableDelete', consultation) : buttonCases('DisableDelete')}
-                        {user.role === 2 && consultation.accepted === 1 ? buttonCases('EnableCancel'): null }
+                        {user.role === 1 && consultation.accepted === 2 ? buttonCases('EnableDelete', consultation) : null }
+                        {user.role === 1 && consultation.accepted !== 2 ? buttonCases('DisableDelete') : null }
+                        {user.role === 2 && consultation.accepted === 1 ? buttonCases('EnableCancel', consultation): null }
                     </ButtonGroup>
                 )
             }
@@ -218,7 +242,7 @@ const ViewConsul = () => {
         },
         {
             field: 'instructor',
-            headerName: 'Instructor',
+            headerName: user.role === 1 ? 'Instructor' : 'Student',
             width: 250
         },
         {

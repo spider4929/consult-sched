@@ -4,6 +4,10 @@ export const ConsultationContext = createContext()
 
 export const consultationReducer = (state, action) => {
     switch (action.type) {
+        case 'STORE_CONSULTATIONS':
+            return {
+                
+            }
         // case 'GET_CONSULTATIONS':
         //     return {
         //         consultations: action.payload
