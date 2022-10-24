@@ -16,10 +16,10 @@ export const consultationReducer = (state, action) => {
             return {
                 consultation: action.payload
             }
-        // case 'EDIT_CONSULTATION':
-        //     return {
-        //         // TODO: add case for edit
-        //     }
+        case 'EDIT_CONSULTATION':
+            return {
+                // TODO: add case for edit
+            }
         // case 'DELETE_CONSULTATION':
         //     return {
         //         consultations: state.consultations.filter(c => c._id !== action.payload._id)

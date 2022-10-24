@@ -3,7 +3,6 @@ import { useAuthContext } from "./useAuthContext"
 export const getOneInstructorConsul = (identity) => {
     const [error, setError] = useState(null)
     const { user } = useAuthContext()
-    const identifier = identity
 
     const getConsultation = async () => {
         setError(null)
