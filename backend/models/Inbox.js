@@ -13,6 +13,9 @@ const InboxSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
+    from_name: {
+        type: String
+    },
     message: [
         {
             from: {
