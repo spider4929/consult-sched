@@ -34,12 +34,14 @@ router.post('/:user_id', [ auth, [
             const newInbox = new Inbox ({
                 to: to.id,
                 from: from.id,
-                to_name: to.first_name + ' ' + to.last_name,
-                from_name: from.first_name + ' ' + from.last_name
+                to_name: to.first_name + ' ' + to.last_name
             })
 
             const inbox = await newInbox.save()
-            inbox.message.unshift({ text: req.body.text })
+            inbox.message.unshift({ 
+                text: req.body.text,
+                from: from.id,
+                from_name: from.first_name + ' ' + from.last_name })
             await inbox.save()
             
 
@@ -53,12 +55,14 @@ router.post('/:user_id', [ auth, [
             const newInbox = new Inbox ({
                 to: to.id,
                 from: from.id,
-                to_name: to.first_name + ' ' + to.last_name,
-                from_name: from.first_name + ' ' + from.last_name
+                to_name: to.first_name + ' ' + to.last_name
             })
 
             const inbox = await newInbox.save()
-            inbox.message.unshift({ text: req.body.text })
+            inbox.message.unshift({ 
+                text: req.body.text,
+                from: from.id,
+                from_name: from.first_name + ' ' + from.last_name })
             await inbox.save()
             
 
@@ -87,7 +91,10 @@ router.put('/:inbox_id', [ auth, [
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
-        inbox.message.unshift({ text: req.body.text })
+        inbox.message.unshift({ 
+                text: req.body.text,
+                from: inbox.from,
+                from_name: req.user.first_name + ' ' + req.user.last_name })
         await inbox.save()
 
         res.json(inbox)

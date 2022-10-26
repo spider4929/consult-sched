@@ -13,22 +13,26 @@ const InboxSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
-    from_name: {
-        type: String
-    },
     message: [
         {
+            from: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'users'
+            },
+            from_name: {
+                type: String
+            },
             text: {
                 type: String,
                 required: true
             },
-            date: {
-                type: Date,
-                default: Date.now
-            },
             read: {
                 type: Boolean,
                 default: false
+            },
+            date: {
+                type: Date,
+                default: Date.now
             }
         }
     ],
