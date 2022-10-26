@@ -55,6 +55,8 @@ router.post('/:user_id', [ auth, [
             teacher: teacher.id,
             teacher_name: teacher.first_name + ' ' + teacher.last_name,
             student_name: student.first_name + ' ' + student.last_name,
+            teacher_email: teacher.email,
+            student_email: student.email,
             student_avatar: student.avatar
         })
 

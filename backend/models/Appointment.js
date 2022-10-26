@@ -9,6 +9,9 @@ const AppointmentSchema = new Schema({
     teacher_name: {
         type: String 
     },
+    teacher_email: {
+        type: String
+    },
     teacher_avatar: {
         type: String
     },
@@ -17,6 +20,9 @@ const AppointmentSchema = new Schema({
         ref: 'users' 
     },
     student_name: {
+        type: String
+    },
+    student_email: {
         type: String
     },
     student_avatar: {
