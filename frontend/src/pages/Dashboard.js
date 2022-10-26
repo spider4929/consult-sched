@@ -4,7 +4,7 @@ const Dashboard = () => {
 
     return ( 
         <div>
-            <Typography>Dashboard in progress.</Typography>
+            <Typography>Dashboard in progress...</Typography>
         </div>
      );
 }
