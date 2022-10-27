@@ -1,9 +1,8 @@
-const Inbox = () => {
-    return ( 
-        <div>
-            Inbox
-        </div>
-     );
-}
- 
+import { Chat } from '../components/Chat';
+
+
+const Inbox = () => (
+    <Chat />
+);
+
 export default Inbox;
