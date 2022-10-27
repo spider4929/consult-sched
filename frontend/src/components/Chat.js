@@ -17,16 +17,19 @@ const classes = {
 }
 
 export const Chat = () => {
-    const [ profile, setProfile] = useState(null)
-    const [ inbox, setInbox] = useState(null)
-    const { user } = useAuthContext()
-    const [ thread, setThread ] = useState(null)
-    const [ sender, setSender ] = useState(null)
-    const [ active, setActive ] = useState(null)
-    const [ replyMsg, setReplyMsg ] = useState('')
+    // Declaration of useStates
+    const [ profile, setProfile] = useState(null)       //for the profile card at the top left
+    const [ inbox, setInbox] = useState(null)           //for general inbox fetch json
+    const { user } = useAuthContext()                    
+    const [ thread, setThread ] = useState(null)        //for the message thread, inside the specific mail object in mail array
+    const [ sender, setSender ] = useState(null)        //to remember the id of 'from' user in mail object
+    const [ active, setActive ] = useState(null)        //for setting which active thread on the left panel
+    const [ replyMsg, setReplyMsg ] = useState('')      //for reply form submit
 
+    //Time formatting to Manila Time
     const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MMM dd, yyyy hh:mm a')
 
+    //Function to open the thread to UI
     const setCurrentThread = (option) => {
         console.log(option)
         setThread(option.message.reverse())
@@ -34,6 +37,7 @@ export const Chat = () => {
         setActive(option._id)
     }
 
+    //use effect to fetch profile information and inbox information
     useEffect(() => {
         const fetchProfile = async () => {
 
@@ -71,6 +75,7 @@ export const Chat = () => {
         }
     }, [user])
 
+    //submit function
     const handleSubmit = async (e) => {
 
         const reply = {
