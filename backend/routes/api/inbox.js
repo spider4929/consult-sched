@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator')
 const auth = require('../../middleware/auth')
+const http = require('http').Server(router)
+const io = require('socket.io')(http)
 
 const Inbox = require('../../models/Inbox')
 const User = require('../../models/User')
@@ -18,56 +20,67 @@ router.post('/:user_id', [ auth, [
     }
 
     try {
-        const from = await User.findById(req.user.id).select('-password')
+        const user = await User.findById(req.user.id).select('-password')
         const inbox = await Inbox.find({ from: from })
         for (const a of inbox) {
             if (a.to == req.params.user_id) {
                 return res.status(400).json({ error: "You have already sent a message to this prof" })
             }
         }
-        if (from.role === 1) {
-            const to = await User.findById(req.params.user_id).select('-password')
-            if (to.role != 2) {
+        if (user.id == req.params.user_id) {
+            return res.status(400).json({ error: "You cannot send message to yourself" })
+        }
+        if (user.role == 1) {
+            const student = user
+            const teacher = await User.findById(req.params.user_id).select('-password')
+            if (teacher.role != 2) {
                 return res.status(400).json({ error: "You can only message towards a faculty member" })
             }
 
             const newInbox = new Inbox ({
-                to: to.id,
-                from: from.id,
-                to_name: to.first_name + ' ' + to.last_name,
-                from_name: from.first_name + ' ' + from.last_name
+                teacher: teacher.id,
+                student: student.id,
+                teacher_name: teacher.first_name + ' ' + teacher.last_name,
+                student_name: student.first_name + ' ' + student.last_name
             })
 
             const inbox = await newInbox.save()
-            inbox.message.unshift({ 
-                text: req.body.text,
-                from: from.id,
-                from_name: from.first_name + ' ' + from.last_name })
+            inbox.message.unshift({
+                from: student.id,
+                from_name: student.first_name + ' ' + student.last_name,
+                to: teacher.id,
+                to_name: teacher.first_name + ' ' + teacher.last_name,
+                text: req.body.text
+             })
             await inbox.save()
             
-
+            io.emit('message', inbox.message)
             res.json(inbox)
         } else {
-            const to = await User.findById(req.params.user_id).select('-password')
-            if (to.role != 1) {
+            const teacher = user
+            const student = await User.findById(req.params.user_id).select('-password')
+            if (teacher.role != 1) {
                 return res.status(400).json({ error: "You can only message towards a student" })
             }
 
             const newInbox = new Inbox ({
-                to: to.id,
-                from: from.id,
-                to_name: to.first_name + ' ' + to.last_name,
-                from_name: from.first_name + ' ' + from.last_name
+                teacher: teacher.id,
+                student: student.id,
+                teacher_name: teacher.first_name + ' ' + teacher.last_name,
+                student_name: student.first_name + ' ' + student.last_name
             })
 
             const inbox = await newInbox.save()
-            inbox.message.unshift({ 
-                text: req.body.text,
-                from: from.id,
-                from_name: from.first_name + ' ' + from.last_name })
+            inbox.message.unshift({
+                from: teacher.id,
+                from_name: teacher.first_name + ' ' + teacher.last_name,
+                to: student.id,
+                to_name: student.first_name + ' ' + student.last_name,
+                text: req.body.text
+             })
             await inbox.save()
             
-
+            io.emit('message', inbox.message)
             res.json(inbox)
         }
     } catch (err) {
@@ -87,19 +100,40 @@ router.put('/:inbox_id', [ auth, [
         return res.status(400).json({ errors: errors.array() })
     }
     try {
+        const user = await User.findById(req.user.id).select('-password')
         const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
 
-        if (!(inbox.from != req.user.id ^ inbox.to != req.user.id)) {
+        if (!(inbox.student != user.id ^ inbox.teacher != user.id)) {
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
-        inbox.message.unshift({ 
+        if (user.role == 1) {
+            const teacher = await User.findById(inbox.teacher).select('-password')
+            inbox.message.unshift({ 
+                from: user.id,
+                from_name: user.first_name + ' ' + user.last_name, 
+                to: teacher.id,
+                to_name: teacher.first_name + ' ' + teacher.last_name,
                 text: req.body.text,
-                from: req.user.id,
-                from_name: req.user.first_name + ' ' + req.user.last_name })
-        await inbox.save()
+            })
+            await inbox.save()
 
-        res.json(inbox)
+            io.emit('message', inbox.message)
+            res.json(inbox)
+        } else {
+            const student = await User.findById(inbox.teacher).select('-password')
+            inbox.message.unshift({ 
+                from: user.id,
+                from_name: user.first_name + ' ' + user.last_name, 
+                to: student.id,
+                to_name: student.first_name + ' ' + student.last_name,
+                text: req.body.text,
+            })
+            await inbox.save()
+
+            io.emit('message', inbox.message)
+            res.json(inbox)
+        }
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -114,8 +148,13 @@ router.get('/me', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password')
 
-        const inbox = await Inbox.find({ user })
-        res.json(inbox)
+        if (user.role == 1) {
+            const inbox = await Inbox.find({ student: user.id, student_disabled: false })
+            res.json(inbox)
+        } else {
+            const inbox = await Inbox.find({ teacher: user.id, teacher_disabled: false })
+            res.json(inbox)
+        }
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -128,7 +167,7 @@ router.get('/me', auth, async (req, res) => {
 router.get('/:inbox_id', auth, async (req, res) => {
     try {
         const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-        if (!(inbox.from != req.user.id ^ inbox.to != req.user.id)) {
+        if (!(inbox.student != req.user.id ^ inbox.teacher != req.user.id)) {
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
@@ -139,16 +178,23 @@ router.get('/:inbox_id', auth, async (req, res) => {
     }
 })
 
-// @route   DELETE api/inbox/:inbox_id
-// @desc    Delete user's message from inbox
+// @route   PUT api/inbox/delete/:inbox_id
+// @desc    Pseudo-delete user's message from inbox
 // @access  Private
-router.delete('/:inbox_id', auth, async (req, res) => {
+router.put('/delete/:inbox_id', auth, async (req, res) => {
     try {
+        const user = await User.findById(req.user.id).select('-password')
         const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-        if (!(inbox.from != req.user.id ^ inbox.to != req.user.id)) {
+        if (!(inbox.student != user.id ^ inbox.teacher != ser.id)) {
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
-        await inbox.remove()
+        if (user.role == 1) {
+            inbox.student_disabled = true 
+            await inbox.save()
+        } else {
+            inbox.teacher_disabled = true 
+            await inbox.save()
+        }
 
         res.json(inbox)
     } catch (err) {
@@ -160,5 +206,27 @@ router.delete('/:inbox_id', auth, async (req, res) => {
     }
     
 })
+
+// @route   DELETE api/inbox/:inbox_id
+// @desc    Delete an inbox when both are disabled
+// @access  Private
+// router.delete('/:inbox_id', auth, async (req, res) => {
+//     try {
+//         const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
+//         if (!(inbox.student != req.user.id ^ inbox.teacher != req.user.id)) {
+//             return res.status(400).json({ error: "Unauthorized access is prohibited" })
+//         }
+//         await inbox.remove()
+
+//         res.json(inbox)
+//     } catch (err) {
+//         console.error(err.message)
+//         if (err.kind == 'ObjectId') {
+//             return res.status(400).json({ error: 'Message not found' })
+//         }
+//         res.status(500).send('Server Error')
+//     }
+    
+// })
 
 module.exports = router
