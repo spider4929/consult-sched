@@ -159,7 +159,7 @@ const ViewConsul = () => {
         },
         {
             field: 'instructor',
-            headerName: user.role === 1 ? 'Instructor' : 'Student',
+            headerName: user && user.role === 1 ? 'Instructor' : 'Student',
             width: 250
         },
         {
@@ -242,7 +242,7 @@ const ViewConsul = () => {
         },
         {
             field: 'instructor',
-            headerName: user.role === 1 ? 'Instructor' : 'Student',
+            headerName: user && user.role === 1 ? 'Instructor' : 'Student',
             width: 250
         },
         {
