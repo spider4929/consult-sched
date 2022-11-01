@@ -28,7 +28,7 @@ export const UserProfileDetails = (props) => {
     const [ courses, setCourses ] = useState('')
     const [ facebookLink, setfacebookLink] = useState('https://www.facebook.com/')
     const [ linkedinLink, setlinkedinLink] = useState('https://www.linkedin.com/in/')
-
+    
     useEffect(() => {
         const fetchProfile = async () => {
 
@@ -45,6 +45,7 @@ export const UserProfileDetails = (props) => {
             setCourses(json.courses)
             setfacebookLink(json.social.facebook)
             setlinkedinLink(json.social.linkedin)
+            console.log(json)
         }
         }
         
@@ -138,6 +139,21 @@ export const UserProfileDetails = (props) => {
                         variant="outlined"
                         
                         defaultValue={profile.user.last_name}
+                        />
+                </Grid>
+                <Grid
+                    item
+                    md={12}
+                    xs={12}
+                >
+                    <TextField
+                        fullWidth
+                        label="Account Email"
+                        id="outlined-disabled"
+                        disabled
+                        variant="outlined"
+                        
+                        defaultValue={profile.user.email}
                         />
                 </Grid>
                 <Grid
