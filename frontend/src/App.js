@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAuthContext } from './hooks/useAuthContext';
+import { PrivateRoutes } from './components/PrivateRoutes';
 
 // pages and components
 import Profile from './pages/Profile'
@@ -12,6 +13,8 @@ import Inbox from './pages/Inbox'
 import Layout from './components/Layout'
 import Register from './pages/Register'
 import Login from './pages/Login'
+import PrivateStudent from './components/PrivateStudent';
+import PrivateTeacher from './components/PrivateTeacher';
 
 const theme = createTheme({
   palette: {
@@ -35,30 +38,36 @@ function App() {
       <BrowserRouter>
           <Layout>
             <Routes>
-              <Route 
-                path="/profile" 
-                element={ user ? <Profile /> : <Navigate to="/login"/> } 
-              />
-              <Route 
-                path="/" 
-                element={ user ? <Dashboard /> : <Navigate to="/login"/> }
-              />
-              <Route 
-                path="/view-consultations" 
-                element={ user ? <ViewConsul /> : <Navigate to="/login"/> }
-              />
-              <Route 
-                path="/create-consultation-student" 
-                element={ user && user.role === 1 ? <CreateConsulStudent /> : <Navigate to="/login"/> } 
-              />
-              <Route 
-                path="/approve-consultation" 
-                element={ user && user.role === 2 ? <ApproveConsulInstructor /> : <Navigate to="/login"/> }
-              />
-              <Route 
+              <Route element={<PrivateRoutes/>}>
+                <Route 
+                  path="/profile" 
+                  element ={<Profile/>}
+                />
+                <Route 
+                  path="/" 
+                  element ={<Dashboard />}
+                />
+                <Route 
+                  path="/view-consultations"
+                  element ={<ViewConsul />}
+                /> 
+                  <Route element={<PrivateStudent/>}>
+                    <Route 
+                      path="/create-consultation-student"
+                      element ={<CreateConsulStudent />}
+                    />
+                  </Route>
+                  <Route element={<PrivateTeacher/>}>
+                    <Route 
+                      path="/approve-consultation"
+                      element ={<ApproveConsulInstructor />}
+                    />
+                  </Route>
+                <Route 
                 path="/inbox" 
-                element={ user ? <Inbox /> : <Navigate to="/login"/> }
-              />
+                element={<Inbox />}
+                />
+              </Route>
               <Route 
                 path="/register" 
                 element={ !user ? <Register /> : <Navigate to="/"/> }
