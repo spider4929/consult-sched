@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const { check, validationResult } = require('express-validator/check')
+const http = require('http').Server(router)
+const io = require('socket.io')(http)
 
 const User = require('../../models/User')
 
@@ -81,6 +83,10 @@ router.post('/', [
             // json response for register
             
             res.json({ token, role: user.role })
+        })
+
+        io.on('connection', () => {
+            console.log('a user is connected')
         })
     } catch(err) {
         console.error(err.message)

@@ -35,7 +35,7 @@ const style = {
 const ViewConsul = () => {
     const [consultationsFuture, setConsultationsFuture] = useState([])
     const [consultationsPast, setConsultationsPast] = useState([])
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
     const { user } = useAuthContext()
     const { dispatch } = useConsultationContext()
 

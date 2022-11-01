@@ -2,19 +2,27 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const InboxSchema = new Schema({
-    to: {
+    student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
-    to_name: {
+    student_name: {
         type: String
     },
-    from: {
+    student_disabled: {
+        type: Boolean,
+        default: false
+    },
+    teacher: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
-    from_name: {
+    teacher_name: {
         type: String
+    },
+    teacher_disabled: {
+        type: Boolean,
+        default: false
     },
     message: [
         {
@@ -23,6 +31,13 @@ const InboxSchema = new Schema({
                 ref: 'users'
             },
             from_name: {
+                type: String
+            },
+            to: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'users'
+            },
+            to_name: {
                 type: String
             },
             text: {

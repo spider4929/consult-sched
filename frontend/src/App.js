@@ -15,6 +15,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import PrivateStudent from './components/PrivateStudent';
 import PrivateTeacher from './components/PrivateTeacher';
+import Test from './pages/Test'
 
 const theme = createTheme({
   palette: {
@@ -72,9 +73,13 @@ function App() {
                 path="/register" 
                 element={ !user ? <Register /> : <Navigate to="/"/> }
               />
-                <Route 
-                path="/login" 
-                element={ !user ? <Login /> : <Navigate to="/"/> }
+              <Route 
+                  path="/login" 
+                  element={ !user ? <Login /> : <Navigate to="/"/> }
+              />
+              <Route 
+                  path="/test" 
+                  element= {<Test />}
               />
             </Routes>
           </Layout>
