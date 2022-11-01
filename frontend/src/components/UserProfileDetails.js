@@ -147,7 +147,9 @@ export const UserProfileDetails = (props) => {
                 >
                     <TextField
                         fullWidth
-                        startAdornment={<InputAdornment position="start"><FacebookIcon /></InputAdornment>}
+                        InputProps={{
+                            startAdornment: (<InputAdornment position="start"><FacebookIcon /></InputAdornment>),
+                        }}
                         label="Facebook Link"
                         name="facebookLink"
                         onChange={(e) => setfacebookLink(e.target.value)}
@@ -164,7 +166,9 @@ export const UserProfileDetails = (props) => {
                 >
                     <TextField
                         fullWidth
-                        startAdornment={<InputAdornment position="start"><LinkedInIcon /></InputAdornment>}
+                        InputProps={{
+                            startAdornment: (<InputAdornment position="start"><LinkedInIcon /></InputAdornment>),
+                        }}
                         label="LinkedIn Link"
                         name="linkedinLink"
                         onChange={(e) => setlinkedinLink(e.target.value)}
