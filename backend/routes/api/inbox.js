@@ -25,7 +25,7 @@ router.post('/:user_id', [ auth, [
             return res.status(400).json({ error: "You cannot send message to yourself" })
         }
         if (user.role == 1) {
-            const temp = await Inbox.find({ student: user.id })
+            const temp = await Inbox.find({ student: user.id, student_disabled: false })
             for (const a of temp) {
                 if (a.to == req.params.user_id) {
                     return res.status(400).json({ error: "You have already sent a message to this prof" })
@@ -57,7 +57,7 @@ router.post('/:user_id', [ auth, [
             io.emit('message', inbox.message)
             res.json(inbox)
         } else {
-            const temp = await Inbox.find({ teacher: user.id })
+            const temp = await Inbox.find({ teacher: user.id, teacher_disabled: false })
             for (const a of temp) {
                 if (a.to == req.params.user_id) {
                     return res.status(400).json({ error: "You have already sent a message to this prof" })
