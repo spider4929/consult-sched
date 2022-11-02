@@ -21,16 +21,16 @@ router.post('/:user_id', [ auth, [
 
     try {
         const user = await User.findById(req.user.id).select('-password')
-        const inbox = await Inbox.find({ from: from })
-        for (const a of inbox) {
-            if (a.to == req.params.user_id) {
-                return res.status(400).json({ error: "You have already sent a message to this prof" })
-            }
-        }
         if (user.id == req.params.user_id) {
             return res.status(400).json({ error: "You cannot send message to yourself" })
         }
         if (user.role == 1) {
+            const temp = await Inbox.find({ student: user.id })
+            for (const a of temp) {
+                if (a.to == req.params.user_id) {
+                    return res.status(400).json({ error: "You have already sent a message to this prof" })
+                }
+            }
             const student = user
             const teacher = await User.findById(req.params.user_id).select('-password')
             if (teacher.role != 2) {
@@ -57,6 +57,12 @@ router.post('/:user_id', [ auth, [
             io.emit('message', inbox.message)
             res.json(inbox)
         } else {
+            const temp = await Inbox.find({ teacher: user.id })
+            for (const a of temp) {
+                if (a.to == req.params.user_id) {
+                    return res.status(400).json({ error: "You have already sent a message to this prof" })
+                }
+            }
             const teacher = user
             const student = await User.findById(req.params.user_id).select('-password')
             if (teacher.role != 1) {
@@ -83,6 +89,43 @@ router.post('/:user_id', [ auth, [
             io.emit('message', inbox.message)
             res.json(inbox)
         }
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
+    }
+})
+
+// @route   GET api/inbox/me
+// @desc    Get user's inbox
+// @access  Private
+router.get('/me', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password')
+
+        if (user.role == 1) {
+            const inbox = await Inbox.find({ student: user.id, student_disabled: false })
+            res.json(inbox)
+        } else {
+            const inbox = await Inbox.find({ teacher: user.id, teacher_disabled: false })
+            res.json(inbox)
+        }
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
+    }
+})
+
+// @route   GET api/inbox/:inbox_id
+// @desc    Get user's message from inbox
+// @access  Private
+router.get('/:inbox_id', auth, async (req, res) => {
+    try {
+        const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
+        if (!(inbox.student != req.user.id ^ inbox.teacher != req.user.id)) {
+            return res.status(400).json({ error: "Unauthorized access is prohibited" })
+        }
+
+        res.json(inbox)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -139,43 +182,6 @@ router.put('/:inbox_id', [ auth, [
         res.status(500).send('Server Error')
     }
     
-})
-
-// @route   GET api/inbox/me
-// @desc    Get user's inbox
-// @access  Private
-router.get('/me', auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password')
-
-        if (user.role == 1) {
-            const inbox = await Inbox.find({ student: user.id, student_disabled: false })
-            res.json(inbox)
-        } else {
-            const inbox = await Inbox.find({ teacher: user.id, teacher_disabled: false })
-            res.json(inbox)
-        }
-    } catch (err) {
-        console.error(err.message)
-        res.status(500).send('Server Error')
-    }
-})
-
-// @route   GET api/inbox/:inbox_id
-// @desc    Get user's message from inbox
-// @access  Private
-router.get('/:inbox_id', auth, async (req, res) => {
-    try {
-        const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-        if (!(inbox.student != req.user.id ^ inbox.teacher != req.user.id)) {
-            return res.status(400).json({ error: "Unauthorized access is prohibited" })
-        }
-
-        res.json(inbox)
-    } catch (err) {
-        console.error(err.message)
-        res.status(500).send('Server Error')
-    }
 })
 
 // @route   PUT api/inbox/delete/:inbox_id
