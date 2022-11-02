@@ -81,12 +81,10 @@ router.post('/', [
             if(err) throw err
 
             // json response for register
-            
+            io.on('connection', () => {
+                console.log('a user is connected')
+            })
             res.json({ token, role: user.role })
-        })
-
-        io.on('connection', () => {
-            console.log('a user is connected')
         })
     } catch(err) {
         console.error(err.message)
