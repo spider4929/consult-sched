@@ -184,14 +184,14 @@ router.put('/:inbox_id', [ auth, [
     
 })
 
-// @route   PUT api/inbox/delete/:inbox_id
-// @desc    Pseudo-delete user's message from inbox
+// @route   DELETE api/inbox/delete/:inbox_id
+// @desc    Delete user's message from inbox
 // @access  Private
-router.put('/delete/:inbox_id', auth, async (req, res) => {
+router.delete('/:inbox_id', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password')
         const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-        if (!(inbox.student != user.id ^ inbox.teacher != ser.id)) {
+        if (!(inbox.student != user.id ^ inbox.teacher != user.id)) {
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
         if (user.role == 1) {
@@ -200,6 +200,10 @@ router.put('/delete/:inbox_id', auth, async (req, res) => {
         } else {
             inbox.teacher_disabled = true 
             await inbox.save()
+        }
+
+        if (inbox.student_disabled == true && inbox.teacher_disabled == true) {
+            await inbox.remove()
         }
 
         res.json(inbox)
