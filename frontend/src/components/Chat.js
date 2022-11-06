@@ -33,7 +33,7 @@ export const Chat = () => {
     const setCurrentThread = (option) => {
         console.log(option)
         setThread(option.message.reverse())
-        setSender(option.from)
+        setSender(profile.user._id)
         setActive(option._id)
     }
 
@@ -128,9 +128,9 @@ export const Chat = () => {
                                 sx={message._id === active ? classes.active : classes.inactive}
                             >
                             <ListItemIcon>
-                                <Avatar alt={message.to_name} src={"https://material-ui.com/static/images/avatar/1.jpg"} />
+                                <Avatar src={"https://material-ui.com/static/images/avatar/1.jpg"} />
                             </ListItemIcon>
-                            <ListItemText primary={message.to_name}>{message.to_name}</ListItemText>
+                            <ListItemText primary={user.role === 1 ? message.teacher_name : message.student_name}></ListItemText>
                         </ListItem>
                         )
                       })}
@@ -164,7 +164,7 @@ export const Chat = () => {
                               </Grid>
                           </Grid>
                         </ListItem>
-                        )}) 
+                        )})
                         : 
                       (<Stack
                         justifyContent="center"
