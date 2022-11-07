@@ -8,6 +8,18 @@ const MomentRange = require('moment-range');
 
 const moment = MomentRange.extendMoment(Moment);
 
+const nodemailer = require('nodemailer')
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'consultsched.tipqc@gmail.com',
+        pass: 'zmyuategodpjlzqi'
+    }
+})
+
+const { formatInTimeZone } = require('date-fns-tz')
+const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MM dd, yyyy hh:mm a')
+
 const Appointment = require('../../models/Appointment')
 const User = require('../../models/User')
 
@@ -61,6 +73,20 @@ router.post('/:user_id', [ auth, [
         })
 
         const appointment = await newAppointment.save()
+
+        const message = {
+            from: "consultsched.tipqc@gmail.com",
+            to: appointment.teacher_email,
+            subject: "[CREATED] A consultation has been created with you",
+            text: "Greetings. A student named " + appointment.student_name + " has created a consultation with you with the following details:\nTitle: " + appointment.text +"\nStart Date: " + formatToManilaTime(appointment.start_date) + "\nEnd Date: " + formatToManilaTime(appointment.end_date) + "\n\nPlease access the consultation website and approve should the schedule fit yours and reject if not."
+        }
+        transporter.sendMail(message, function(err, info) {
+            if(err) {
+                console.log(err)
+                return res.status(500).send('Server Error')
+            }
+            console.log("Sent: " + info.response)
+        })
 
         res.json(appointment)
     } catch(err) {
@@ -174,6 +200,20 @@ router.put('/approve/:app_id', auth, async (req, res) => {
         appointment.accepted = 1 
         await appointment.save()
 
+        const message = {
+            from: "consultsched.tipqc@gmail.com",
+            to: appointment.student_email,
+            subject: "[ACCEPTED] Your consultation has been accepted!",
+            text: "Greetings. Your consultation with Engr. " + appointment.teacher_name + " is accepted. Here are the details:\nTitle: " + appointment.text +"\nStart Date: " + formatToManilaTime(appointment.start_date) + "\nEnd Date: " + formatToManilaTime(appointment.end_date) + "\n\nPlease make sure that you keep in touch with your professor as the start date comes closer."
+        }
+        transporter.sendMail(message, function(err, info) {
+            if(err) {
+                console.log(err)
+                return res.status(500).send('Server Error')
+            }
+            console.log("Sent: " + info.response)
+        })
+
         res.json({ msg: 'Appointment has successfully been approved' })
     } catch (err) {
         console.error(err.message)
@@ -241,6 +281,20 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
 
         await Appointment.findOneAndRemove({ _id: req.params.app_id })
 
+        const message = {
+            from: "consultsched.tipqc@gmail.com",
+            to: appointment.teacher_email,
+            subject: "[CANCELLED] A consultation created with you was cancelled",
+            text: "Greetings. A student named " + appointment.student_name + " has cancelled a consultation with you with the following details:\nTitle: " + appointment.text +"\nStart Date: " + formatToManilaTime(appointment.start_date) + "\nEnd Date: " + formatToManilaTime(appointment.end_date) + "\n\nPlease coordinate with your respective student to know the reason for cancellation."
+        }
+        transporter.sendMail(message, function(err, info) {
+            if(err) {
+                console.log(err)
+                return res.status(500).send('Server Error')
+            }
+            console.log("Sent: " + info.response)
+        })
+
         res.json({ msg: 'Appointment successfully removed' })
     } catch(err) {
         console.error(err.message)
@@ -251,10 +305,10 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
     }
 })
 
-// @route   DELETE api/appointments/reject/:app_id
+// @route   PUT api/appointments/reject/:app_id
 // @desc    Reject the appointment
 // @access  Private
-router.delete('/reject/:app_id', auth, async (req, res) => {
+router.put('/reject/:app_id', auth, async (req, res) => {
     try{
         const teacher = await User.findById(req.user.id).select('-password')
 
@@ -277,6 +331,20 @@ router.delete('/reject/:app_id', auth, async (req, res) => {
 
         appointment.accepted = 0
         await appointment.save()
+
+        const message = {
+            from: "consultsched.tipqc@gmail.com",
+            to: appointment.student_email,
+            subject: "[REJECTED] Your consultation has been rejected.",
+            text: "Greetings. Your consultation with Engr. " + appointment.teacher_name + " is rejected. Here are the details:\nTitle: " + appointment.text +"\nStart Date: " + formatToManilaTime(appointment.start_date) + "\nEnd Date: " + formatToManilaTime(appointment.end_date) + "\n\nPlease contact your respective faculty member to know the reason for rejection, so a new one can be created as soon as possible."
+        }
+        transporter.sendMail(message, function(err, info) {
+            if(err) {
+                console.log(err)
+                return res.status(500).send('Server Error')
+            }
+            console.log("Sent: " + info.response)
+        })
 
         res.json({ msg: 'Appointment successfully rejected' })
     } catch(err) {
