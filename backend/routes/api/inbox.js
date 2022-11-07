@@ -217,26 +217,4 @@ router.delete('/:inbox_id', auth, async (req, res) => {
     
 })
 
-// @route   DELETE api/inbox/:inbox_id
-// @desc    Delete an inbox when both are disabled
-// @access  Private
-// router.delete('/:inbox_id', auth, async (req, res) => {
-//     try {
-//         const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-//         if (!(inbox.student != req.user.id ^ inbox.teacher != req.user.id)) {
-//             return res.status(400).json({ error: "Unauthorized access is prohibited" })
-//         }
-//         await inbox.remove()
-
-//         res.json(inbox)
-//     } catch (err) {
-//         console.error(err.message)
-//         if (err.kind == 'ObjectId') {
-//             return res.status(400).json({ error: 'Message not found' })
-//         }
-//         res.status(500).send('Server Error')
-//     }
-    
-// })
-
 module.exports = router
