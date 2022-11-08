@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator')
 const auth = require('../../middleware/auth')
-const http = require('http').Server(router)
-const io = require('socket.io')(http)
 
 const Inbox = require('../../models/Inbox')
 const User = require('../../models/User')
@@ -54,7 +52,6 @@ router.post('/:user_id', [ auth, [
              })
             await inbox.save()
             
-            io.emit('message', inbox.message)
             res.json(inbox)
         } else {
             const temp = await Inbox.find({ teacher: user.id, teacher_disabled: false })
@@ -86,7 +83,6 @@ router.post('/:user_id', [ auth, [
              })
             await inbox.save()
             
-            io.emit('message', inbox.message)
             res.json(inbox)
         }
     } catch (err) {
@@ -161,7 +157,6 @@ router.put('/:inbox_id', [ auth, [
             })
             await inbox.save()
 
-            io.emit('message', inbox.message)
             res.json(inbox)
         } else {
             const student = await User.findById(inbox.teacher).select('-password')
@@ -174,7 +169,6 @@ router.put('/:inbox_id', [ auth, [
             })
             await inbox.save()
 
-            io.emit('message', inbox.message)
             res.json(inbox)
         }
     } catch (err) {
