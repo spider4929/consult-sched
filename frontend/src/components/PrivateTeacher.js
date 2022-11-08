@@ -14,7 +14,7 @@ export const PrivateTeacher = () => {
     }, []);
 
     return (
-        role === 1 ? <Outlet/> : <Navigate to="/"/>
+        role === 2 ? <Outlet/> : <Navigate to="/"/>
     )
 }
 
