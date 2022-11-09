@@ -71,6 +71,7 @@ router.post('/', [
 
         // Create default profile
         const newProfile = new Profile({
+            user: user.id,
             first_name: first_name,
             last_name: last_name,
             email: email
