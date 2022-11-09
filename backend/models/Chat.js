@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const InboxSchema = new Schema({
+const ChatSchema = new Schema({
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
@@ -45,4 +45,4 @@ const InboxSchema = new Schema({
     }
 })
 
-module.exports = Inbox = mongoose.model('inbox', InboxSchema)
+module.exports = Chat = mongoose.model('chat', ChatSchema)

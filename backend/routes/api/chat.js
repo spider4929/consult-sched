@@ -3,10 +3,10 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 const auth = require('../../middleware/auth')
 
-const Inbox = require('../../models/Inbox')
+const Chat = require('../../models/Chat')
 const User = require('../../models/User')
 
-// @route   POST api/inbox/:user_id
+// @route   POST api/chat/:user_id
 // @desc    Message a user for the first time
 // @access  Private
 router.post('/:user_id', [ auth, [
@@ -23,7 +23,7 @@ router.post('/:user_id', [ auth, [
             return res.status(400).json({ error: "You cannot send message to yourself" })
         }
         if (user.role == 1) {
-            const temp = await Inbox.find({ student: user.id })
+            const temp = await Chat.find({ student: user.id })
             for (const a of temp) {
                 if (a.teacher == req.params.user_id) {
                     return res.status(400).json({ error: "You have already sent a message to this prof" })
@@ -35,24 +35,24 @@ router.post('/:user_id', [ auth, [
                 return res.status(400).json({ error: "You can only message towards a faculty member" })
             }
 
-            const newInbox = new Inbox ({
+            const newChat = new Chat ({
                 teacher: teacher.id,
                 student: student.id,
                 teacher_name: teacher.first_name + ' ' + teacher.last_name,
                 student_name: student.first_name + ' ' + student.last_name
             })
 
-            const inbox = await newInbox.save()
-            inbox.message.unshift({
+            const chat = await newChat.save()
+            chat.message.unshift({
                 sender: student.id,
                 sender_name: student.first_name + ' ' + student.last_name,
                 text: req.body.text
              })
-            await inbox.save()
+            await chat.save()
             
-            res.json(inbox)
+            res.json(chat)
         } else {
-            const temp = await Inbox.find({ teacher: user.id })
+            const temp = await Chat.find({ teacher: user.id })
             for (const a of temp) {
                 if (a.student == req.params.user_id) {
                     return res.status(400).json({ error: "You have already sent a message to this prof" })
@@ -64,22 +64,22 @@ router.post('/:user_id', [ auth, [
                 return res.status(400).json({ error: "You can only message towards a student" })
             }
 
-            const newInbox = new Inbox ({
+            const newChat = new Chat ({
                 teacher: teacher.id,
                 student: student.id,
                 teacher_name: teacher.first_name + ' ' + teacher.last_name,
                 student_name: student.first_name + ' ' + student.last_name
             })
 
-            const inbox = await newInbox.save()
-            inbox.message.unshift({
+            const chat = await newChat.save()
+            chat.message.unshift({
                 sender: teacher.id,
                 sender_name: teacher.first_name + ' ' + teacher.last_name,
                 text: req.body.text
              })
-            await inbox.save()
+            await chat.save()
             
-            res.json(inbox)
+            res.json(chat)
         }
     } catch (err) {
         console.error(err.message)
@@ -87,19 +87,19 @@ router.post('/:user_id', [ auth, [
     }
 })
 
-// @route   GET api/inbox/me
-// @desc    Get user's inbox
+// @route   GET api/chat/me
+// @desc    Get user's chat
 // @access  Private
 router.get('/me', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password')
 
         if (user.role == 1) {
-            const inbox = await Inbox.find({ student: user.id })
-            res.json(inbox)
+            const chat = await Chat.find({ student: user.id })
+            res.json(chat)
         } else {
-            const inbox = await Inbox.find({ teacher: user.id })
-            res.json(inbox)
+            const chat = await Chat.find({ teacher: user.id })
+            res.json(chat)
         }
     } catch (err) {
         console.error(err.message)
@@ -107,27 +107,27 @@ router.get('/me', auth, async (req, res) => {
     }
 })
 
-// @route   GET api/inbox/:inbox_id
-// @desc    Get user's message from inbox
+// @route   GET api/chat/:chat_id
+// @desc    Get user's message from chat
 // @access  Private
-router.get('/:inbox_id', auth, async (req, res) => {
+router.get('/:chat_id', auth, async (req, res) => {
     try {
-        const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-        if (!(inbox.student != req.user.id ^ inbox.teacher != req.user.id)) {
+        const chat = await Chat.findOne({ _id: req.params.chat_id })
+        if (!(chat.student != req.user.id ^ chat.teacher != req.user.id)) {
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
-        res.json(inbox)
+        res.json(chat)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
     }
 })
 
-// @route   PUT api/inbox/:inbox_id
+// @route   PUT api/chat/:chat_id
 // @desc    Reply to a message
 // @access  Private
-router.put('/:inbox_id', [ auth, [
+router.put('/:chat_id', [ auth, [
     check('text', 'Text is required').not().isEmpty()
 ] ], async (req, res) => {
     const errors = validationResult(req)
@@ -136,20 +136,20 @@ router.put('/:inbox_id', [ auth, [
     }
     try {
         const user = await User.findById(req.user.id).select('-password')
-        const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
+        const chat = await Chat.findOne({ _id: req.params.chat_id })
 
-        if (!(inbox.student != user.id ^ inbox.teacher != user.id)) {
+        if (!(chat.student != user.id ^ chat.teacher != user.id)) {
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
-        inbox.message.unshift({
+        chat.message.unshift({
             sender: user.id,
             sender_name: user.first_name + ' ' + user.last_name,
             text: req.body.text
         })
-        await inbox.save()
+        await chat.save()
 
-        res.json(inbox)
+        res.json(chat)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -157,10 +157,10 @@ router.put('/:inbox_id', [ auth, [
     
 })
 
-// @route   DELETE api/inbox/delete/:inbox_id
-// @desc    Delete user's message from inbox
+// @route   DELETE api/chat/:chat_id
+// @desc    Delete user's message from chat
 // @access  Private
-router.delete('/:inbox_id', auth, async (req, res) => {
+router.delete('/:chat_id', auth, async (req, res) => {
     
 })
 
