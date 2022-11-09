@@ -13,38 +13,39 @@ const Dashboard = () => {
 
     const [value, setValue] = useState(new Date());
     const [highlightedDays, setHighlightedDays] = useState([1, 2, 3]);//dont forget this 
-    return (
-    <Box className='rootContainer'>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <div className='Header'>Dashboard</div>
-        <StaticDatePicker
-            // mask='____/__/__'
-            variant='static'
-            orientation='portrait'
-            value={value}
-            
-            onChange={(newValue) => setValue(newValue)}
-            renderInput={(params) => {
-            <TextField {...params} />;
-            }}
-            renderDay={(day, _value, DayComponentProps) => {
-            const isSelected =
-                !DayComponentProps.outsideCurrentMonth &&
-                highlightedDays.indexOf(day.getDate()) >= 0;
 
-            return (
-                <Badge
-                key={day.toString()}
-                overlap='circular'
-                badgeContent={isSelected ? <CheckIcon color='red' /> : undefined}
-                >
-                <PickersDay {...DayComponentProps} />
-                </Badge>
-            );
-            }}
-        />
-    </LocalizationProvider>
-    </Box>
+    return (
+        <Box className='rootContainer'>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <div className='Header'>Dashboard</div>
+                <StaticDatePicker
+                    // mask='____/__/__'
+                    variant='static'
+                    orientation='portrait'
+                    value={value}
+                    
+                    onChange={(newValue) => setValue(newValue)}
+                    renderInput={(params) => {
+                    <TextField {...params} />;
+                    }}
+                    renderDay={(day, _value, DayComponentProps) => {
+                    const isSelected =
+                        !DayComponentProps.outsideCurrentMonth &&
+                        highlightedDays.indexOf(day.getDate()) >= 0;
+
+                    return (
+                        <Badge
+                        key={day.toString()}
+                        overlap='circular'
+                        badgeContent={isSelected ? <CheckIcon color='red' /> : undefined}
+                        >
+                        <PickersDay {...DayComponentProps} />
+                        </Badge>
+                    );
+                    }}
+                />
+            </LocalizationProvider>
+        </Box>
     
   );
 };

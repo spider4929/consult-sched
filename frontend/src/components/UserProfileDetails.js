@@ -153,7 +153,7 @@ export const UserProfileDetails = (props) => {
                         disabled
                         variant="outlined"
                         
-                        defaultValue={profile.user.email}
+                        defaultValue={profile.email}
                         />
                 </Grid>
                 <Grid
