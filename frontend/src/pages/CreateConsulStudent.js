@@ -205,7 +205,7 @@ const CreateConsulStudent = () => {
                 <Typography>The following dates are not available: </Typography>
                 { teacherConsul && teacherConsul.map((consultation) => (
                     <Box>
-                        <Typography key={consultation._id}>{formatToManilaTime(consultation.start_date)} - {formatToManilaTime(consultation.end_date)}</Typography>
+                        <Typography key={consultation._id}>{formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMM dd, yyyy')}</Typography>
                     </Box>
                 ))}
                 
