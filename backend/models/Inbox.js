@@ -9,10 +9,6 @@ const InboxSchema = new Schema({
     student_name: {
         type: String
     },
-    student_disabled: {
-        type: Boolean,
-        default: false
-    },
     teacher: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
@@ -20,24 +16,13 @@ const InboxSchema = new Schema({
     teacher_name: {
         type: String
     },
-    teacher_disabled: {
-        type: Boolean,
-        default: false
-    },
     message: [
         {
-            from: {
+            sender: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'users'
             },
-            from_name: {
-                type: String
-            },
-            to: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'users'
-            },
-            to_name: {
+            sender_name: {
                 type: String
             },
             text: {

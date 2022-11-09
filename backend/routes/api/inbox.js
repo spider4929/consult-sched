@@ -44,10 +44,8 @@ router.post('/:user_id', [ auth, [
 
             const inbox = await newInbox.save()
             inbox.message.unshift({
-                from: student.id,
-                from_name: student.first_name + ' ' + student.last_name,
-                to: teacher.id,
-                to_name: teacher.first_name + ' ' + teacher.last_name,
+                sender: student.id,
+                sender_name: student.first_name + ' ' + student.last_name,
                 text: req.body.text
              })
             await inbox.save()
@@ -75,10 +73,8 @@ router.post('/:user_id', [ auth, [
 
             const inbox = await newInbox.save()
             inbox.message.unshift({
-                from: teacher.id,
-                from_name: teacher.first_name + ' ' + teacher.last_name,
-                to: student.id,
-                to_name: student.first_name + ' ' + student.last_name,
+                sender: teacher.id,
+                sender_name: teacher.first_name + ' ' + teacher.last_name,
                 text: req.body.text
              })
             await inbox.save()
@@ -99,10 +95,10 @@ router.get('/me', auth, async (req, res) => {
         const user = await User.findById(req.user.id).select('-password')
 
         if (user.role == 1) {
-            const inbox = await Inbox.find({ student: user.id, student_disabled: false })
+            const inbox = await Inbox.find({ student: user.id })
             res.json(inbox)
         } else {
-            const inbox = await Inbox.find({ teacher: user.id, teacher_disabled: false })
+            const inbox = await Inbox.find({ teacher: user.id })
             res.json(inbox)
         }
     } catch (err) {
@@ -146,31 +142,14 @@ router.put('/:inbox_id', [ auth, [
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
-        if (user.role == 1) {
-            const teacher = await User.findById(inbox.teacher).select('-password')
-            inbox.message.unshift({ 
-                from: user.id,
-                from_name: user.first_name + ' ' + user.last_name, 
-                to: teacher.id,
-                to_name: teacher.first_name + ' ' + teacher.last_name,
-                text: req.body.text,
-            })
-            await inbox.save()
+        inbox.message.unshift({
+            sender: user.id,
+            sender_name: user.first_name + ' ' + user.last_name,
+            text: req.body.text
+        })
+        await inbox.save()
 
-            res.json(inbox)
-        } else {
-            const student = await User.findById(inbox.teacher).select('-password')
-            inbox.message.unshift({ 
-                from: user.id,
-                from_name: user.first_name + ' ' + user.last_name, 
-                to: student.id,
-                to_name: student.first_name + ' ' + student.last_name,
-                text: req.body.text,
-            })
-            await inbox.save()
-
-            res.json(inbox)
-        }
+        res.json(inbox)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -182,32 +161,6 @@ router.put('/:inbox_id', [ auth, [
 // @desc    Delete user's message from inbox
 // @access  Private
 router.delete('/:inbox_id', auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password')
-        const inbox = await Inbox.findOne({ _id: req.params.inbox_id })
-        if (!(inbox.student != user.id ^ inbox.teacher != user.id)) {
-            return res.status(400).json({ error: "Unauthorized access is prohibited" })
-        }
-        if (user.role == 1) {
-            inbox.student_disabled = true 
-            await inbox.save()
-        } else {
-            inbox.teacher_disabled = true 
-            await inbox.save()
-        }
-
-        if (inbox.student_disabled == true && inbox.teacher_disabled == true) {
-            await inbox.remove()
-        }
-
-        res.json(inbox)
-    } catch (err) {
-        console.error(err.message)
-        if (err.kind == 'ObjectId') {
-            return res.status(400).json({ error: 'Message not found' })
-        }
-        res.status(500).send('Server Error')
-    }
     
 })
 
