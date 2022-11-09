@@ -16,7 +16,7 @@ const classes = {
     }
 }
 
-export const Chat = () => {
+export const Chat2 = () => {
     // Declaration of useStates
     const [ profile, setProfile] = useState(null)       //for the profile card at the top left
     const [ inbox, setInbox] = useState(null)           //for general inbox fetch json
