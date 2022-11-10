@@ -52,7 +52,7 @@ const MyChats = () => {
                         display: 'flex',
                         flexDirection: 'row'
                         },]}>
-                        <Typography>{chat.teacher_name}</Typography>
+                        <Typography>{user && user.role === 1 ? chat.teacher_name : chat.student_name}</Typography>
                     </ListItemButton>
 
                 ))}

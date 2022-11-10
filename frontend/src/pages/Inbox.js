@@ -14,7 +14,6 @@ const Inbox = () => {
             <Grid item xs={3}>
             <List>
             { user && <SideDrawer/> }
-            <Divider/>
             { user && <MyChats/> }
             </List>
             </Grid>

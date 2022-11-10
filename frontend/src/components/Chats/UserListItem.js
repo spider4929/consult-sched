@@ -15,13 +15,16 @@ const UserListItem = ({ user, handleFunction }) => {
                     backgroundColor: "#38B2AC",
                 },
                 display: 'flex',
-                flexDirection: 'row'
+                flexDirection: 'row',
+                pr: 7
             },
             ]}
             >
             <Avatar alt="Profile Picture" src={user.user.avatar} 
                 sx={[{
-                    margin: 1,}
+                    mt: 1,
+                    mb: 1,
+                    mr: 2}
                 ]}/>
                 <Typography>{user.user.last_name} {user.user.first_name}</Typography>
         </ListItemButton>

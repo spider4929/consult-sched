@@ -81,7 +81,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 sx={{
                     fontWeight: 'bold'
                 }}> 
-                { selectedChat ? selectedChat.teacher_name : 'Chat Window'}
+                { selectedChat ? (user && user.role === 1 ? selectedChat.teacher_name : selectedChat.student_name) : 'Chat Window'}
             </Typography>
             </Box>
             { selectedChat ? (

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from "react";
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import { Box, Button, Tooltip, Typography, Drawer, TextField, ListItem, List, Snackbar, Stack, ListItemButton } from "@mui/material";
+import { Box, Button, Tooltip, Typography, Drawer, TextField, ListItem, List, Snackbar, Stack, ListItemButton, Divider } from "@mui/material";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import ChatLoading from './ChatLoading';
 import UserListItem from './UserListItem';
@@ -28,6 +28,7 @@ const SideDrawer = () => {
         }
     
         setState({ ...state, [anchor]: open });
+        handleSearch();
       };
     
       const handleClick = () => {
@@ -43,10 +44,10 @@ const SideDrawer = () => {
       };
 
     const handleSearch = async () => {
-        if (!search) {
-            console.log('error')
-            return;
-        };
+        // if (!search) {
+        //     console.log('error')
+        //     return;
+        // };
 
         try {
             setLoading(true)
@@ -98,37 +99,48 @@ const SideDrawer = () => {
 
     return (
         <React.Fragment key='left'>
-            <Tooltip 
-                label="Search Users to chat"
-                placement="bottom-end"
-            >
+            { user && user.role === 1 ? (
                 <ListItemButton 
-                    variant="contained"
-                    onClick={toggleDrawer('left', true)}
-                    sx={{
-                        p: 2
-                    }}
-                    >
-                <PersonSearchIcon />
-                <Typography>
-                    Search User
+                variant="contained"
+                onClick={toggleDrawer('left', true)}
+                sx={{
+                    p: 2
+                }}
+                >
+            <PersonSearchIcon />
+            <Typography>
+                Select an Instructor
+            </Typography>
+            
+            </ListItemButton>) : (
+            <ListItem sx={{ justifyContent: 'center', mt: 0.5}}>
+                <Typography sx={{ fontWeight: 'bold' }}> 
+                    Current threads 
                 </Typography>
-               
-                </ListItemButton>
-            </Tooltip>
-
+            </ListItem>)
+            }
+            
             <Drawer
                     anchor='left'
                     open={state['left']}
                     onClose={toggleDrawer('left',false)}
                 >
                     <List>
-                        <ListItem>
-                            <Typography>
-                                New chat
+                        <ListItem sx={{
+                            p: 2,
+                        }}>
+                            <Typography sx={{
+                                fontWeight: 'bold',
+                                fontSize: 'large'
+                            }}>
+                                List of Instructors
                             </Typography>
                         </ListItem>
-                        <ListItem>
+                        <Divider sx={{
+                            mb: 2,
+                            mt: 1
+                        }}/>
+                        {/* <ListItem>
                             <TextField 
                                 label="Search by name"
                                 value={search}
@@ -141,7 +153,7 @@ const SideDrawer = () => {
                                 >
                                 Go
                             </Button>
-                        </ListItem>
+                        </ListItem> */}
                         <Stack>
                          { loading ? ( 
                             <ChatLoading/>
