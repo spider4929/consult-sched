@@ -15,6 +15,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import PrivateStudent from './components/PrivateStudent';
 import PrivateTeacher from './components/PrivateTeacher';
+import AboutUs from './pages/AboutUs';
 // import Test from './pages/Test'
 
 const theme = createTheme({
@@ -68,6 +69,10 @@ function App() {
                 path="/inbox" 
                 element={<Inbox />}
                 />
+                <Route 
+                  path="/about-us"
+                  element ={<AboutUs/>}
+                /> 
               </Route>
               <Route 
                 path="/register" 

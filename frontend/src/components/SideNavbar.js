@@ -9,6 +9,7 @@ import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import GroupsIcon from '@mui/icons-material/Groups';
 const drawerWidth = 260
 
 const classes = {
@@ -124,6 +125,16 @@ const SideNavbar = () => {
                         </Badge>
                     </ListItemIcon>
                     <ListItemText primary="Inbox"></ListItemText>
+                </ListItem>
+                <ListItem
+                    button
+                    onClick={() => navigate('/about-us')}
+                    sx={location.pathname === '/about-us' ? classes.active : null}
+                >
+                    <ListItemIcon>
+                        <GroupsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="About Us"></ListItemText>
                 </ListItem>
             </List>
                         
