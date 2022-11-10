@@ -43,7 +43,7 @@ router.post('/:user_id', [ auth, [
             })
 
             const chat = await newChat.save()
-            chat.message.unshift({
+            chat.message.push({
                 sender: student.id,
                 sender_name: student.first_name + ' ' + student.last_name,
                 text: req.body.text
@@ -72,7 +72,7 @@ router.post('/:user_id', [ auth, [
             })
 
             const chat = await newChat.save()
-            chat.message.unshift({
+            chat.message.push({
                 sender: teacher.id,
                 sender_name: teacher.first_name + ' ' + teacher.last_name,
                 text: req.body.text
@@ -142,7 +142,7 @@ router.put('/:chat_id', [ auth, [
             return res.status(400).json({ error: "Unauthorized access is prohibited" })
         }
 
-        chat.message.unshift({
+        chat.message.push({
             sender: user.id,
             sender_name: user.first_name + ' ' + user.last_name,
             text: req.body.text
