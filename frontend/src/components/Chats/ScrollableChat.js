@@ -67,7 +67,7 @@ const ScrollableChat = ({messages}) => {
     return (
         <Box
             sx={{
-                height: 800,
+                height: 500,
                 bgcolor: '#ECECEC',
                 overflow: "hidden",
                 overflowY: "scroll"
