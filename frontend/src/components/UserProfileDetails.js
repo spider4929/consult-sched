@@ -21,7 +21,7 @@ import { MuiChipsInput } from 'mui-chips-input'
 
 export const UserProfileDetails = (props) => {
     const [ profile, setProfile ] = useState(null)
-    const { user } = useAuthContext()
+    const { user, setUsername } = useAuthContext()
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const navigate = useNavigate()
@@ -45,6 +45,8 @@ export const UserProfileDetails = (props) => {
             setCourses(json.courses)
             setfacebookLink(json.social.facebook)
             setlinkedinLink(json.social.linkedin)
+            const fullName = json.user.first_name + ' ' + json.user.last_name
+            setUsername(fullName)
             console.log(json)
         }
         }

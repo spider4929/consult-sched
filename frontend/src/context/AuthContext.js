@@ -15,6 +15,7 @@ export const authReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
   const [ selectedChat, setSelectedChat] = useState();
+  const [ username, setUsername ] = useState('');
   const [chats, setChats] = useState([]);
   const [state, dispatch] = useReducer(authReducer, { 
     user: null
@@ -30,7 +31,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [])
   
   return (
-    <AuthContext.Provider value={{ ...state, dispatch, selectedChat, setSelectedChat, chats, setChats }}>
+    <AuthContext.Provider value={{ ...state, dispatch, selectedChat, setSelectedChat, chats, setChats, username, setUsername }}>
       { children }
     </AuthContext.Provider>
   )
