@@ -53,8 +53,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 })
         
                 const json = await response.json()
-
-                setMessages([...messages, json]);
+                setMessages(json.message)
                 setLoading(false);
             } catch (error) {
                 console.log(error)

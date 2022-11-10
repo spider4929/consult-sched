@@ -74,7 +74,7 @@ const ScrollableChat = ({messages}) => {
             }}>
         {messages && luser &&
             messages.map((m, i) => (
-                <Box  key={m._id} sx={{
+                <Box key={m._id} sx={{
                     display: "flex",
                     justifyContent: isSameSenderMargin(messages, m, i, luser._id)
                 }}>
