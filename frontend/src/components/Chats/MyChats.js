@@ -11,7 +11,7 @@ const MyChats = () => {
 
     const fetchChats = async () => {
         try {
-            const response = await fetch(`/api/inbox/me`, {
+            const response = await fetch(`/api/chat/me`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
@@ -35,8 +35,9 @@ const MyChats = () => {
         { chats ? (
             <Stack 
                 sx={{
+                    overflow: 'hidden',
                     overflowY: "scroll",
-                    margin: 2,
+                    mt: 2,
                 }}>
                 {chats.map((chat) => (
                     <ListItemButton

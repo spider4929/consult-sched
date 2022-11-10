@@ -75,7 +75,7 @@ const SideDrawer = () => {
             }
 
 
-            const response = await fetch(`/api/inbox/${userId}`, {
+            const response = await fetch(`/api/chat/${userId}`, {
                 method: 'POST',
                 body: JSON.stringify(startChat),
                 headers: {
@@ -105,6 +105,9 @@ const SideDrawer = () => {
                 <ListItemButton 
                     variant="contained"
                     onClick={toggleDrawer('left', true)}
+                    sx={{
+                        p: 2
+                    }}
                     >
                 <PersonSearchIcon />
                 <Typography>

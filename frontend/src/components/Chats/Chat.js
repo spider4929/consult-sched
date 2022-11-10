@@ -1,12 +1,14 @@
-import { Box, CircularProgress, FormControl, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, FormControl, Input, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import ScrollableChat from "./ScrollableChat";
+import './scrollbar.css'
 
 const Chat = ({ fetchAgain, setFetchAgain }) => {
 
     const [ messages, setMessages ] = useState([])
     const [loading, setLoading ] = useState(false);
-    const [newMessage, setNewMessage ] = useState();
+    const [newMessage, setNewMessage ] = useState('');
 
     const { user, selectedChat, setSelectedChat } = useAuthContext();
 
@@ -15,7 +17,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
 
         try {
             setLoading(true)
-            const response = await fetch(`/api/inbox/me`, {
+            const response = await fetch(`/api/chat/${selectedChat._id}`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
@@ -23,7 +25,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
 
             const json = await response.json()
 
-            setMessages(json)
+            setMessages(json.message)
             setLoading(false);
 
         } catch ( error ) {
@@ -41,7 +43,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 }
                 
                 setNewMessage("")
-                const response = await fetch(`/api/inbox/${selectedChat._id}`, {
+                const response = await fetch(`/api/chat/${selectedChat._id}`, {
                     method: 'PUT',
                     body: JSON.stringify(reply),
                     headers: {
@@ -72,31 +74,49 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
 
     return (
         <>
-            <Typography> Selected Chat
-
+            <Box sx={{
+                m: 2,
+                p: 0.5
+            }}>
+            <Typography
+                sx={{
+                    fontWeight: 'bold'
+                }}> 
+                { selectedChat ? selectedChat.teacher_name : 'Chat Window'}
             </Typography>
+            </Box>
             { selectedChat ? (
             <Box>
                 {loading ? ( <CircularProgress/>) : 
-                 <div>
-                    {/* { Messages }  */}
+                 <div className='messages'>
+                    <ScrollableChat messages={messages}/>
                 </div>}
-                <FormControl onKeyDown={sendMessage}
+                <Divider/>
+                <Box onKeyDown={sendMessage} 
+                sx={{
+                    display:"flex",
+                    flexGrow: 1
+                }}
                  >
-                    <TextField
-                        label="Enter a message.."
+                    <Input
+                        placeholder="Enter a message.."
                         onChange={typingHandler}
                         value={newMessage}
                         required
+                        fullWidth
+                        sx={{
+                            p:1
+                        }}
                         >
-
-                    </TextField>
-                </FormControl>
+                    </Input>
+                </Box>
             </Box> ) : 
                 <Box 
                     sx={{ 
-                        width: '50%',
-                        height: '50%'
+                        display: 'flex',
+                        height: 500,
+                        justifyContent: 'center',
+                        flexGrow: 1
                     }}
                 > 
                     <Typography> Click on a user to start chatting</Typography>
