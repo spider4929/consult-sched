@@ -149,7 +149,7 @@ router.put('/:chat_id', [ auth, [
         })
         await chat.save()
 
-        res.json(chat)
+        res.json(chat.message[chat.message.length - 1].text)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
