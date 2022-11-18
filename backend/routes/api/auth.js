@@ -60,7 +60,7 @@ router.post('/', [
             if(err) throw err
 
             // json response for login
-            res.json({ token, role: user.role })
+            res.json({ token, role: user.role, id: user.id })
 
         })
         
