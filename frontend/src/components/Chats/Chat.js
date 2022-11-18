@@ -4,13 +4,25 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import ScrollableChat from "./ScrollableChat";
 import './scrollbar.css'
 
+import io from 'socket.io-client'
+const ENDPOINT = 'http://localhost:5000';
+var socket, selectedChatCompare;
+
+
 const Chat = ({ fetchAgain, setFetchAgain }) => {
 
     const [ messages, setMessages ] = useState([])
     const [loading, setLoading ] = useState(false);
     const [newMessage, setNewMessage ] = useState('');
+    const [socketConnected, setSocketConnected] = useState(false);
 
     const { user, selectedChat, setSelectedChat } = useAuthContext();
+
+    useEffect(() => {
+        socket = io(ENDPOINT)
+        socket.emit("setup", user)
+        socket.on('connection',() => setSocketConnected(true))
+    },[])
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
@@ -28,6 +40,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
             setMessages(json.message)
             setLoading(false);
 
+            socket.emit('join chat', selectedChat._id);
         } catch ( error ) {
             console.log(error)
         } 
@@ -53,7 +66,9 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 })
         
                 const json = await response.json()
-                setMessages(json.message)
+
+                socket.emit('new message', json)
+                setMessages([...messages, json])
                 setLoading(false);
             } catch (error) {
                 console.log(error)
@@ -69,8 +84,21 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
 
     useEffect(() => {
         fetchMessages();
+
+        selectedChatCompare = selectedChat;
     }, [selectedChat]);
 
+    useEffect(() => {
+        return(() => {
+            socket.on("message received",(newMessageReceived) => {
+                if(!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id){
+                    //give notification
+                } else {
+                    setMessages([...messages, newMessageReceived])
+                }
+            });
+        })
+    })
     return (
         <>
             <Box sx={{
