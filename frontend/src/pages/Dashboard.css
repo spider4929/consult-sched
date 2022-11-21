@@ -28,7 +28,7 @@ width: auto;
 .header-text {
   text-transform: uppercase;
   margin-bottom: 2rem;
-  color: green;
+  color: #81c784;
 }
 
 
@@ -48,7 +48,7 @@ width: auto;
 
 .css-hq2kpw-MuiGrid-root-MuiPickersToolbar-content {
   justify-content: center !important;
-  background-color: green;
+  background-color: #81c784;
   padding: 1rem;
 }
 
@@ -57,11 +57,11 @@ width: auto;
 }
 
 .css-bkrceb-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
-  background-color: green !important;
+  background-color: #81c784 !important;
 }
 
 .css-195y93z-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
-  background-color: green !important;
+  background-color: #81c784 !important;
   color: black !important;
 }
 .css-195y93z-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {

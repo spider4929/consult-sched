@@ -17,7 +17,12 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
     const [socketConnected, setSocketConnected] = useState(false);
     const bottomRef = useRef(null);
 
-    const { user, selectedChat, setSelectedChat } = useAuthContext();
+    const { user, selectedChat } = useAuthContext();
+
+    useEffect(() => {
+        console.log('scroll has been called')
+        bottomRef.current?.scrollIntoView({behavior: "smooth"});
+    }, [messages]);
 
     useEffect(() => {
         console.log('scroll has been called')
