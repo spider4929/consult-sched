@@ -32,7 +32,8 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
     console.log("Connected to socket.io")
     socket.on("setup", (userData) => {
-        socket.join(userData._id)
+        socket.join(userData.id)
+        console.log(userData.id)
         socket.emit("connected")
     })
 
@@ -44,19 +45,19 @@ io.on("connection", (socket) => {
     socket.on("stop typing", (room) => socket.in(room).emit("stop typing"))
 
     socket.on("new message", (newMessageReceived) => {
-        var chat = newMessageReceived.chat
-
-        if (!chat.users) return console.log("chat.users not defined")
-
-        chat.users.forEach((user) => {
-            if (user._id == newMessageReceived.sender._id) return
-
-            socket.in(user._id).emit("message received", newMessageReceived)
-        })
+        var chat = newMessageReceived
+        var message = newMessageReceived.message
+        var newmessage = message[message.length - 1]
+        // if (!chat.users) return console.log("chat.users not defined")
+        console.log('emits')
+        // chat.users.forEach((user) => {
+            socket.in(chat.student).emit("message received", chat, newmessage)
+            socket.in(chat.teacher).emit("message received", chat, newmessage)
+        // })
     })
 
     socket.off("setup", () => {
         console.log("USER DISCONNECTED")
-        socket.leave(userData._id)
+        socket.leave(userData)
     })
 })

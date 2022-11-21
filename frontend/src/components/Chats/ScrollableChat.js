@@ -1,5 +1,5 @@
 import { Avatar, Box, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 const isSameSender = (messages, m, i, userId) => {
@@ -37,7 +37,7 @@ const isSameUser = (messages, m, i) => {
     return i > 0 && messages[i - 1].sender === m.sender;
 };
 
-const ScrollableChat = ({messages}) => {
+const ScrollableChat = ({messages, bottomRef}) => {
     const { user } = useAuthContext()
     const [ luser, setUser] = useState()
 
@@ -104,6 +104,7 @@ const ScrollableChat = ({messages}) => {
                 </Box>
             )
         )}
+        <div ref={bottomRef} id="bottomref"/>
         </Box>
     );
 };
