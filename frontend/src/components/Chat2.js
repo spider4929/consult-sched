@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Grid, Box, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab, ListItemButton, FormControl } from '@mui/material'
+import { Paper, Grid, Divider, TextField, Typography, List, ListItem, 
+    ListItemIcon, ListItemText, Avatar, Fab, ListItemButton, } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { Stack, sizing } from '@mui/system';
+import { Stack } from '@mui/system';
 import { formatInTimeZone } from "date-fns-tz";
 import AddIcon from '@mui/icons-material/Add';
 

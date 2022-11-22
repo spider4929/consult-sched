@@ -113,8 +113,6 @@ const Dashboard = () => {
 
     const rowsFuture = []
 
-    const selectedDate = new Date(value.toDateString())
-
     consultationsFuture && consultationsFuture.map((consultation) => {
         const selectedDate = new Date(value.toDateString())
         const temp = new Date(consultation.start_date)

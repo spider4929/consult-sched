@@ -120,9 +120,9 @@ const SideNavbar = () => {
                 >
                     <ListItemIcon>
                         {/* TODO: make value dynamic */}
-                        <Badge badgeContent={10} color="primary">
+                        {/* <Badge badgeContent={10} color="primary"> */}
                             <EmailOutlinedIcon />
-                        </Badge>
+                        {/* </Badge> */}
                     </ListItemIcon>
                     <ListItemText primary="Inbox"></ListItemText>
                 </ListItem>
