@@ -1,5 +1,5 @@
-import { Box, CircularProgress, Divider, Input, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, Divider, FormControl, Input, TextField, Typography } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import ScrollableChat from "./ScrollableChat";
 import './scrollbar.css'
@@ -15,8 +15,23 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
     const [loading, setLoading ] = useState(false);
     const [newMessage, setNewMessage ] = useState('');
     const [socketConnected, setSocketConnected] = useState(false);
+    const bottomRef = useRef(null);
 
     const { user, selectedChat } = useAuthContext();
+
+    useEffect(() => {
+        console.log('scroll has been called')
+        bottomRef.current?.scrollIntoView({behavior: "smooth"});
+    }, [messages]);
+
+    useEffect(() => {
+        console.log('scroll has been called')
+        bottomRef.current?.scrollIntoView({behavior: "smooth"});
+    }, [messages]);
+
+    const scrolltoRef = () => {
+        bottomRef.current?.scrollIntoView({behavior: "smooth"});
+    }
 
     useEffect(() => {
         socket = io(ENDPOINT)
@@ -39,8 +54,8 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
 
             setMessages(json.message)
             setLoading(false);
-
             socket.emit('join chat', selectedChat._id);
+            scrolltoRef();
         } catch ( error ) {
             console.log(error)
         } 
@@ -49,8 +64,6 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
     const sendMessage = async (event) => {
         if(event.key==="Enter" && newMessage) {
             try {
-                setLoading(true);
-
                 const reply = {
                     text: newMessage
                 }
@@ -68,8 +81,9 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 const json = await response.json()
 
                 socket.emit('new message', json)
-                setMessages([...messages, json])
-                setLoading(false);
+                const message = json.message
+                const newmessage = message[message.length - 1]
+                setMessages([...messages, newmessage])
             } catch (error) {
                 console.log(error)
             }
@@ -89,16 +103,21 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
     }, [selectedChat]);
 
     useEffect(() => {
-        return(() => {
-            socket.on("message received",(newMessageReceived) => {
-                if(!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id){
-                    //give notification
-                } else {
-                    setMessages([...messages, newMessageReceived])
-                }
-            });
-        })
-    })
+        socket.on("message received", (newMessageReceived, newmessage) => {
+          if (
+            !selectedChatCompare || // if chat is not selected or doesn't match current chat
+            selectedChatCompare._id !== newMessageReceived._id
+          ) {
+            // if (!notification.includes(newMessageRecieved)) {
+            //   setNotification([newMessageRecieved, ...notification]);
+            //   setFetchAgain(!fetchAgain);
+            // }
+          } else {
+            setMessages([...messages, newmessage]);
+          }
+        });
+      });
+
     return (
         <>
             <Box sx={{
@@ -116,7 +135,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
             <Box>
                 {loading ? ( <CircularProgress/>) : 
                  <div className='messages'>
-                    <ScrollableChat messages={messages}/>
+                    <ScrollableChat messages={messages} ref={bottomRef}/>
                 </div>}
                 <Divider/>
                 <Box onKeyDown={sendMessage} 
