@@ -359,7 +359,7 @@ router.put('/reject/:app_id', auth, async (req, res) => {
 
 // @route   PUT api/appointments/reject/:app_id
 // @desc    Mark appointment as finished
-// @access  Public
+// @access  Private
 router.put('/finished/:app_id', auth, async (req, res) => {
     try {
         const appointment = await Appointment.findOne({ _id: req.params.app_id })
@@ -377,7 +377,7 @@ router.put('/finished/:app_id', auth, async (req, res) => {
 
         appointment.finished = true
         await appointment.save()
-        
+
         res.json({ msg: 'Appointment set to finished' })
     } catch (err) {
         console.error(err.message)
