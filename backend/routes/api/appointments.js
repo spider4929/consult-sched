@@ -413,8 +413,9 @@ router.put('/cancel/:app_id', auth, async (req, res) => {
 // @access  Private
 router.put('/finished', auth, async (req, res) => {
     try {
-        if (req.user.role == 1) {
-            const appointments = await Appointment.find({ student: req.user.id, accepted: 1 })
+        const user = await User.findById(req.user.id).select('-password')
+        if (user.role == 1) {
+            const appointments = await Appointment.find({ student: req.user.id })
 
             for (const appointment of appointments) {
                 const range1 = moment.range(appointment.range)
@@ -426,8 +427,8 @@ router.put('/finished', auth, async (req, res) => {
                 }
             }
             res.json(appointments)
-        } else if (req.user.role == 2) {
-            const appointments = await Appointment.find({ teacher: req.user.id, accepted: 1 })
+        } else if (user.role == 2) {
+            const appointments = await Appointment.find({ teacher: req.user.id })
 
             for (const appointment of appointments) {
                 const range1 = moment.range(appointment.range)
