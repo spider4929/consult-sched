@@ -45,8 +45,8 @@ const MyChats = () => {
                         key={chat._id}
                         sx={[
                         {
-                        '&:hover': {
-                            color: "white",
+                        '&:active': {
+                            backgroundColor: "#f3f3f3"
                         },
                         display: 'flex',
                         flexDirection: 'row'

@@ -37,7 +37,7 @@ const classes = {
 
 const Layout = ({ children }) => {
     const theme = useTheme()
-    const { user, username } = useAuthContext()
+    const { user } = useAuthContext()
 
     // this will display if user is logged in
     if (user) {
@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
                 >
                     <Toolbar>
                         {/* TODO: display here the current page */}
-                        <Typography sx={{flexGrow: 1}}>Welcome, {username ? username : 'visitor.'}</Typography>
+                        <Typography sx={{flexGrow: 1}}>Computer Engineering Consultation App</Typography>
                         <Typography>
                             {/* Day, MM/DD/YYYY */}
                             { format(new Date(), 'iiii, LLLL dd, RRRR') }

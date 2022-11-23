@@ -26,8 +26,9 @@ const style = {
 
 const Dashboard = () => {
     const [consultationsFuture, setConsultationsFuture] = useState([])
-    const { user } = useAuthContext()
-    const [value, setValue] = useState(new Date());
+    const { user, username } = useAuthContext()
+    const [value, setValue] = useState(new Date())
+    const [name, setName] = useState('')
     
     const theme = useTheme()
 
@@ -132,14 +133,25 @@ const Dashboard = () => {
             })
         }
     })
-    
+
     return (
         <Stack spacing={1} sx={{ p: `${theme.spacing(5)}` }}>
-            <Paper sx={{ p: `${theme.spacing(5)}`, pb: `${theme.spacing(10)}` , mb: `${theme.spacing(1)}`}}>
-                <Typography variant='h4'>Welcome</Typography>
+            <Paper sx={{ 
+                p: `${theme.spacing(5)}`, 
+                mb: `${theme.spacing(1)}`
+            }}>
+                <Typography variant="h4" sx={{flexGrow: 1}}>Welcome, {username ? username : 'visitor.'} </Typography>
+                <Typography >It is nice to see you again. </Typography>
+                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.length } scheduled upcoming consultations. </Typography>
             </Paper>
-            <div style={{ display: 'flex', height: 440 }}>
-                <Paper style={{ width: '30%', marginRight: `${theme.spacing(2)}`}}>
+            <div style={{ 
+                display: 'flex', 
+                height: 440 
+            }}>
+                <Paper style={{ 
+                    width: '30%', 
+                    marginRight: `${theme.spacing(2)}`
+                }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <StaticDatePicker
                             variant='static'
@@ -149,7 +161,10 @@ const Dashboard = () => {
                         />
                     </LocalizationProvider>
                 </Paper>
-                <Paper style={{  height: '100%', width: '70%'}}>
+                <Paper style={{ 
+                    height: '100%', 
+                    width: '70%'
+                }}>
                     <DataGrid
                     initialState={{
                         sorting: {

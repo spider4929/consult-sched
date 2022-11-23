@@ -6,6 +6,7 @@ import { IconButton, Tooltip, Box, Modal, Typography,
     ButtonGroup, 
     Paper} from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
+import { useTheme } from "@mui/material/styles";
 
 // icon imports
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -39,6 +40,7 @@ const ViewConsul = () => {
     const [open, setOpen] = useState(false)
     const { user } = useAuthContext()
     const { dispatch } = useConsultationContext()
+    const theme = useTheme()
 
     // fetch consultations of logged in student or instructor
     useEffect(() => {
@@ -156,7 +158,7 @@ const ViewConsul = () => {
         {
             field: 'title',
             headerName: 'Title',
-            width: 350
+            width: 300
         },
         {
             field: 'instructor',
@@ -176,7 +178,7 @@ const ViewConsul = () => {
         {
             field: 'meetLink',
             headerName: 'Link/Location',
-            width: 300
+            width: 275
         },
         {
             field: 'approvedStatus',
@@ -239,7 +241,7 @@ const ViewConsul = () => {
         {
             field: 'title',
             headerName: 'Title',
-            width: 350
+            width: 300
         },
         {
             field: 'instructor',
@@ -259,7 +261,7 @@ const ViewConsul = () => {
         {
             field: 'meetLink',
             headerName: 'Link/Location',
-            width: 300
+            width: 275
         }
     ]
 
@@ -278,9 +280,16 @@ const ViewConsul = () => {
     )
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{ 
+            p: `${theme.spacing(5)}` 
+        }}>
             <Typography variant='h6'>Current Consultations</Typography>
-            <Paper style={{  display: 'flex', height: '100%', flexGrow: 1, height: '40vh'}}>
+            <Paper style={{ 
+                display: 'flex', 
+                height: '100%', 
+                flexGrow: 1, 
+                height: 370
+            }}>
                 <DataGrid
                     rows={rowsFuture}
                     columns={columnsFuture}
@@ -291,7 +300,12 @@ const ViewConsul = () => {
                 />
             </Paper>
             <Typography variant='h6'>Past Consultations</Typography>
-            <Paper style={{  display: 'flex', height: '100%', flexGrow: 1, height: '40vh'}}>
+            <Paper style={{ 
+                display: 'flex', 
+                height: '100%', 
+                flexGrow: 1, 
+                height: 370
+            }}>
                 <DataGrid
                     rows={rowsPast}
                     columns={columnsPast}

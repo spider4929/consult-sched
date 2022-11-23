@@ -1,10 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Card,
-    CardContent,
-    Typography
-} from '@mui/material';
+import { Avatar, Box, Card, CardContent, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { CircularProgress } from '@mui/material';
@@ -58,14 +52,13 @@ export const UserProfile = (props) => {
                 <Typography
                     color="textPrimary"
                     gutterBottom
-                    variant="h5"
+                    variant="h6"
                     >
                         {profile.user.last_name}, {profile.user.first_name}
                     </Typography>
                 <Typography
                     color="textSecondary"
                     gutterBottom
-                    variant="h6"
                     >
                         {(user.role === 1) ? "Student" : "Instructor"}
                     </Typography>

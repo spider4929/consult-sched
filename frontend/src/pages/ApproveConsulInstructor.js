@@ -2,18 +2,14 @@ import format from 'date-fns/format'
 import { useEffect, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, 
-    IconButton, Tooltip, Box, Alert} from "@mui/material";
-import { useNavigate } from "react-router-dom";
+    IconButton, Tooltip, Alert, Paper} from "@mui/material";
 
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const CreateConsulProf = () => {
-    const navigate = useNavigate()
     const { user } = useAuthContext()
     const [consultations, setConsultations] = useState(null)
-    const [accept, setAccept] = useState(false)
-    const [reject, setReject] = useState(false)
     const [error, setError] = useState(null)
 
     // get all consultations that are not approved
@@ -38,8 +34,6 @@ const CreateConsulProf = () => {
         }
     }, [user])
 
-    //TODO: add alerts for when a consultation is successfully accepted or not
-    // approval function
     const handleApproval = async (consulId) => {
         const response = await fetch(`/api/appointments/approve/${consulId}`, {
             method: 'PUT',
@@ -48,8 +42,14 @@ const CreateConsulProf = () => {
             }
         })
 
-        setConsultations(consultations.filter(item => item._id != consulId))
-        
+        const json = await response.json()
+
+        if (!response.ok) {
+            setError(json.error)
+        }
+        else {
+            setConsultations(consultations.filter(item => item._id != consulId))
+        }
     }
 
     // rejection function
@@ -65,17 +65,19 @@ const CreateConsulProf = () => {
 
     }
     
-    console.log(user)
-
     return ( 
-        <Box>
+        <Paper sx={{ 
+            height: '90vh', 
+            padding: 1 
+        }}>
             <TableContainer>
-                <Table sx={{ minWidth: 650 }}>
+                <Table sx={{ 
+                    minWidth: 650 
+                }}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Title</TableCell>
-                            { console.log(user.role) }
-                            { user.role === 1 ? <TableCell>Instructor</TableCell> : <TableCell>Student/s</TableCell>}
+                            <TableCell>Student/s</TableCell>
                             <TableCell>Start</TableCell>
                             <TableCell>End</TableCell>
                             <TableCell>Meet Link/Location</TableCell>
@@ -86,7 +88,7 @@ const CreateConsulProf = () => {
                     {consultations && consultations.map((consultation) => (
                         <TableRow key={consultation._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell sx={{maxWidth: 400}}>{consultation.text}</TableCell>
-                            { user.role === 1 ? <TableCell>{consultation.teacher_name}</TableCell> : <TableCell>{consultation.student_name}</TableCell> }
+                            <TableCell>{consultation.student_name}</TableCell>
                             <TableCell>{format(new Date(consultation.start_date), 'LLL dd, yyyy, hh:mm aa')}{}</TableCell>
                             <TableCell>{format(new Date(consultation.end_date), 'LLL dd, yyyy, hh:mm aa')}</TableCell>
                             <TableCell>{consultation.meet_link}</TableCell>
@@ -100,8 +102,7 @@ const CreateConsulProf = () => {
                 </Table>
             </TableContainer>
         { error && <Alert severity="error">{error}</Alert> }
-        {/* TODO: pop-up if accept or reject is successful */}
-        </Box>
+        </Paper>
     );
 }
  

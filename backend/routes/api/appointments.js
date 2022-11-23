@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 })
 
 const { formatInTimeZone } = require('date-fns-tz')
-const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MM dd, yyyy hh:mm a')
+const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MMMM dd, yyyy hh:mm a')
 
 const Appointment = require('../../models/Appointment')
 const User = require('../../models/User')

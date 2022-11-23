@@ -91,7 +91,7 @@ const CreateConsulStudent = () => {
         }
         
         if (response.ok) {
-            setTeacherConsul(json)
+            setTeacherConsul(json.filter(i => i.finished === false))
         }
 
     }
@@ -133,8 +133,16 @@ const CreateConsulStudent = () => {
 
     //TODO: add a way for student's to see all of an instructor's schedules to know what times slots are unavailable
     return (  
-        <Box sx={{ display: 'flex', p: `${theme.spacing(5)}` }}>
-            <Paper sx={{ width: '40%', alignContent: 'center', justifyContent: 'center', padding: `${theme.spacing(5)}`, mr: `${theme.spacing(4)}` }}>
+        <Box sx={{ 
+            display: 'flex', 
+            p: `${theme.spacing(5)}` 
+        }}>
+            <Paper sx={{ 
+                width: '40%', 
+                alignContent: 'center', 
+                justifyContent: 'center', 
+                padding: `${theme.spacing(5)}`,
+                mr: `${theme.spacing(2)}` }}>
                 <Typography sx={{ mb: 1 }}variant='h5'>Create Consultation</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <FormControl
@@ -208,7 +216,9 @@ const CreateConsulStudent = () => {
                 { teacherConsul && teacherConsul.map((consultation) => (
                     <Box>
                         <Paper sx={{ marginTop: `${theme.spacing(2)}`, padding: `${theme.spacing(1)}`, boxShadow: 3 }}>
-                            <Typography key={consultation._id}>{formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMM dd, yyyy')}</Typography>
+                            <Typography key={consultation._id}>
+                                {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMMM dd, yyyy')}
+                            </Typography>
                         </Paper>
                     </Box>
                 ))}

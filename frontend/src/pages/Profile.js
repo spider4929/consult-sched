@@ -8,43 +8,25 @@ const Profile = () => {
     const theme = useTheme()
 
     return (
-        <Box
-            components="main"
-            sx={{
-                flexGrow: 1,
-                py: `${theme.spacing(5)}`
-            }}
-        >
-            <Container maxWidth="lg">
-                <Typography
+        <Box sx={{ flexGrow: 1, p: `${theme.spacing(5)}`}}>
+            <Typography
                     sx={{ mb: 3}}
                     variant="h4"
                 >
                     User Profile 
-                </Typography>
-                <Grid
-                    container
-                    spacing={3}
-                >
-                    <Grid
-                        item
-                        lg={12}
-                        md={12}
-                        xs={12}
-                    >
-                        <UserProfile />
-                    </Grid>
-                    <Grid
-                        item
-                        lg={12}
-                        md={12}
-                        xs={12}
-                    >
-                        <UserProfileDetails />
-                    </Grid>
-                </Grid>
-            </Container>
+            </Typography>
+            <Box
+                components="main"
+                sx={{
+                    display: 'flex'
+                }}
+            >
+                
+                <UserProfile sx={{width: '30%'}} />
+                <UserProfileDetails />
+            </Box>
         </Box>
+        
     )
 };
 
