@@ -3,7 +3,8 @@ import format from 'date-fns/format'
 // mui imports
 import { useEffect, useState } from 'react'
 import { IconButton, Tooltip, Box, Modal, Typography, 
-    ButtonGroup } from "@mui/material";
+    ButtonGroup, 
+    Paper} from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 
 // icon imports
@@ -277,9 +278,9 @@ const ViewConsul = () => {
     )
 
     return (
-        <Stack spacing={1}>
+        <Stack spacing={2}>
             <Typography variant='h6'>Current Consultations</Typography>
-            <div style={{  display: 'flex', height: '100%', flexGrow: 1, height: 371}}>
+            <Paper style={{  display: 'flex', height: '100%', flexGrow: 1, height: '40vh'}}>
                 <DataGrid
                     rows={rowsFuture}
                     columns={columnsFuture}
@@ -288,9 +289,9 @@ const ViewConsul = () => {
                         id: false,
                     }}
                 />
-            </div>
+            </Paper>
             <Typography variant='h6'>Past Consultations</Typography>
-            <div style={{  display: 'flex', height: '100%', flexGrow: 1, height: 371}}>
+            <Paper style={{  display: 'flex', height: '100%', flexGrow: 1, height: '40vh'}}>
                 <DataGrid
                     rows={rowsPast}
                     columns={columnsPast}
@@ -299,14 +300,14 @@ const ViewConsul = () => {
                         id: false,
                     }}
                 />
-            </div>
+            </Paper>
             <Modal
                 open={open}
                 onClose={handleClose}
             >
-                <Box sx={style}>
+                <Paper sx={style}>
                     <EditConsultation />
-                </Box>
+                </Paper>
             </Modal>
         </Stack>
     );

@@ -1,16 +1,17 @@
-import { Box, Divider, Grid, List, Paper } from '@mui/material';
-import { Chat2 } from '../components/Chat2';
+import { Grid, List, Paper } from '@mui/material';
 import Chat from '../components/Chats/Chat';
 import MyChats from '../components/Chats/MyChats';
 import SideDrawer from '../components/Chats/SideDrawer'
 import { useAuthContext } from '../hooks/useAuthContext';
 
+import { useTheme } from "@mui/material/styles";
+
 const Inbox = () => {
+    const theme = useTheme()
     const { user } = useAuthContext();
 
     return <>
-        
-        <Grid container component={Paper}>
+        <Grid container component={Paper} sx={{  }}>
             <Grid item xs={3}>
             <List>
             { user && <SideDrawer/> }
@@ -21,7 +22,6 @@ const Inbox = () => {
             { user && <Chat/>}
             </Grid>
         </Grid>
-        <Divider/>
         {/* { user && <Chat2/>} */}
     </>
 };

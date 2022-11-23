@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Box } from '@mui/system';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, Alert, Typography} from '@mui/material';
-import { formatISO, format } from 'date-fns';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, 
+    Alert, Typography, Paper} from '@mui/material';
+import { formatISO } from 'date-fns';
 import { utcToZonedTime, formatInTimeZone } from "date-fns-tz";
 import { useTheme } from "@mui/material/styles";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { useNavigate } from "react-router-dom";
-import { useGetTeacherConsul } from '../hooks/useGetTeacherConsul';
 
 const CreateConsulStudent = () => {
 
@@ -22,7 +22,6 @@ const CreateConsulStudent = () => {
     const [teachProfiles, setTeachProfiles] = useState('')
     const [assignedTeach, setAssignedTeach] = useState('')
     const [teacherConsul, setTeacherConsul] = useState(null)
-    //const [displayAllForms, setDisplayAllForms] = useState('')
 
     // error checking
     const [error, setError] = useState(null)
@@ -134,82 +133,86 @@ const CreateConsulStudent = () => {
 
     //TODO: add a way for student's to see all of an instructor's schedules to know what times slots are unavailable
     return (  
-        <Box sx={{ display: 'flex'}}>
-            <Box sx={{ width: '50%' }}>
+        <Box sx={{ display: 'flex', p: `${theme.spacing(5)}` }}>
+            <Paper sx={{ width: '40%', alignContent: 'center', justifyContent: 'center', padding: `${theme.spacing(5)}`, mr: `${theme.spacing(4)}` }}>
+                <Typography sx={{ mb: 1 }}variant='h5'>Create Consultation</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <FormControl>
-                        <Stack spacing={2}>
-                            <InputLabel sx={{marginTop: `${theme.spacing(2)}`}}>Select Instructor</InputLabel>
-                            <Select
-                                value={assignedTeach}
-                                label="Select Instructor"
-                                onChange={handleAssignedTeach}
-                            >
-                                { teachProfiles && teachProfiles.map((teachProfile) => (
-                                    <MenuItem 
-                                        key={teachProfile._id}
-                                        value={teachProfile.user._id}
-                                        >
+                        <FormControl
+                            fullWidth
+                        >
+                            <Stack spacing={2}>
+                                <InputLabel sx={{marginTop: `${theme.spacing(2)}`}}>Select Instructor</InputLabel>
+                                <Select
+                                    value={assignedTeach}
+                                    label="Select Instructor"
+                                    onChange={handleAssignedTeach}
+                                >
+                                    { teachProfiles && teachProfiles.map((teachProfile) => (
+                                        <MenuItem 
+                                            key={teachProfile._id}
+                                            value={teachProfile.user._id}
+                                            >
 
-                                        {teachProfile.user.first_name} {teachProfile.user.last_name}
+                                            {teachProfile.user.first_name} {teachProfile.user.last_name}
 
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                            <TextField
-                                required
-                                label="Enter title" 
-                                variant="outlined"
-                                type="text"
-                                onChange={(e) => setText(e.target.value)}
-                                value={text}
-                            />
-                            <DateTimePicker
-                                required
-                                label="Start Date"
-                                value={startDate}
-                                onChange={handleStarDateChange}
-                                renderInput={(params) => <TextField {...params} />}
-                                inputFormat="MM/dd/yyyy hh:mm a"
-                            />
-                            <DateTimePicker
-                                required
-                                label="End Date"
-                                value={endDate}
-                                onChange={handleEndDateChange}
-                                renderInput={(params) => <TextField {...params} />}
-                                inputFormat="MM/dd/yyyy hh:mm a"
-                            />
-                            <TextField
-                                required
-                                label="Enter location or link" 
-                                variant="outlined"
-                                type="text"
-                                onChange={(e) => setMeetLink(e.target.value)}
-                                value={meetLink}
-                            />
-                            <Button
-                                variant="contained"
-                                onClick={handleSubmit}
-                            >
-                                Submit
-                            </Button>
-                            
-                            { error && <Alert severity="error">{error}</Alert>}
-                            
-                        </Stack>
-                    </FormControl>
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                <TextField
+                                    required
+                                    label="Enter title" 
+                                    variant="outlined"
+                                    type="text"
+                                    onChange={(e) => setText(e.target.value)}
+                                    value={text}
+                                />
+                                <DateTimePicker
+                                    required
+                                    label="Start Date"
+                                    value={startDate}
+                                    onChange={handleStarDateChange}
+                                    renderInput={(params) => <TextField {...params} />}
+                                    inputFormat="MM/dd/yyyy hh:mm a"
+                                />
+                                <DateTimePicker
+                                    required
+                                    label="End Date"
+                                    value={endDate}
+                                    onChange={handleEndDateChange}
+                                    renderInput={(params) => <TextField {...params} />}
+                                    inputFormat="MM/dd/yyyy hh:mm a"
+                                />
+                                <TextField
+                                    required
+                                    label="Enter location or link" 
+                                    variant="outlined"
+                                    type="text"
+                                    onChange={(e) => setMeetLink(e.target.value)}
+                                    value={meetLink}
+                                />
+                                <Button
+                                    variant="contained"
+                                    onClick={handleSubmit}
+                                >
+                                    Submit
+                                </Button>
+                                
+                                { error && <Alert severity="error">{error}</Alert>}
+                                
+                            </Stack>
+                        </FormControl>
                 </LocalizationProvider>
-            </Box>
-            <Box>
+            </Paper>
+            <Paper sx={{ width: '60%', padding: `${theme.spacing(5)}` }}>
                 <Typography>The following dates are not available: </Typography>
                 { teacherConsul && teacherConsul.map((consultation) => (
                     <Box>
-                        <Typography key={consultation._id}>{formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMM dd, yyyy')}</Typography>
+                        <Paper sx={{ marginTop: `${theme.spacing(2)}`, padding: `${theme.spacing(1)}`, boxShadow: 3 }}>
+                            <Typography key={consultation._id}>{formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMM dd, yyyy')}</Typography>
+                        </Paper>
                     </Box>
                 ))}
-                
-            </Box>
+            </Paper>
 
         </Box>
     );

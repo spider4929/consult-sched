@@ -47,7 +47,6 @@ const MyChats = () => {
                         {
                         '&:hover': {
                             color: "white",
-                            backgroundColor: "#38B2AC",
                         },
                         display: 'flex',
                         flexDirection: 'row'

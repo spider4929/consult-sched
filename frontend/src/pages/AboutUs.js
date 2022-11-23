@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, CardMedia, Grid, Paper, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import Taylar from './Images/Taylar.PNG'
 const AboutUs = () => {

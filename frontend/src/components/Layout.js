@@ -67,7 +67,8 @@ const Layout = ({ children }) => {
                 <Box sx={{ 
                     padding: `${theme.spacing(2)}`, 
                     background: '#f9f9f9',
-                    width:'100%'
+                    width:'100%',
+                    height:'100vh'
                 }}>
                     <Box sx={theme.mixins.toolbar}></Box>
                     {children}

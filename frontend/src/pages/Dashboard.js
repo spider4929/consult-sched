@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import Badge from '@mui/material/Badge';
-import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import CheckIcon from '@mui/icons-material/Check';
 import './Dashboard.css'
-import { Tooltip} from '@mui/material';
+import { Tooltip, Paper, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import format from 'date-fns/format'
 import CloseIcon from '@mui/icons-material/Close';
 import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Stack } from '@mui/system';
+import { useTheme } from "@mui/material/styles";
 
 
 const style = {
@@ -30,6 +28,8 @@ const Dashboard = () => {
     const [consultationsFuture, setConsultationsFuture] = useState([])
     const { user } = useAuthContext()
     const [value, setValue] = useState(new Date());
+    
+    const theme = useTheme()
 
     // fetch consultations of logged in student or instructor
     useEffect(() => {
@@ -96,7 +96,7 @@ const Dashboard = () => {
             headerName: 'Approved?',
             headerAlign: 'center',
             align:"center",
-            width: 200,
+            width: 100,
             
             renderCell: (params) => {
                 switch(params.value) {
@@ -134,20 +134,22 @@ const Dashboard = () => {
     })
     
     return (
-        <Stack spacing={1}>
+        <Stack spacing={1} sx={{ p: `${theme.spacing(5)}` }}>
+            <Paper sx={{ p: `${theme.spacing(5)}`, pb: `${theme.spacing(10)}` , mb: `${theme.spacing(1)}`}}>
+                <Typography variant='h4'>Welcome</Typography>
+            </Paper>
             <div style={{ display: 'flex', height: 440 }}>
-                <div style={{ width: '30%' }}>
+                <Paper style={{ width: '30%', marginRight: `${theme.spacing(2)}`}}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <StaticDatePicker
-                            // mask='____/__/__'
                             variant='static'
                             orientation='portrait'
                             value={value}
                             onChange={(newValue) => setValue(newValue)}
                         />
-                </LocalizationProvider>
-                </div>
-                <div style={{  height: '100%', width: '70%'}}>
+                    </LocalizationProvider>
+                </Paper>
+                <Paper style={{  height: '100%', width: '70%'}}>
                     <DataGrid
                     initialState={{
                         sorting: {
@@ -163,7 +165,7 @@ const Dashboard = () => {
                         }}
                         
                     />
-                </div>
+                </Paper>
             </div>
         </Stack>
     );
