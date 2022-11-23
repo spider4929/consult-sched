@@ -414,32 +414,28 @@ router.put('/cancel/:app_id', auth, async (req, res) => {
 router.put('/finished', auth, async (req, res) => {
     try {
         if (req.user.role == 1) {
-            const appointments = await Appointment.find({ student: req.user.id })
+            const appointments = await Appointment.find({ student: req.user.id, accepted: 1 })
 
             for (const appointment of appointments) {
-                if (appointment.accepted == 1) {
-                    const range1 = moment.range(appointment.range)
-                    const range2 = moment.range(Date.now(), appointment.end_date)
+                const range1 = moment.range(appointment.range)
+                const range2 = moment.range(Date.now(), appointment.end_date)
 
-                    if (range2 - range1 < 0) {
-                        appointment.finished = true
-                        await appointment.save()
-                    }
+                if (range2 - range1 < 0) {
+                    appointment.finished = true
+                    await appointment.save()
                 }
             }
             res.json(appointments)
         } else if (req.user.role == 2) {
-            const appointments = await Appointment.find({ teacher: req.user.id })
+            const appointments = await Appointment.find({ teacher: req.user.id, accepted: 1 })
 
             for (const appointment of appointments) {
-                if (appointment.accepted == 1) {
-                    const range1 = moment.range(appointment.range)
-                    const range2 = moment.range(Date.now(), appointment.end_date)
+                const range1 = moment.range(appointment.range)
+                const range2 = moment.range(Date.now(), appointment.end_date)
 
-                    if (range2 - range1 < 0) {
-                        appointment.finished = true
-                        await appointment.save()
-                    }
+                if (range2 - range1 < 0) {
+                    appointment.finished = true
+                    await appointment.save()
                 }
             }
             res.json(appointments)
