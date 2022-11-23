@@ -55,7 +55,7 @@ const CreateConsulProf = () => {
     // rejection function
     const handleReject = async (consulId) => {
         const response = await fetch(`/api/appointments/reject/${consulId}`, {
-            method: 'DELETE',
+            method: 'PUT',
             headers: {
                 'x-auth-token': `${user.token}`
             }
@@ -65,6 +65,8 @@ const CreateConsulProf = () => {
 
     }
     
+    console.log(user)
+
     return ( 
         <Box>
             <TableContainer>
@@ -72,6 +74,7 @@ const CreateConsulProf = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Title</TableCell>
+                            { console.log(user.role) }
                             { user.role === 1 ? <TableCell>Instructor</TableCell> : <TableCell>Student/s</TableCell>}
                             <TableCell>Start</TableCell>
                             <TableCell>End</TableCell>

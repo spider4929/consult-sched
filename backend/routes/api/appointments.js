@@ -258,9 +258,9 @@ router.put('/edit/:app_id', [ auth, [
 })
 
 // @route   DELETE api/appointments/cancel/:app_id
-// @desc    Cancel the appointment
+// @desc    Delete the appointment
 // @access  Private
-router.delete('/cancel/:app_id', auth, async (req, res) => {
+router.delete('/delete/:app_id', auth, async (req, res) => {
     try{
         const student = await User.findById(req.user.id).select('-password')
         if (student.role != 1) {
@@ -273,7 +273,7 @@ router.delete('/cancel/:app_id', auth, async (req, res) => {
         }
 
         if (student.id != appointment.student) {
-            return res.status(400).json({ error: "You cannot cancel another student's appointments" })
+            return res.status(400).json({ error: "You cannot delete another student's appointments" })
         }
 
         if (appointment.accepted == 1) {
@@ -338,6 +338,57 @@ router.put('/reject/:app_id', auth, async (req, res) => {
             to: appointment.student_email,
             subject: "[REJECTED] Your consultation has been rejected.",
             text: "Greetings. Your consultation with Engr. " + appointment.teacher_name + " is rejected. Here are the details:\nTitle: " + appointment.text +"\nStart Date: " + formatToManilaTime(appointment.start_date) + "\nEnd Date: " + formatToManilaTime(appointment.end_date) + "\n\nPlease contact your respective faculty member to know the reason for rejection, so a new one can be created as soon as possible."
+        }
+        transporter.sendMail(message, function(err, info) {
+            if(err) {
+                console.log(err)
+                return res.status(500).send('Server Error')
+            }
+            console.log("Sent: " + info.response)
+        })
+
+        res.json({ msg: 'Appointment successfully rejected' })
+    } catch(err) {
+        console.error(err.message)
+        if (err.kind == 'ObjectId') {
+            return res.status(400).json({ error: 'Appointment not found' })
+        }
+        res.status(500).send('Server Error')
+    }
+})
+
+// @route   PUT api/appointments/cancel/:app_id
+// @desc    Cancel the approved appointment
+// @access  Private
+router.put('/cancel/:app_id', auth, async (req, res) => {
+    try{
+        const teacher = await User.findById(req.user.id).select('-password')
+
+        if (teacher.role != 2) {
+            return res.status(400).json({ error: "You cannot view teacher's list of appointments" })
+        }
+        const appointment = await Appointment.findOne({ _id: req.params.app_id })
+
+        if (!appointment) {
+            return res.status(401).json({ error: 'Appointment not found' })
+        }
+
+        if (teacher.id != appointment.teacher) {
+            return res.status(400).json({ error: "You cannot cancel another teacher's appointments" })
+        }
+
+        if (appointment.accepted == 0) {
+            return res.status(400).json({ error: "Appointment cancel rejected" })
+        }
+
+        appointment.accepted = 0
+        await appointment.save()
+
+        const message = {
+            from: "consultsched.tipqc@zohomail.com",
+            to: appointment.student_email,
+            subject: "[CANCELLED] Your consultation has been cancelled.",
+            text: "Greetings. Your previously approved consultation with Engr. " + appointment.teacher_name + " is cancelled. Here are the details:\nTitle: " + appointment.text +"\nStart Date: " + formatToManilaTime(appointment.start_date) + "\nEnd Date: " + formatToManilaTime(appointment.end_date) + "\n\nPlease contact your respective faculty member to know the reason for sudden cancellation, so a new one can be rescheduled as soon as possible."
         }
         transporter.sendMail(message, function(err, info) {
             if(err) {

@@ -82,8 +82,8 @@ const ViewConsul = () => {
 
     // CRUD handles
     const handleCancel = async (item) => {
-        const response = await fetch(`/api/appointments/reject/${item._id}`, {
-            method: 'DELETE',
+        const response = await fetch(`/api/appointments/cancel/${item._id}`, {
+            method: 'PUT',
             headers: {
                 'x-auth-token': `${user.token}`
             }
@@ -102,7 +102,7 @@ const ViewConsul = () => {
     }
 
     const handleDelete = async (consulId) => {
-        const response = await fetch(`/api/appointments/cancel/${consulId}`, {
+        const response = await fetch(`/api/appointments/delete/${consulId}`, {
             method: 'DELETE',
             headers: {
                 'x-auth-token': `${user.token}`
