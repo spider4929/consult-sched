@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, List, ListItemButton, Stack, Typography } from "@mui/material";
+import { List, ListItemButton, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import ChatLoading from "./ChatLoading";

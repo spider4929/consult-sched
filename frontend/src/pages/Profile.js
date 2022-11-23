@@ -2,13 +2,17 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { UserProfile } from '../components/UserProfile';
 import { UserProfileDetails } from '../components/UserProfileDetails';
 
-const Profile = () => (
-    <>
+import { useTheme } from "@mui/material/styles";
+
+const Profile = () => {
+    const theme = useTheme()
+
+    return (
         <Box
             components="main"
             sx={{
                 flexGrow: 1,
-                py: 8
+                py: `${theme.spacing(5)}`
             }}
         >
             <Container maxWidth="lg">
@@ -41,7 +45,7 @@ const Profile = () => (
                 </Grid>
             </Container>
         </Box>
-    </>
-);
+    )
+};
 
 export default Profile;

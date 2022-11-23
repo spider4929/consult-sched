@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Divider, FormControl, Input, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Input, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import ScrollableChat from "./ScrollableChat";

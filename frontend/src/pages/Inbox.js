@@ -1,4 +1,4 @@
-import { Grid, List, Paper } from '@mui/material';
+import { Box, Grid, List, Paper } from '@mui/material';
 import Chat from '../components/Chats/Chat';
 import MyChats from '../components/Chats/MyChats';
 import SideDrawer from '../components/Chats/SideDrawer'
@@ -11,7 +11,8 @@ const Inbox = () => {
     const { user } = useAuthContext();
 
     return <>
-        <Grid container component={Paper} sx={{  }}>
+        <Box sx={{ py: `${theme.spacing(3)}`}}/>
+        <Grid container component={Paper}>
             <Grid item xs={3}>
             <List>
             { user && <SideDrawer/> }
