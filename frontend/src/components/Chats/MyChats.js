@@ -21,7 +21,7 @@ const MyChats = () => {
 
             setChats(json);
         } catch (error) {
-            console.log(error)
+            
         }
     };
 

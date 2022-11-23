@@ -20,12 +20,10 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
     const { user, selectedChat } = useAuthContext();
 
     useEffect(() => {
-        console.log('scroll has been called')
         bottomRef.current?.scrollIntoView({behavior: "smooth"});
     }, [messages]);
 
     useEffect(() => {
-        console.log('scroll has been called')
         bottomRef.current?.scrollIntoView({behavior: "smooth"});
     }, [messages]);
 
@@ -57,7 +55,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
             socket.emit('join chat', selectedChat._id);
             scrolltoRef();
         } catch ( error ) {
-            console.log(error)
+
         } 
     }
 
@@ -85,7 +83,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 const newmessage = message[message.length - 1]
                 setMessages([...messages, newmessage])
             } catch (error) {
-                console.log(error)
+            
             }
         }
     }

@@ -28,7 +28,6 @@ const Dashboard = () => {
     const [consultationsFuture, setConsultationsFuture] = useState([])
     const { user, username } = useAuthContext()
     const [value, setValue] = useState(new Date())
-    const [name, setName] = useState('')
     
     const theme = useTheme()
 
@@ -42,8 +41,18 @@ const Dashboard = () => {
                 'x-auth-token': `${user.token}`
                 }
             })
-            
+
+            const markFinished = await fetch(`/api/appointments/finished`, {
+                headers: {
+                'x-auth-token': `${user.token}`
+                }
+            })
+
             const json = await response.json()
+
+            const jsonMarkFinished = await markFinished
+            
+            console.log(jsonMarkFinished)
 
             if (response.ok) {
                 setConsultationsFuture(json)
@@ -174,7 +183,7 @@ const Dashboard = () => {
                     
                         rows={rowsFuture}
                         columns={columnsFuture}
-                        pageSize={10}
+                        pageSize={6}
                         columnVisibilityModel={{
                             id: false,   
                         }}

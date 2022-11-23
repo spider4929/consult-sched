@@ -6,6 +6,7 @@ import Taylar from '../static/images/Taylar.PNG'
 import Baturiano from '../static/images/Baturiano.jpg'
 import Julongbayan from '../static/images/Julongbayan.jpg'
 import Nazareno from '../static/images/Nazareno.jpg'
+import Dones from '../static/images/Dones.jpg'
 
 const AboutUs = () => {
 
@@ -98,7 +99,7 @@ const AboutUs = () => {
                                 component='img'
                                 alt='advisor-image'
                                 height={imageHeight}
-                                image={Taylar}
+                                image={Dones}
                             />
                             <CardContent>
                                 <Typography variant="h6" align='center'>Member</Typography>

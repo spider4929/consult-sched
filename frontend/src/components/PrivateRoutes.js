@@ -9,10 +9,8 @@ export const PrivateRoutes = () => {
     useEffect(() => {
         if (localStorage.getItem("user") === null ) {
             setToken(false);
-            console.log('token set to false')
         } else {
             setToken(true);
-            console.log('token set to true')
         }
     }, []);
 

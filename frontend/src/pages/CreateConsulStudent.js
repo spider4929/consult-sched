@@ -91,7 +91,8 @@ const CreateConsulStudent = () => {
         }
         
         if (response.ok) {
-            setTeacherConsul(json.filter(i => i.finished === false))
+            const temp2Json = json.filter(i => i.finished === false)
+            setTeacherConsul(temp2Json.filter(i => i.accepted === 1))
         }
 
     }
@@ -126,12 +127,10 @@ const CreateConsulStudent = () => {
         }
 
         if (response.ok) {
-            // dispatch({type: 'CREATE_CONSULTATION', payload: json})
             navigate('/view-consultations')
         }
     };
 
-    //TODO: add a way for student's to see all of an instructor's schedules to know what times slots are unavailable
     return (  
         <Box sx={{ 
             display: 'flex', 

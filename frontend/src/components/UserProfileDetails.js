@@ -47,7 +47,6 @@ export const UserProfileDetails = (props) => {
             setlinkedinLink(json.social.linkedin)
             const fullName = json.user.first_name + ' ' + json.user.last_name
             setUsername(fullName)
-            console.log(json)
         }
         }
         
@@ -81,7 +80,6 @@ export const UserProfileDetails = (props) => {
 
         if (!response.ok) {
             setError(json.error)
-            console.log(json.error)
         }
 
         if (response.ok) {

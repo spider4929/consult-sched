@@ -56,7 +56,7 @@ const ScrollableChat = ({messages, bottomRef}) => {
         }
     
     } catch (error) {
-        console.log(error)
+        
     }
     }
 
