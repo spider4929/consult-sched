@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Box } from '@mui/system';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Stack, 
-    Alert, Typography, Paper} from '@mui/material';
+    Alert, Typography, Paper, Grid} from '@mui/material';
 import { formatISO } from 'date-fns';
 import { utcToZonedTime, formatInTimeZone } from "date-fns-tz";
 import { useTheme } from "@mui/material/styles";
@@ -136,12 +136,17 @@ const CreateConsulStudent = () => {
             display: 'flex', 
             p: `${theme.spacing(5)}` 
         }}>
-            <Paper sx={{ 
-                width: '40%', 
-                alignContent: 'center', 
-                justifyContent: 'center', 
-                padding: `${theme.spacing(5)}`,
-                mr: `${theme.spacing(2)}` }}>
+            <Grid container sx={{ flex: '1 1 auto'}}>
+                    <Grid item
+                        lg={6}
+                        xs={12}
+                        component={Paper}
+                        sx={{
+                            padding: `${theme.spacing(2)}`,
+                            mr: 4,
+                            mb: 2
+                        }}
+                        >
                 <Typography sx={{ mb: 1 }}variant='h5'>Create Consultation</Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <FormControl
@@ -209,20 +214,35 @@ const CreateConsulStudent = () => {
                             </Stack>
                         </FormControl>
                 </LocalizationProvider>
-            </Paper>
-            <Paper sx={{ width: '60%', padding: `${theme.spacing(5)}` }}>
-                <Typography>The following dates are not available: </Typography>
-                { teacherConsul && teacherConsul.map((consultation) => (
-                    <Box>
-                        <Paper sx={{ marginTop: `${theme.spacing(2)}`, padding: `${theme.spacing(1)}`, boxShadow: 3 }}>
-                            <Typography key={consultation._id}>
-                                {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMMM dd, yyyy')}
-                            </Typography>
-                        </Paper>
-                    </Box>
-                ))}
-            </Paper>
-
+            </Grid>
+            <Grid item
+                        lg={5.51}
+                        xs={12}
+                        component={Paper}
+                        sx={{
+                            mr: 4,
+                            mb: 2
+                        }}
+                        >
+                <Typography sx={{p:2}}> The following dates are not available: </Typography>
+                    { teacherConsul && teacherConsul.map((consultation) => (
+                        <Box>
+                            <Paper sx={{ 
+                                marginRight: `${theme.spacing(2)}`,
+                                marginLeft: `${theme.spacing(2)}`,
+                                marginTop: `${theme.spacing(1)}`,
+                                marginBottom: `${theme.spacing(1)}`,
+                                padding: `${theme.spacing(1)}`, 
+                                boxShadow: 1 
+                            }}>
+                                <Typography key={consultation._id}>
+                                    {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMMM dd, yyyy')}
+                                </Typography>
+                            </Paper>
+                        </Box>
+                    ))}
+            </Grid>
+            </Grid>
         </Box>
     );
 }

@@ -24,7 +24,7 @@ const CreateConsulProf = () => {
             const json = await response.json()
 
             if (response.ok) {
-                const filteredJson = json.filter(item => item.accepted === 2)
+                const filteredJson = json.filter(item => item.accepted === 2).filter(i => i.finished === false)
                 setConsultations(filteredJson)
             }
         }

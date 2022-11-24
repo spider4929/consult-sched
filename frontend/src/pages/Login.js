@@ -72,16 +72,17 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                             <TextField
                                 label="Enter email" 
-                                variant="standard"
+                                variant="outlined"
                                 type="email"
                                 fullWidth
                                 required
                                 onChange={(e) => setEmail(e.target.value)}
                                 value={email}
+                                sx={{pb: 2}}
                             />
                             <TextField
                                 label="Enter password" 
-                                variant="standard"
+                                variant="outlined"
                                 id="standard-password-input"
                                 type="password"
                                 fullWidth

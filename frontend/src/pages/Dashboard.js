@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import CheckIcon from '@mui/icons-material/Check';
 import { Tooltip, Paper, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import format from 'date-fns/format'
 import CloseIcon from '@mui/icons-material/Close';
@@ -149,45 +150,61 @@ const Dashboard = () => {
             }}>
                 <Typography variant="h4" sx={{flexGrow: 1}}>Welcome, {username ? username : 'visitor.'} </Typography>
                 <Typography >It is nice to see you again. </Typography>
-                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.filter(i => i.finished === false).length } scheduled upcoming consultations. </Typography>
+                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.filter(i => i.accepted === 1).filter(i => i.finished === false).length } scheduled upcoming consultations. </Typography>
             </Paper>
             <div style={{ 
                 display: 'flex', 
                 height: 440 
             }}>
-                <Paper style={{ 
-                    width: '30%', 
-                    marginRight: `${theme.spacing(2)}`
-                }}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <StaticDatePicker
-                            variant='static'
-                            orientation='portrait'
-                            value={value}
-                            onChange={(newValue) => setValue(newValue)}
-                        />
-                    </LocalizationProvider>
-                </Paper>
-                <Paper style={{ 
-                    height: '100%', 
-                    width: '70%'
-                }}>
-                    <DataGrid
-                    initialState={{
-                        sorting: {
-                            sortModel: [{ field: 'startDate', sort: 'asc' }],
-                        },
-                    }}
-                    
-                        rows={rowsFuture}
-                        columns={columnsFuture}
-                        pageSize={6}
-                        columnVisibilityModel={{
-                            id: false,   
-                        }}
-                        
-                    />
-                </Paper>
+                <Grid container sx={{ flex: '1 1 auto'}}>
+                    <Grid item
+                        lg={4}
+                        xs={12}
+                        >
+                        <Paper style={{ 
+                            width: '100%', 
+                            marginRight: `${theme.spacing(2)}`
+                        }}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <StaticDatePicker
+                                    variant='static'
+                                    orientation='portrait'
+                                    value={value}
+                                    onChange={(newValue) => setValue(newValue)}
+                                />
+                            </LocalizationProvider>
+                        </Paper>
+                    </Grid>
+                    <Grid item
+                        lg={8}
+                        xs={12}
+                        sx ={{
+                            flexGrow: 1
+                        }}>
+                        <Paper style={{ 
+                            height: '100%', 
+                            width: '100%'
+                        }}>
+                            <DataGrid
+                            initialState={{
+                                sorting: {
+                                    sortModel: [{ field: 'startDate', sort: 'asc' }],
+                                },
+                            }}
+                            
+                                rows={rowsFuture}
+                                columns={columnsFuture}
+                                pageSize={6}
+                                columnVisibilityModel={{
+                                    id: false,   
+                                }}
+                                sx={{
+                                    height: 440,
+                                }}
+                            />
+                        </Paper>
+                    </Grid>
+                </Grid>
             </div>
         </Stack>
     );
