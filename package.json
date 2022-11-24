@@ -4,8 +4,8 @@
   "description": "Consultation Scheduler for CPE Department, T.I.P. - QC",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
   },
   "author": "Group 3 - Software Design",
   "license": "MIT",
