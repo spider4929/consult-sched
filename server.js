@@ -18,14 +18,14 @@ app.use('/api/appointments', require('./routes/api/appointments'))
 app.use('/api/chat', require('./routes/api/chat'))
 
 // Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-    // Set static folder
-    app.use(express.static('frontend/build'))
+// if (process.env.NODE_ENV === 'production') {
+//     // Set static folder
+//     app.use(express.static('frontend/build'))
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-    })
-}
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+//     })
+// }
 
 const PORT = process.env.PORT || 5000
 
