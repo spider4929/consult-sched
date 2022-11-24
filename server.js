@@ -17,6 +17,10 @@ app.use('/api/profile', require('./routes/api/profile'))
 app.use('/api/appointments', require('./routes/api/appointments'))
 app.use('/api/chat', require('./routes/api/chat'))
 
+app.get('/', (req, res) => {
+    res.send("App is running")
+})
+
 // Serve static assets in production
 // if (process.env.NODE_ENV === 'production') {
 //     // Set static folder
