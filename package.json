@@ -4,7 +4,7 @@
   "description": "Consultation Scheduler for CPE Department, T.I.P. - QC",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run server\" \"NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend\"",
     "server": "node server.js",
     "client": "npm start --prefix frontend",
     "railway-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
