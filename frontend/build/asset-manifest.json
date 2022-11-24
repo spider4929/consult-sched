@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.76797162.css",
+    "main.js": "/static/js/main.bd9557b0.js",
+    "static/media/Taylar.PNG": "/static/media/Taylar.f15433710e3115cef7a8.PNG",
+    "index.html": "/index.html",
+    "main.76797162.css.map": "/static/css/main.76797162.css.map",
+    "main.bd9557b0.js.map": "/static/js/main.bd9557b0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.76797162.css",
+    "static/js/main.bd9557b0.js"
+  ]
+}
