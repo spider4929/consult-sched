@@ -53,6 +53,7 @@ export const UserProfile = (props) => {
                     color="textPrimary"
                     gutterBottom
                     variant="h6"
+                    align="center"
                     >
                         {profile.user.last_name}, {profile.user.first_name}
                     </Typography>

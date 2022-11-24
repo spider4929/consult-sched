@@ -107,32 +107,35 @@ const Register = () => {
                     <form onSubmit={handleSubmit}>
                     <TextField
                         label="Enter first name" 
-                        variant="standard"
+                        variant="outlined"
                         fullWidth
                         required
                         onChange={(e) => setfirstName(e.target.value)}
                         value={firstName}
+                        sx={{pb:2}}
                     />
                     <TextField
                         label="Enter last name" 
-                        variant="standard"
+                        variant="outlined"
                         fullWidth
                         required
                         onChange={(e) => setlastName(e.target.value)}
                         value={lastName}
+                        sx={{pb:2}}
                     />
                     <TextField
                         label="Enter email" 
-                        variant="standard"
+                        variant="outlined"
                         type="email"
                         fullWidth
                         required
                         onChange={(e) => setEmail(e.target.value)}
                         value={email}
+                        sx={{pb:2}}
                     />
                     <TextField
                         label="Enter password" 
-                        variant="standard"
+                        variant="outlined"
                         id="standard-password-input"
                         type="password"
                         fullWidth

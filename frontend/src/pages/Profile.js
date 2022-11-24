@@ -22,7 +22,7 @@ const Profile = () => {
                 }}
             >
                 
-                <UserProfile sx={{width: '30%'}} />
+                <UserProfile sx={{width: '50%'}} />
                 <UserProfileDetails />
             </Box>
         </Box>
