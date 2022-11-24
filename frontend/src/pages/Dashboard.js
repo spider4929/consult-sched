@@ -3,7 +3,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import CheckIcon from '@mui/icons-material/Check';
-import './Dashboard.css'
 import { Tooltip, Paper, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import format from 'date-fns/format'
@@ -150,7 +149,7 @@ const Dashboard = () => {
             }}>
                 <Typography variant="h4" sx={{flexGrow: 1}}>Welcome, {username ? username : 'visitor.'} </Typography>
                 <Typography >It is nice to see you again. </Typography>
-                <Typography sx={{ marginTop: 5 }}>You have { rowsFuture.length } scheduled consultations today. </Typography>
+                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.filter(i => i.finished === false).length } scheduled upcoming consultations. </Typography>
             </Paper>
             <div style={{ 
                 display: 'flex', 
