@@ -155,39 +155,55 @@ const Dashboard = () => {
                 display: 'flex', 
                 height: 440 
             }}>
-                <Paper style={{ 
-                    width: '30%', 
-                    marginRight: `${theme.spacing(2)}`
-                }}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <StaticDatePicker
-                            variant='static'
-                            orientation='portrait'
-                            value={value}
-                            onChange={(newValue) => setValue(newValue)}
-                        />
-                    </LocalizationProvider>
-                </Paper>
-                <Paper style={{ 
-                    height: '100%', 
-                    width: '70%'
-                }}>
-                    <DataGrid
-                    initialState={{
-                        sorting: {
-                            sortModel: [{ field: 'startDate', sort: 'asc' }],
-                        },
-                    }}
-                    
-                        rows={rowsFuture}
-                        columns={columnsFuture}
-                        pageSize={6}
-                        columnVisibilityModel={{
-                            id: false,   
-                        }}
-                        
-                    />
-                </Paper>
+                <Grid container sx={{ flex: '1 1 auto'}}>
+                    <Grid item
+                        lg={4}
+                        xs={12}
+                        >
+                        <Paper style={{ 
+                            width: '100%', 
+                            marginRight: `${theme.spacing(2)}`
+                        }}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <StaticDatePicker
+                                    variant='static'
+                                    orientation='portrait'
+                                    value={value}
+                                    onChange={(newValue) => setValue(newValue)}
+                                />
+                            </LocalizationProvider>
+                        </Paper>
+                    </Grid>
+                    <Grid item
+                        lg={8}
+                        xs={12}
+                        sx ={{
+                            flexGrow: 1
+                        }}>
+                        <Paper style={{ 
+                            height: '100%', 
+                            width: '100%'
+                        }}>
+                            <DataGrid
+                            initialState={{
+                                sorting: {
+                                    sortModel: [{ field: 'startDate', sort: 'asc' }],
+                                },
+                            }}
+                            
+                                rows={rowsFuture}
+                                columns={columnsFuture}
+                                pageSize={6}
+                                columnVisibilityModel={{
+                                    id: false,   
+                                }}
+                                sx={{
+                                    height: 440,
+                                }}
+                            />
+                        </Paper>
+                    </Grid>
+                </Grid>
             </div>
         </Stack>
     );
