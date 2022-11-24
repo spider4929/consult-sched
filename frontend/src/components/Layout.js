@@ -80,7 +80,7 @@ const Layout = ({ children }) => {
     // this will display if user is not logged in
     else {
         return (
-            <Box sx={{ padding: `${theme.spacing(1)}`}}>
+            <Box>
                 {children}
             </Box>
         )
