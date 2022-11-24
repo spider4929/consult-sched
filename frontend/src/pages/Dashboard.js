@@ -150,7 +150,7 @@ const Dashboard = () => {
             }}>
                 <Typography variant="h4" sx={{flexGrow: 1}}>Welcome, {username ? username : 'visitor.'} </Typography>
                 <Typography >It is nice to see you again. </Typography>
-                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.filter(i => i.finished === false).length } scheduled upcoming consultations. </Typography>
+                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.filter(i => i.accepted === 1).filter(i => i.finished === false).length } scheduled upcoming consultations. </Typography>
             </Paper>
             <div style={{ 
                 display: 'flex', 

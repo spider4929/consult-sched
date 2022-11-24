@@ -48,7 +48,7 @@ const AboutUs = () => {
         }}>
             <Grid container>
                 <Grid item component={Paper} sx={{
-                    padding: `${theme.spacing(3)}`,
+                    padding: `${theme.spacing(5)}`,
                     mb: 3
                 }} xs={12} lg={5}>
                 <Stack spacing={2} >

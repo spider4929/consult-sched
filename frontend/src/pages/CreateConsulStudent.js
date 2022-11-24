@@ -216,7 +216,7 @@ const CreateConsulStudent = () => {
                 </LocalizationProvider>
             </Grid>
             <Grid item
-                        lg={4}
+                        lg={5.51}
                         xs={12}
                         component={Paper}
                         sx={{
@@ -225,15 +225,22 @@ const CreateConsulStudent = () => {
                         }}
                         >
                 <Typography sx={{p:2}}> The following dates are not available: </Typography>
-                { teacherConsul && teacherConsul.map((consultation) => (
-                    <Box>
-                        <Paper sx={{ marginTop: `${theme.spacing(2)}`, padding: `${theme.spacing(1)}`, boxShadow: 3 }}>
-                            <Typography key={consultation._id}>
-                                {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMMM dd, yyyy')}
-                            </Typography>
-                        </Paper>
-                    </Box>
-                ))}
+                    { teacherConsul && teacherConsul.map((consultation) => (
+                        <Box>
+                            <Paper sx={{ 
+                                marginRight: `${theme.spacing(2)}`,
+                                marginLeft: `${theme.spacing(2)}`,
+                                marginTop: `${theme.spacing(1)}`,
+                                marginBottom: `${theme.spacing(1)}`,
+                                padding: `${theme.spacing(1)}`, 
+                                boxShadow: 1 
+                            }}>
+                                <Typography key={consultation._id}>
+                                    {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'hh:mm a')} - {formatInTimeZone(consultation.end_date, 'Asia/Manila', 'hh:mm a')}, {formatInTimeZone(consultation.start_date, 'Asia/Manila', 'MMMM dd, yyyy')}
+                                </Typography>
+                            </Paper>
+                        </Box>
+                    ))}
             </Grid>
             </Grid>
         </Box>
