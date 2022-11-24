@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 })
 
 const { formatInTimeZone } = require('date-fns-tz')
-const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MM dd, yyyy hh:mm a')
+const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MMMM dd, yyyy hh:mm a')
 
 const Appointment = require('../../models/Appointment')
 const User = require('../../models/User')
@@ -408,28 +408,39 @@ router.put('/cancel/:app_id', auth, async (req, res) => {
     }
 })
 
-// @route   PUT api/appointments/reject/:app_id
+// @route   PUT api/appointments/finished
 // @desc    Mark appointment as finished
 // @access  Private
-router.put('/finished/:app_id', auth, async (req, res) => {
+router.put('/finished', auth, async (req, res) => {
     try {
-        const appointment = await Appointment.findOne({ _id: req.params.app_id })
+        const user = await User.findById(req.user.id).select('-password')
+        if (user.role == 1) {
+            const appointments = await Appointment.find({ student: req.user.id })
 
-        if (appointment.accepted != 1) {
-            return res.status(400).json({ error: "Only accepted appointments can be set to finished" })
+            for (const appointment of appointments) {
+                const range1 = moment.range(appointment.range)
+                const range2 = moment.range(Date.now(), appointment.end_date)
+
+                if (range2 - range1 < 0) {
+                    appointment.finished = true
+                    await appointment.save()
+                }
+            }
+            res.json(appointments)
+        } else if (user.role == 2) {
+            const appointments = await Appointment.find({ teacher: req.user.id })
+
+            for (const appointment of appointments) {
+                const range1 = moment.range(appointment.range)
+                const range2 = moment.range(Date.now(), appointment.end_date)
+
+                if (range2 - range1 < 0) {
+                    appointment.finished = true
+                    await appointment.save()
+                }
+            }
+            res.json(appointments)
         }
-
-        const range1 = moment.range(appointment.range)
-        const range2 = moment.range(Date.now(), appointment.end_date)
-
-        if (range2 - range1 > 0) {
-            return res.status(400).json({ error: "Appointment is still not finished" })
-        }
-
-        appointment.finished = true
-        await appointment.save()
-
-        res.json({ msg: 'Appointment set to finished' })
     } catch (err) {
         console.error(err.message)
         if (err.kind == 'ObjectId') {
