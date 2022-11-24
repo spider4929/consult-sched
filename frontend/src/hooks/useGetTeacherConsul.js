@@ -9,7 +9,7 @@ export const useGetTeacherConsul = () => {
     const getConsultation = async (teacherId) => {
         setError(null)
 
-        const response = await fetch(`/api/appointments/${teacherId}`, {
+        const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/${teacherId}`, {
             method: 'GET',
             headers: {
                 'x-auth-token': `${user.token}`

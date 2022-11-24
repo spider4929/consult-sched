@@ -5,7 +5,7 @@ import ScrollableChat from "./ScrollableChat";
 import './scrollbar.css'
 
 import io from 'socket.io-client'
-const ENDPOINT = 'http://localhost:5000';
+const ENDPOINT = 'https://consult-sched-production.up.railway.app';
 var socket, selectedChatCompare;
 
 
@@ -42,7 +42,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
 
         try {
             setLoading(true)
-            const response = await fetch(`/api/chat/${selectedChat._id}`, {
+            const response = await fetch(`https://consult-sched-production.up.railway.app/api/chat/${selectedChat._id}`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
@@ -67,7 +67,7 @@ const Chat = ({ fetchAgain, setFetchAgain }) => {
                 }
                 
                 setNewMessage("")
-                const response = await fetch(`/api/chat/${selectedChat._id}`, {
+                const response = await fetch(`https://consult-sched-production.up.railway.app/api/chat/${selectedChat._id}`, {
                     method: 'PUT',
                     body: JSON.stringify(reply),
                     headers: {

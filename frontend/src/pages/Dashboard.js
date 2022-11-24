@@ -35,13 +35,13 @@ const Dashboard = () => {
         const fetchConsultations = async () => {
             let userRole = (user.role === 1) ? 'student': 'teacher'
 
-            const response = await fetch(`/api/appointments/${userRole}`, {
+            const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/${userRole}`, {
                 headers: {
                 'x-auth-token': `${user.token}`
                 }
             })
 
-            const markFinished = await fetch(`/api/appointments/finished/`, {
+            const markFinished = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/finished/`, {
                 method: 'PUT',
                 headers: {
                 'x-auth-token': `${user.token}`

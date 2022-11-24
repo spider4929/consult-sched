@@ -11,7 +11,7 @@ const MyChats = () => {
 
     const fetchChats = async () => {
         try {
-            const response = await fetch(`/api/chat/me`, {
+            const response = await fetch(`https://consult-sched-production.up.railway.app/api/chat/me`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
