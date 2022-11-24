@@ -42,7 +42,8 @@ const Dashboard = () => {
                 }
             })
 
-            const markFinished = await fetch(`/api/appointments/finished`, {
+            const markFinished = await fetch(`/api/appointments/finished/`, {
+                method: 'PUT',
                 headers: {
                 'x-auth-token': `${user.token}`
                 }
@@ -50,9 +51,7 @@ const Dashboard = () => {
 
             const json = await response.json()
 
-            const jsonMarkFinished = await markFinished
-            
-            console.log(jsonMarkFinished)
+            const jsonMarkFinished = await markFinished.json()
 
             if (response.ok) {
                 setConsultationsFuture(json)
@@ -151,7 +150,7 @@ const Dashboard = () => {
             }}>
                 <Typography variant="h4" sx={{flexGrow: 1}}>Welcome, {username ? username : 'visitor.'} </Typography>
                 <Typography >It is nice to see you again. </Typography>
-                <Typography sx={{ marginTop: 5 }}>You have { consultationsFuture.length } scheduled upcoming consultations. </Typography>
+                <Typography sx={{ marginTop: 5 }}>You have { rowsFuture.length } scheduled consultations today. </Typography>
             </Paper>
             <div style={{ 
                 display: 'flex', 
