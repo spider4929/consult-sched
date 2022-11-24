@@ -4,7 +4,8 @@
   "description": "Consultation Scheduler for CPE Department, T.I.P. - QC",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
+    "test": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server.js",
     "client": "npm start --prefix frontend"
   },
