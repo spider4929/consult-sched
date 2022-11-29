@@ -12,6 +12,7 @@ import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Stack } from '@mui/system';
 import { useTheme } from "@mui/material/styles";
+import "./Dashboard.css"
 
 
 const style = {
@@ -171,7 +172,7 @@ const Dashboard = () => {
                                     orientation='portrait'
                                     value={value}
                                     onChange={(newValue) => setValue(newValue)}
-                                    showToolbar={false}
+                                    disableOpenPicker
                                 />
                             </LocalizationProvider>
                         </Paper>
