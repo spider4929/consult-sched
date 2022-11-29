@@ -147,7 +147,7 @@ const Register = () => {
                     <Button sx={{marginTop: `${theme.spacing(3)}`, width: '100%'}} disabled={isLoading} type="submit" variant="contained">Register</Button>
 
                     {/* TODO: for array of errors, to .map() here */}
-                    { error && <Alert severity="error">{error}</Alert>}
+                    { error && <Alert severity="error" sx={{marginTop: 2}}>{error}</Alert>}
 
                 </form>
                 </Box>

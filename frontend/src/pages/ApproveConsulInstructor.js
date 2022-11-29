@@ -2,7 +2,7 @@ import format from 'date-fns/format'
 import { useEffect, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, 
-    IconButton, Tooltip, Alert, Paper} from "@mui/material";
+    IconButton, Tooltip, Alert, Paper, Snackbar} from "@mui/material";
 
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -11,6 +11,8 @@ const CreateConsulProf = () => {
     const { user } = useAuthContext()
     const [consultations, setConsultations] = useState(null)
     const [error, setError] = useState(null)
+    const [message, setMessage] = useState(null)
+    const [open, setOpen] = useState(false)
 
     // get all consultations that are not approved
     useEffect(() => {
@@ -45,11 +47,20 @@ const CreateConsulProf = () => {
         const json = await response.json()
 
         if (!response.ok) {
-            setError(json.error)
+            if (json.error) {
+                setError(json.error)
+            }
+            else {
+                setError("An unknown error has occured.")
+            }
+            setOpen(true)
         }
         else {
             setConsultations(consultations.filter(item => item._id != consulId))
+            setMessage('Consultation successfully approved.')
+            setOpen(true)
         }
+        
     }
 
     // rejection function
@@ -61,14 +72,38 @@ const CreateConsulProf = () => {
             }
         })
 
-        setConsultations(consultations.filter(item => item._id != consulId))
+        const json = await response.json()
 
+        if (!response.ok) {
+            if (json.error) {
+                setError(json.error)
+            }
+            else {
+                setError("An unknown error has occured.")
+            }
+            setOpen(true)
+        }
+        else {
+            setConsultations(consultations.filter(item => item._id != consulId))
+            setMessage('Consultation successfully rejected.')
+            setOpen(true)
+        }
     }
+
+    // snackbar
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
     
+        setOpen(false);
+    };
+
     return ( 
         <Paper sx={{ 
-            height: '90vh', 
-            padding: 1 
+            height: '84%', 
+            padding: 1,
+            margin: 5
         }}>
             <TableContainer>
                 <Table sx={{ 
@@ -101,7 +136,34 @@ const CreateConsulProf = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-        { error && <Alert severity="error">{error}</Alert> }
+        { error &&
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}>
+                <Alert 
+                    onClose={handleClose} 
+                    severity="error" 
+                    sx={{width: '100%'}}>
+                    {error}
+                </Alert>
+            </Snackbar>
+        }
+        { message &&
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}>
+                <Alert 
+                    onClose={handleClose} 
+                    severity="success" 
+                    sx={{width: '100%'}}>
+                    {message}
+                </Alert>
+            </Snackbar>
+        }
         </Paper>
     );
 }

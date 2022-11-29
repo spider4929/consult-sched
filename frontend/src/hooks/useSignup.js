@@ -20,7 +20,12 @@ export const useSignup = () => {
 
         if (!response.ok) {
             setIsLoading(false)
-            setError(json.error)
+            if (json.error) {
+                setError(json.error)
+            }
+            else {
+                setError("An error has occured. Please try again.")
+            }
         }
 
         if (response.ok) {

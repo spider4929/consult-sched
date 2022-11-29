@@ -111,7 +111,7 @@ const Login = () => {
                                 No account? Register Here!
                             </Link>
 
-                            { error && <Alert severity="error">{error}</Alert>}
+                            { error && <Alert severity="error" sx={{marginTop: 2}}>{error}</Alert>}
                         </form>
                 </Box>
             </Box>

@@ -218,16 +218,16 @@ export const UserProfileDetails = (props) => {
                 p: 2
             }}
             >
-                <Button
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                >
-                    Save
-                </Button>
-
                 { error && <Alert severity="error">{error}</Alert>}
                 { success && <Alert severity="success">{success}</Alert>}
+            <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                sx={{marginLeft: 2}}
+            >
+                Save
+            </Button>
             </Box>
       </Card> : <CircularProgress />}
     </form>
