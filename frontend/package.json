@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:5000",
+  "proxy": "https://backend-consult-sched-production.up.railway.app/",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
