@@ -3,7 +3,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import CheckIcon from '@mui/icons-material/Check';
-import { Tooltip, Paper, Typography } from '@mui/material';
+import { Tooltip, Paper, Typography, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import format from 'date-fns/format'
@@ -12,7 +12,6 @@ import PendingOutlinedIcon from '@mui/icons-material/PendingOutlined';
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Stack } from '@mui/system';
 import { useTheme } from "@mui/material/styles";
-import "./Dashboard.css"
 
 
 const style = {
@@ -168,11 +167,14 @@ const Dashboard = () => {
                         }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <StaticDatePicker
-                                    variant='static'
-                                    orientation='portrait'
+                                    orientation="portrait"
                                     value={value}
                                     onChange={(newValue) => setValue(newValue)}
-                                    disableOpenPicker
+                                    renderInput={(params) => <TextField {...params} />}
+                                    componentsProps={{
+                                        actionBar: { sx: { display: 'none' } },
+                                        switchViewButton: { sx: { display: 'none' } }
+                                   }}
                                 />
                             </LocalizationProvider>
                         </Paper>
