@@ -62,7 +62,7 @@ const EditConsultation = () => {
 
         console.log(consulId)
 
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/edit/${consulId}`, {
+        const response = await fetch(`api/appointments/edit/${consulId}`, {
             method: 'PUT',
             body: JSON.stringify(consultation),
             headers: {

@@ -32,7 +32,7 @@ export const UserProfileDetails = (props) => {
     useEffect(() => {
         const fetchProfile = async () => {
 
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/profile/me`, {
+        const response = await fetch(`api/profile/me`, {
             headers: {
             'x-auth-token': `${user.token}`
             }
@@ -67,7 +67,7 @@ export const UserProfileDetails = (props) => {
             facebook: facebookLink,
             linkedin: linkedinLink
         }
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/profile`, {
+        const response = await fetch(`api/profile`, {
             method: 'POST',
             body: JSON.stringify(newProfile),
             headers: {

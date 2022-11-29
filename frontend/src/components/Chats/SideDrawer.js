@@ -52,7 +52,7 @@ const SideDrawer = () => {
         try {
             setLoading(true)
 
-            const response = await fetch(`https://consult-sched-production.up.railway.app/api/profile/teachers`, {
+            const response = await fetch(`api/profile/teachers`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
@@ -76,7 +76,7 @@ const SideDrawer = () => {
             }
 
 
-            const response = await fetch(`https://consult-sched-production.up.railway.app/api/chat/${userId}`, {
+            const response = await fetch(`api/chat/${userId}`, {
                 method: 'POST',
                 body: JSON.stringify(startChat),
                 headers: {

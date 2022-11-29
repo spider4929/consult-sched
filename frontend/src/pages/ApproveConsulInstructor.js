@@ -15,7 +15,7 @@ const CreateConsulProf = () => {
     // get all consultations that are not approved
     useEffect(() => {
         const fetchConsultations = async () => {
-            const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/teacher`, {
+            const response = await fetch(`api/appointments/teacher`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }

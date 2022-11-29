@@ -110,7 +110,7 @@ const CreateConsulStudent = () => {
             meet_link: meetLink
         }
 
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/${assignedTeach}`, {
+        const response = await fetch(`api/appointments/${assignedTeach}`, {
             method: 'POST',
             body: JSON.stringify(consultation),
             headers: {
