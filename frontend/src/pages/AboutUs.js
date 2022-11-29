@@ -1,6 +1,7 @@
-import { Stack, Box, Paper, Card, CardContent, CardMedia, Typography, Grid, Avatar } from "@mui/material";
+import { Stack, Box, Paper, Card, CardContent, CardMedia, Typography, Grid, Avatar, Button } from "@mui/material";
 import React from "react";
 import { useTheme } from "@mui/material/styles";
+import ConfettiExplosion from 'react-confetti-explosion';
 
 import Taylar from '../static/images/Taylar.PNG'
 import Baturiano from '../static/images/Baturiano.jpg'
@@ -38,9 +39,22 @@ const list = [
 ]
 const AboutUs = () => {
 
+    const [isExploding, setIsExploding] = React.useState(false)
+
     const theme = useTheme()
     // const cardWidth = '18%'
     const imageHeight = '140'
+    let counter = 0
+
+    const handleClick = () => {
+        counter += 1
+        if(counter % 10 === 0) {
+            setIsExploding(true)
+        }
+        if(counter % 10 !== 0) {
+            setIsExploding(false)
+        }
+    }
 
     return (
         <Box sx={{
@@ -81,16 +95,19 @@ const AboutUs = () => {
                         display: 'flex',
                         justifyContent:"center" 
                     }}>
+                        {isExploding && <ConfettiExplosion />}
                         <Box sx={{ display: '1 1 flex', mb: 5}}>
-                        <Avatar variant={"rounded"} alt="advisor-image" src={Taylar} 
-                        sx={{
-                            width: 200,
-                            height: 200,
-                            display:{
-                                xs: 'none',
-                                md: 'block'
-                            }
-                            }}/>
+                        <Button onClick={handleClick}>
+                            <Avatar variant={"rounded"} alt="advisor-image" src={Taylar} 
+                            sx={{
+                                width: 200,
+                                height: 200,
+                                display:{
+                                    xs: 'none',
+                                    md: 'block'
+                                }
+                                }}/>
+                        </Button>
                             <Box sx={{flexGrow: 1, mt: 4, ml: 2}}>
                                 <Typography variant="h4" align="center">Dr Jonathan Taylar</Typography>
                                 <Typography variant="h6" align="center">Adviser</Typography>
