@@ -7,6 +7,7 @@ import Baturiano from '../static/images/Baturiano.jpg'
 import Julongbayan from '../static/images/Julongbayan.jpg'
 import Nazareno from '../static/images/Nazareno.jpg'
 import Dones from '../static/images/Dones.jpg'
+import Liad from '../static/images/Liad.jpg'
 
 const list = [
         {
@@ -22,7 +23,7 @@ const list = [
          {
         "name": 'Morian Cumer E. Liad',
         "role": 'Member',
-        "image": Taylar
+        "image": Liad
         },
         {
         "name": 'Dan Angelo A. Julongbayan',
