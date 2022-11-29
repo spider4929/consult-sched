@@ -85,7 +85,7 @@ const ViewConsul = () => {
 
     // CRUD handles
     const handleCancel = async (item) => {
-        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/cancel/${item._id}`, {
+        await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/cancel/${item._id}`, {
             method: 'PUT',
             headers: {
                 'x-auth-token': `${user.token}`
@@ -105,7 +105,7 @@ const ViewConsul = () => {
     }
 
     const handleDelete = async (consulId) => {
-        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/delete/${consulId}`, {
+        await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/delete/${consulId}`, {
             method: 'DELETE',
             headers: {
                 'x-auth-token': `${user.token}`
@@ -286,7 +286,6 @@ const ViewConsul = () => {
             <Typography variant='h6'>Current Consultations</Typography>
             <Paper style={{ 
                 display: 'flex', 
-                height: '100%', 
                 flexGrow: 1, 
                 height: 370
             }}>
@@ -301,8 +300,7 @@ const ViewConsul = () => {
             </Paper>
             <Typography variant='h6'>Past Consultations</Typography>
             <Paper style={{ 
-                display: 'flex', 
-                height: '100%', 
+                display: 'flex',
                 flexGrow: 1, 
                 height: 370
             }}>

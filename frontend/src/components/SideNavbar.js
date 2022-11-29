@@ -1,4 +1,4 @@
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Button, Badge, } from "@mui/material";
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext';
