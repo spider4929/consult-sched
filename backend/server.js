@@ -6,7 +6,7 @@ const app = express()
 
 const cors=require("cors");
 const corsOptions ={
-   origin:'*', 
+   origin:'http://localhost:3000', 
    credentials:true,            //access-control-allow-credentials:true
    optionSuccessStatus:200,
 }
@@ -29,16 +29,6 @@ app.use('/api/chat', require('./routes/api/chat'))
 app.get('/', (req, res) => {
     res.send("App is running")
 })
-
-// Serve static assets in production
-// if (process.env.NODE_ENV === 'production') {
-//     // Set static folder
-//     app.use(express.static('frontend/build'))
-
-//     app.get('*', (req, res) => {
-//         res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-//     })
-// }
 
 const PORT = process.env.PORT || 5000
 
