@@ -37,7 +37,7 @@ const server = app.listen(PORT, () => console.log(`Server started on port ${PORT
 const io = require("socket.io")(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "https://frontend-production-35f9.up.railway.app",
+        origin: "https://consultation-scheduler-group3.up.railway.app/",
     }
 })
 
