@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from "react";
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import { Box, Button, Tooltip, Typography, Drawer, TextField, ListItem, List, Snackbar, Stack, ListItemButton, Divider } from "@mui/material";
+import { Typography, Drawer, ListItem, List, Stack, ListItemButton, Divider } from "@mui/material";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import ChatLoading from './ChatLoading';
 import UserListItem from './UserListItem';
@@ -10,7 +10,7 @@ import { CircularProgress } from '@mui/material';
 const SideDrawer = () => {
     const { user, setSelectedChat, chats, setChats } = useAuthContext()
 
-    const [search, setSearch] = useState("")
+    //const [search, setSearch] = useState("")
     const [searchResult, setSearchResult] = useState([])
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState();

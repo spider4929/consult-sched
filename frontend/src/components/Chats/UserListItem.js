@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, ListItemButton, Typography } from "@mui/material";
+import { Avatar, ListItemButton, Typography } from "@mui/material";
 import React from "react";
-import { useAuthContext } from "../../hooks/useAuthContext";
+//import { useAuthContext } from "../../hooks/useAuthContext";
 
 const UserListItem = ({ user, handleFunction }) => {
     console.log(user)

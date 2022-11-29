@@ -1,5 +1,5 @@
-import { Box, Card, TextField, Button, Typography, Alert, Link, Container, Stack, Grid } from "@mui/material";
-import { ThemeProvider, useTheme, styled } from "@mui/material/styles";
+import { Box, TextField, Button, Typography, Alert, Link, Grid } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ const Login = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { login, error, isLoading } = useLogin()
+    const { login, error } = useLogin()
 
     const handleSubmit = async (e) => {
         e.preventDefault()

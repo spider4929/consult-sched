@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 

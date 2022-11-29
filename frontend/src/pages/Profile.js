@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { UserProfile } from '../components/UserProfile';
 import { UserProfileDetails } from '../components/UserProfileDetails';
 

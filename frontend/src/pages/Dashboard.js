@@ -171,6 +171,7 @@ const Dashboard = () => {
                                     orientation='portrait'
                                     value={value}
                                     onChange={(newValue) => setValue(newValue)}
+                                    showToolbar={false}
                                 />
                             </LocalizationProvider>
                         </Paper>

@@ -63,7 +63,6 @@ const CreateConsulStudent = () => {
 
     // functions
     const formatToUTC = (time) => formatISO(utcToZonedTime(time, "UTC")).replace("+08:00", ".000Z")
-    const formatToManilaTime = (time) => formatInTimeZone(time, 'Asia/Manila', 'MMM dd, yyyy hh:mm a')
 
     /* retrieves the list of consultations of a teacher */
     const handleAssignedTeach = async (e) => {
