@@ -10,7 +10,7 @@ export const useSignup = () => {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('api/users/', {
+        const response = await fetch('https://backend-consult-sched-production.up.railway.app/api/users/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ first_name, last_name, email, password })

@@ -35,7 +35,7 @@ const CreateConsulStudent = () => {
     // fetch list of Instructors on database
     useEffect(() => {
         const fetchTeachProfiles = async () => {
-            const response = await fetch('https://consult-sched-production.up.railway.app/api/profile/teachers', {
+            const response = await fetch('https://backend-consult-sched-production.up.railway.app/api/profile/teachers', {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
@@ -71,7 +71,7 @@ const CreateConsulStudent = () => {
 
         setAssignedTeach(e.target.value)
 
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/${e.target.value}`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/${e.target.value}`, {
             method: 'GET',
             headers: {
                 'x-auth-token': `${user.token}`
@@ -110,7 +110,7 @@ const CreateConsulStudent = () => {
             meet_link: meetLink
         }
 
-        const response = await fetch(`api/appointments/${assignedTeach}`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/${assignedTeach}`, {
             method: 'POST',
             body: JSON.stringify(consultation),
             headers: {

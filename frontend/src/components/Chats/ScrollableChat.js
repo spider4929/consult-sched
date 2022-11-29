@@ -43,7 +43,7 @@ const ScrollableChat = ({messages, bottomRef}) => {
 
     const fetchUser = async () => {
     try {
-        const response = await fetch(`api/profile/me`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/profile/me`, {
             headers: {
             'x-auth-token': `${user.token}`
             }

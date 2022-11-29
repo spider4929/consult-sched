@@ -15,7 +15,7 @@ const CreateConsulProf = () => {
     // get all consultations that are not approved
     useEffect(() => {
         const fetchConsultations = async () => {
-            const response = await fetch(`api/appointments/teacher`, {
+            const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/teacher`, {
                 headers: {
                     'x-auth-token': `${user.token}`
                 }
@@ -35,7 +35,7 @@ const CreateConsulProf = () => {
     }, [user])
 
     const handleApproval = async (consulId) => {
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/approve/${consulId}`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/approve/${consulId}`, {
             method: 'PUT',
             headers: {
                 'x-auth-token': `${user.token}`
@@ -54,7 +54,7 @@ const CreateConsulProf = () => {
 
     // rejection function
     const handleReject = async (consulId) => {
-        const response = await fetch(`https://consult-sched-production.up.railway.app/api/appointments/reject/${consulId}`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/reject/${consulId}`, {
             method: 'PUT',
             headers: {
                 'x-auth-token': `${user.token}`

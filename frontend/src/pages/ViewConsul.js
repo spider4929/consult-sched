@@ -47,7 +47,7 @@ const ViewConsul = () => {
         const fetchConsultations = async () => {
             let userRole = (user.role === 1) ? 'student': 'teacher'
 
-            const response = await fetch(`api/appointments/${userRole}`, {
+            const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/${userRole}`, {
                 headers: {
                 'x-auth-token': `${user.token}`
                 }
@@ -85,7 +85,7 @@ const ViewConsul = () => {
 
     // CRUD handles
     const handleCancel = async (item) => {
-        const response = await fetch(`api/appointments/cancel/${item._id}`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/cancel/${item._id}`, {
             method: 'PUT',
             headers: {
                 'x-auth-token': `${user.token}`
@@ -105,7 +105,7 @@ const ViewConsul = () => {
     }
 
     const handleDelete = async (consulId) => {
-        const response = await fetch(`api/appointments/delete/${consulId}`, {
+        const response = await fetch(`https://backend-consult-sched-production.up.railway.app/api/appointments/delete/${consulId}`, {
             method: 'DELETE',
             headers: {
                 'x-auth-token': `${user.token}`
