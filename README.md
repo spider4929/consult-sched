@@ -6,4 +6,4 @@ Tools and technologies used:
 
 I (franklinnazareno) contributed mostly in the backend, while the rest of the contributors worked mostly in the front-end.
 
-Client-side of the application is still up at consult-sched.vercel.app although the free hosting for the server-side has been expired.
+Client-side of the application is still up at consult-sched.vercel.app although the free hosting for the server-side (at Railway) has been expired.
